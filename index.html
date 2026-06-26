@@ -1539,7 +1539,7 @@
                         <li><strong>Generate Video</strong> - Click "Generate" or "Create Video" button</li>
                         <li><strong>Download Result</strong> - Once ready, download your video file</li>
                     </ol>
-                    <a href="https://seedance.ai" target="_blank" class="vg-link">Visit Seedance 2.0 →</a>
+                    <a href="https://seedance2.ai/" target="_blank" class="vg-link">Visit Seedance 2.0 →</a>
                 </div>
 
                 <!-- Gemini Guide -->
@@ -2175,28 +2175,157 @@
         function buildDesignPrompt(settings) {
             // Add variation prompts for regeneration
             const regenerationCount = settings.regenerationCount || 0;
-            let systemPrompt = `You are a professional design director creating an advertising poster.\n\n`;
-            systemPrompt += `CRITICAL: Brand name "${settings.brandName}" must appear EXACTLY as written in all text elements.\n\n`;
             
-            let prompt = `Campaign: ${settings.title}\nBrand: ${settings.brandName}\nDescription: ${settings.description}\n`;
-            prompt += `Style: ${settings.selectedStyle} | Ratio: ${settings.selectedRatio}\n`;
-            prompt += `Category: ${settings.theme}\n`;
-            if (settings.themeKeywords) prompt += `Theme: ${settings.themeKeywords}\n`;
-            if (settings.personalities) prompt += `Personalities: ${settings.personalities}\n`;
-            if (settings.validFrom) prompt += `Valid: ${settings.validFrom} to ${settings.validTo}\n`;
+            let prompt = `=== PROFESSIONAL ADVERTISING POSTER DESIGN BRIEF ===\n\n`;
             
-            // Add variation based on regeneration count
-            if (regenerationCount === 0) {
-                prompt += `\nCreate a professional, eye-catching design brief for this poster.`;
-            } else if (regenerationCount === 1) {
-                prompt += `\nCreate an ALTERNATIVE and DIFFERENT design brief for this poster. Focus on different layout arrangements and visual hierarchy.`;
-            } else if (regenerationCount === 2) {
-                prompt += `\nCreate a THIRD UNIQUE design brief with a completely different approach. Emphasize different compositional elements.`;
-            } else {
-                prompt += `\nCreate a FRESH design brief with a new perspective. Vary the layout, composition, and focal points from previous concepts.`;
+            prompt += `BRAND & CAMPAIGN INFORMATION:\n`;
+            prompt += `Brand Name: "${settings.brandName}"\n`;
+            prompt += `Campaign Title: ${settings.title}\n`;
+            prompt += `Campaign Description: ${settings.description}\n`;
+            prompt += `Product Category: ${settings.theme}\n\n`;
+            
+            prompt += `DESIGN SPECIFICATIONS:\n`;
+            prompt += `Design Style: ${settings.selectedStyle}\n`;
+            prompt += `Aspect Ratio: ${settings.selectedRatio}\n`;
+            if (settings.validFrom && settings.validTo) {
+                prompt += `Campaign Period: ${settings.validFrom} to ${settings.validTo}\n`;
+            }
+            prompt += `\n`;
+            
+            // Add theme keywords if provided
+            if (settings.themeKeywords) {
+                prompt += `VISUAL THEMES & KEYWORDS:\n`;
+                prompt += `${settings.themeKeywords}\n`;
+                prompt += `Incorporate these thematic elements naturally throughout the design.\n\n`;
             }
             
-            return systemPrompt + prompt;
+            // Add personalities if provided
+            if (settings.personalities) {
+                prompt += `FEATURED PERSONALITIES/ATHLETES:\n`;
+                prompt += `${settings.personalities}\n`;
+                prompt += `Position them prominently as focal points. Ensure they are recognizable and appropriately styled.\n\n`;
+            }
+            
+            prompt += `=== CRITICAL DESIGN REQUIREMENTS ===\n`;
+            prompt += `1. BRAND NAME PLACEMENT:\n`;
+            prompt += `   - Brand name "${settings.brandName}" MUST appear EXACTLY as written\n`;
+            prompt += `   - Display prominently in a readable, bold font\n`;
+            prompt += `   - Position strategically for maximum visibility\n`;
+            prompt += `   - Ensure sufficient contrast with background\n\n`;
+            
+            prompt += `2. VISUAL HIERARCHY:\n`;
+            prompt += `   - Clear focal point that draws the eye immediately\n`;
+            prompt += `   - Secondary elements support the primary message\n`;
+            prompt += `   - Typography creates visual flow and guides reading order\n`;
+            prompt += `   - Balance composition for professional appearance\n\n`;
+            
+            prompt += `3. COLOR STRATEGY:\n`;
+            prompt += `   - Use psychologically appropriate colors for ${settings.theme}\n`;
+            prompt += `   - Maintain high contrast for text readability\n`;
+            prompt += `   - Create color harmony throughout the design\n`;
+            prompt += `   - Ensure colors reflect brand identity and campaign mood\n\n`;
+            
+            prompt += `4. DESIGN STYLE GUIDELINES (${settings.selectedStyle}):\n`;
+            if (settings.selectedStyle.includes('Minimalist')) {
+                prompt += `   - Clean, uncluttered layout with generous whitespace\n`;
+                prompt += `   - Limited color palette, maximum 3-4 colors\n`;
+                prompt += `   - Simple, elegant typography\n`;
+                prompt += `   - Focus on essential elements only\n`;
+                prompt += `   - Emphasis on typography and negative space\n`;
+            } else if (settings.selectedStyle.includes('Bold')) {
+                prompt += `   - Vibrant, eye-catching color combinations\n`;
+                prompt += `   - Dynamic shapes and graphic elements\n`;
+                prompt += `   - Strong typography with high impact fonts\n`;
+                prompt += `   - Energetic composition that commands attention\n`;
+                prompt += `   - Rich visual textures and patterns\n`;
+            } else if (settings.selectedStyle.includes('Premium')) {
+                prompt += `   - Sophisticated, luxurious aesthetic\n`;
+                prompt += `   - Gold, silver, or jewel tone accents\n`;
+                prompt += `   - Refined typography with elegant serifs\n`;
+                prompt += `   - High-end materials appearance (velvet, silk effects)\n`;
+                prompt += `   - Subtle patterns and ornamental elements\n`;
+            } else if (settings.selectedStyle.includes('Dynamic')) {
+                prompt += `   - Geometric shapes and modern composition\n`;
+                prompt += `   - Bold angular layouts with movement\n`;
+                prompt += `   - Contemporary typography\n`;
+                prompt += `   - Layered elements creating depth\n`;
+                prompt += `   - Forward-moving, progressive visual flow\n`;
+            } else if (settings.selectedStyle.includes('Artistic')) {
+                prompt += `   - Creative, expressive visual language\n`;
+                prompt += `   - Organic shapes and hand-drawn elements\n`;
+                prompt += `   - Artistic, unconventional layout\n`;
+                prompt += `   - Rich textures and artistic effects\n`;
+                prompt += `   - Unique color combinations that evoke emotion\n`;
+            } else if (settings.selectedStyle.includes('Professional')) {
+                prompt += `   - Corporate, business-appropriate design\n`;
+                prompt += `   - Structured grid-based layout\n`;
+                prompt += `   - Professional sans-serif typography\n`;
+                prompt += `   - Conservative color palette\n`;
+                prompt += `   - Trustworthy, authoritative appearance\n`;
+            }
+            prompt += `\n`;
+            
+            prompt += `5. TECHNICAL QUALITY REQUIREMENTS:\n`;
+            prompt += `   - High resolution, crisp and clear\n`;
+            prompt += `   - Professional production quality\n`;
+            prompt += `   - Sharp text and smooth gradients\n`;
+            prompt += `   - Consistent file format suitable for printing/digital\n`;
+            prompt += `   - Color calibrated for both screen and print\n\n`;
+            
+            prompt += `6. COMPOSITION & LAYOUT:\n`;
+            prompt += `   - Aspect ratio ${settings.selectedRatio} strictly adhered to\n`;
+            prompt += `   - Safe margins maintained from edges\n`;
+            prompt += `   - All text easily readable from distance\n`;
+            prompt += `   - Strategic use of empty space\n`;
+            prompt += `   - Perfect visual balance\n\n`;
+            
+            prompt += `7. CALL-TO-ACTION & TEXT:\n`;
+            prompt += `   - Clear, compelling message hierarchy\n`;
+            prompt += `   - Easy to read taglines or slogans\n`;
+            prompt += `   - Contact information or website clearly visible\n`;
+            prompt += `   - Professional, error-free copy\n\n`;
+            
+            // Add variation based on regeneration count
+            prompt += `8. DESIGN BRIEF INSTRUCTION:\n`;
+            if (regenerationCount === 0) {
+                prompt += `   - Create a FIRST CONCEPT with professional, eye-catching design\n`;
+                prompt += `   - Focus on immediate visual impact and brand clarity\n`;
+                prompt += `   - Ensure all specifications above are perfectly executed\n`;
+                prompt += `   - Make this the PRIMARY, most polished concept\n`;
+            } else if (regenerationCount === 1) {
+                prompt += `   - Create an ALTERNATIVE CONCEPT with COMPLETELY DIFFERENT layout\n`;
+                prompt += `   - Different focal point and composition approach\n`;
+                prompt += `   - Different color arrangement or accent colors\n`;
+                prompt += `   - Different typography arrangement\n`;
+                prompt += `   - This should feel distinctly different from the first concept\n`;
+            } else if (regenerationCount === 2) {
+                prompt += `   - Create a THIRD UNIQUE CONCEPT with fresh perspective\n`;
+                prompt += `   - Opposite composition style (horizontal vs vertical focus)\n`;
+                prompt += `   - Different visual weight distribution\n`;
+                prompt += `   - Alternative design elements arrangement\n`;
+                prompt += `   - Showcase variety in approach while maintaining professionalism\n`;
+            } else {
+                prompt += `   - Create a NEW INNOVATIVE CONCEPT with creative twist\n`;
+                prompt += `   - Bold reimagining of layout and hierarchy\n`;
+                prompt += `   - Unique compositional approach\n`;
+                prompt += `   - Maintains all technical requirements while pushing creativity\n`;
+                prompt += `   - Offers fresh visual perspective on campaign\n`;
+            }
+            prompt += `\n`;
+            
+            prompt += `=== FINAL OUTPUT REQUIREMENTS ===\n`;
+            prompt += `Generate a comprehensive design brief that includes:\n`;
+            prompt += `• Detailed visual description of the poster\n`;
+            prompt += `• Color palette with specific color recommendations\n`;
+            prompt += `• Typography specifications\n`;
+            prompt += `• Layout and composition details\n`;
+            prompt += `• Positioning of all visual elements\n`;
+            prompt += `• Brand name placement and styling\n`;
+            prompt += `• Any special effects or textures\n`;
+            prompt += `• Professional design tips for implementation\n`;
+            prompt += `• Technical specifications for production\n`;
+            
+            return prompt;
         }
 
         async function callGeminiAPI(prompt) {
