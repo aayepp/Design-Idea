@@ -901,6 +901,195 @@
             background: rgba(30, 58, 95, 0.6);
         }
 
+        /* How-To Guide */
+        .btn-how-to {
+            width: 100%;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 12px;
+        }
+
+        .btn-how-to:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.4);
+        }
+
+        .howto-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .howto-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .howto-content {
+            background: linear-gradient(135deg, rgba(15, 40, 71, 0.98) 0%, rgba(30, 58, 95, 0.95) 100%);
+            border-radius: 16px;
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        .howto-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .howto-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .howto-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .howto-close:hover {
+            color: var(--text-primary);
+        }
+
+        .howto-intro {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .howto-section {
+            margin-bottom: 24px;
+        }
+
+        .howto-section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .video-generator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .vg-option {
+            background: rgba(30, 58, 95, 0.5);
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            border-radius: 10px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .vg-option:hover {
+            border-color: var(--primary);
+            background: rgba(30, 58, 95, 0.7);
+        }
+
+        .vg-option.active {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: var(--secondary);
+        }
+
+        .vg-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .vg-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .vg-guide {
+            display: none;
+            background: rgba(15, 40, 71, 0.6);
+            border-left: 3px solid var(--primary);
+            padding: 14px;
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+
+        .vg-guide.active {
+            display: block;
+        }
+
+        .vg-guide ol {
+            margin: 0;
+            padding-left: 20px;
+            list-style: decimal;
+        }
+
+        .vg-guide li {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .vg-guide strong {
+            color: var(--secondary);
+        }
+
+        .vg-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 14px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--card);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .vg-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
         .spinner {
             border: 2px solid #1e3a5f;
             border-top: 2px solid var(--primary);
@@ -1231,11 +1420,11 @@
                         <div class="date-range">
                             <div class="form-group">
                                 <label>Valid From</label>
-                                <input type="text" id="validFrom" placeholder="dd/mm/yy" maxlength="8">
+                                <input type="date" id="validFrom">
                             </div>
                             <div class="form-group">
                                 <label>Valid To</label>
-                                <input type="text" id="validTo" placeholder="dd/mm/yy" maxlength="8">
+                                <input type="date" id="validTo">
                             </div>
                         </div>
                     </div>
@@ -1297,9 +1486,111 @@
 
             <button id="copyBtn" class="copy-btn">📋 Copy Prompt</button>
 
+            <button class="btn-how-to" onclick="openHowTo()">🎬 How to Use Prompt</button>
+
             <div class="result-buttons">
                 <button id="regenerateBtn" class="btn-regenerate">Regenerate</button>
                 <button id="createNewBtn" class="btn-new">New Design</button>
+            </div>
+        </div>
+
+        <!-- How-To Modal -->
+        <div class="howto-modal" id="howtoModal">
+            <div class="howto-content">
+                <div class="howto-header">
+                    <h3 class="howto-title">🎬 Using Your Design Prompt</h3>
+                    <button class="howto-close" onclick="closeHowTo()">✕</button>
+                </div>
+
+                <div class="howto-intro">
+                    Your generated design prompt is optimized for AI video generators. Choose your preferred platform below to see step-by-step instructions.
+                </div>
+
+                <div class="howto-section">
+                    <div class="howto-section-title">Select Video Generator</div>
+                    <div class="video-generator-grid">
+                        <div class="vg-option active" onclick="selectGenerator('seedance')">
+                            <div class="vg-icon">🎨</div>
+                            <div class="vg-name">Seedance 2.0</div>
+                        </div>
+                        <div class="vg-option" onclick="selectGenerator('gemini')">
+                            <div class="vg-icon">🔮</div>
+                            <div class="vg-name">Google Gemini</div>
+                        </div>
+                        <div class="vg-option" onclick="selectGenerator('davinci')">
+                            <div class="vg-icon">🎥</div>
+                            <div class="vg-name">DaVinci.AI</div>
+                        </div>
+                        <div class="vg-option" onclick="selectGenerator('kling')">
+                            <div class="vg-icon">✨</div>
+                            <div class="vg-name">Kling.AI</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seedance Guide -->
+                <div class="vg-guide active" id="guide-seedance">
+                    <ol>
+                        <li><strong>Go to Seedance 2.0</strong> - Open your web browser and navigate to the platform</li>
+                        <li><strong>Start New Project</strong> - Click "Create New Video" or "New Project"</li>
+                        <li><strong>Select Template</strong> - Choose "Poster to Video" or similar template</li>
+                        <li><strong>Paste Your Prompt</strong> - Click on the prompt field and paste your design prompt using Ctrl+V or Cmd+V</li>
+                        <li><strong>Configure Settings</strong> - Set duration, aspect ratio, and style preferences</li>
+                        <li><strong>Generate Video</strong> - Click "Generate" or "Create Video" button</li>
+                        <li><strong>Download Result</strong> - Once ready, download your video file</li>
+                    </ol>
+                    <a href="https://seedance.ai" target="_blank" class="vg-link">Visit Seedance 2.0 →</a>
+                </div>
+
+                <!-- Gemini Guide -->
+                <div class="vg-guide" id="guide-gemini">
+                    <ol>
+                        <li><strong>Open Google Gemini</strong> - Go to gemini.google.com</li>
+                        <li><strong>Start New Chat</strong> - Click "New chat" to create a fresh conversation</li>
+                        <li><strong>Prompt for Video Generation</strong> - Paste your prompt with this prefix: "Using your video generation capabilities, create a video from this design prompt:"</li>
+                        <li><strong>Paste Design Prompt</strong> - Add your full design prompt text</li>
+                        <li><strong>Request Video Output</strong> - Add: "Generate a video representation of this design"</li>
+                        <li><strong>Wait for Processing</strong> - Gemini will process and generate video</li>
+                        <li><strong>Download or Share</strong> - Get your video link or download</li>
+                    </ol>
+                    <a href="https://gemini.google.com" target="_blank" class="vg-link">Visit Google Gemini →</a>
+                </div>
+
+                <!-- DaVinci.AI Guide -->
+                <div class="vg-guide" id="guide-davinci">
+                    <ol>
+                        <li><strong>Access DaVinci.AI</strong> - Open davinci.ai in your browser</li>
+                        <li><strong>Create Video Project</strong> - Click "New Video" or "Create Project"</li>
+                        <li><strong>Choose Video Mode</strong> - Select "Text-to-Video" or "AI Generation"</li>
+                        <li><strong>Paste Your Design Prompt</strong> - Click in the text area and paste your full prompt</li>
+                        <li><strong>Set Video Parameters</strong> - Choose duration (30s, 60s, etc), resolution, and FPS</li>
+                        <li><strong>Add Music (Optional)</strong> - Select background music if desired</li>
+                        <li><strong>Generate Video</strong> - Click "Generate" button and wait for processing</li>
+                        <li><strong>Edit & Export</strong> - Fine-tune if needed and export your video</li>
+                    </ol>
+                    <a href="https://davinci.ai" target="_blank" class="vg-link">Visit DaVinci.AI →</a>
+                </div>
+
+                <!-- Kling.AI Guide -->
+                <div class="vg-guide" id="guide-kling">
+                    <ol>
+                        <li><strong>Visit Kling.AI</strong> - Go to kling.ai website</li>
+                        <li><strong>Sign In/Register</strong> - Create account or login to your existing account</li>
+                        <li><strong>Start Generation</strong> - Click "Create Video" or "New Generation"</li>
+                        <li><strong>Select Model</strong> - Choose Kling model version available</li>
+                        <li><strong>Paste Your Prompt</strong> - Enter your design prompt in the prompt field</li>
+                        <li><strong>Configure Duration</strong> - Set video length (5s, 10s recommended for posters)</li>
+                        <li><strong>Generate Video</strong> - Click "Generate" and wait for video creation</li>
+                        <li><strong>Download Output</strong> - Download the generated video in your preferred format</li>
+                    </ol>
+                    <a href="https://kling.ai" target="_blank" class="vg-link">Visit Kling.AI →</a>
+                </div>
+
+                <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(59, 130, 246, 0.2);">
+                    <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.6;">
+                        💡 <strong>Pro Tips:</strong> Make sure your prompt is in the clipboard (copy button above), experiment with different platforms to find your preferred output quality, and try adjusting duration/settings for different results.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -1770,30 +2061,6 @@
             titleInput.focus();
         }
 
-        // ===== DATE FORMATTING =====
-        function formatDateInput(input) {
-            // Auto-format date as user types: dd/mm/yy
-            let value = input.value.replace(/\D/g, ''); // Remove non-digits
-            
-            if (value.length >= 2) {
-                value = value.substring(0, 2) + '/' + value.substring(2);
-            }
-            if (value.length >= 5) {
-                value = value.substring(0, 5) + '/' + value.substring(5, 7);
-            }
-            
-            input.value = value;
-        }
-
-        // Add event listeners for date formatting
-        validFromInput.addEventListener('input', function() {
-            formatDateInput(this);
-        });
-
-        validToInput.addEventListener('input', function() {
-            formatDateInput(this);
-        });
-
         uploadArea.addEventListener('click', () => imageUpload.click());
         uploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -1906,16 +2173,30 @@
         }
 
         function buildDesignPrompt(settings) {
-            let prompt = `You are a professional design director creating an advertising poster.\n\n`;
-            prompt += `CRITICAL: Brand name "${settings.brandName}" must appear EXACTLY as written in all text elements.\n\n`;
-            prompt += `Campaign: ${settings.title}\nBrand: ${settings.brandName}\nDescription: ${settings.description}\n`;
+            // Add variation prompts for regeneration
+            const regenerationCount = settings.regenerationCount || 0;
+            let systemPrompt = `You are a professional design director creating an advertising poster.\n\n`;
+            systemPrompt += `CRITICAL: Brand name "${settings.brandName}" must appear EXACTLY as written in all text elements.\n\n`;
+            
+            let prompt = `Campaign: ${settings.title}\nBrand: ${settings.brandName}\nDescription: ${settings.description}\n`;
             prompt += `Style: ${settings.selectedStyle} | Ratio: ${settings.selectedRatio}\n`;
             prompt += `Category: ${settings.theme}\n`;
             if (settings.themeKeywords) prompt += `Theme: ${settings.themeKeywords}\n`;
             if (settings.personalities) prompt += `Personalities: ${settings.personalities}\n`;
             if (settings.validFrom) prompt += `Valid: ${settings.validFrom} to ${settings.validTo}\n`;
-            prompt += `\nCreate a professional, eye-catching design brief for this poster.`;
-            return prompt;
+            
+            // Add variation based on regeneration count
+            if (regenerationCount === 0) {
+                prompt += `\nCreate a professional, eye-catching design brief for this poster.`;
+            } else if (regenerationCount === 1) {
+                prompt += `\nCreate an ALTERNATIVE and DIFFERENT design brief for this poster. Focus on different layout arrangements and visual hierarchy.`;
+            } else if (regenerationCount === 2) {
+                prompt += `\nCreate a THIRD UNIQUE design brief with a completely different approach. Emphasize different compositional elements.`;
+            } else {
+                prompt += `\nCreate a FRESH design brief with a new perspective. Vary the layout, composition, and focal points from previous concepts.`;
+            }
+            
+            return systemPrompt + prompt;
         }
 
         async function callGeminiAPI(prompt) {
@@ -1999,7 +2280,11 @@
 
         regenerateBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            if (currentGenerationSettings) generateDesignPrompt();
+            if (currentGenerationSettings) {
+                // Increment regeneration counter for variation
+                currentGenerationSettings.regenerationCount = (currentGenerationSettings.regenerationCount || 0) + 1;
+                generateDesignPrompt();
+            }
         });
 
         copyBtn.addEventListener('click', () => {
@@ -2023,6 +2308,38 @@
             logoPreview.classList.remove('active');
             selectedStyle = 'Minimalist & Modern';
             selectedRatio = '1:1';
+        });
+
+        // ===== HOW-TO GUIDE FUNCTIONS =====
+        function openHowTo() {
+            const modal = document.getElementById('howtoModal');
+            modal.classList.add('active');
+        }
+
+        function closeHowTo() {
+            const modal = document.getElementById('howtoModal');
+            modal.classList.remove('active');
+        }
+
+        function selectGenerator(generator) {
+            // Update active option
+            document.querySelectorAll('.vg-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            event.target.closest('.vg-option').classList.add('active');
+
+            // Update active guide
+            document.querySelectorAll('.vg-guide').forEach(guide => {
+                guide.classList.remove('active');
+            });
+            document.getElementById('guide-' + generator).classList.add('active');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('howtoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeHowTo();
+            }
         });
     </script>
 </body>
