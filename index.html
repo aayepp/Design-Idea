@@ -2219,21 +2219,96 @@ function buildDesignPrompt(settings) {
             const cartoonAllowedThemes = ['Gaming & Esports', 'Entertainment & Events', 'Animation', 'Kids', 'Anime Vibe', 'Artistic & Creative'];
             const allowCartoon = isCreativeStyle && cartoonAllowedThemes.some(theme => settings.theme.includes(theme));
             
+            // ENHANCED AUTO-DETECTION - Extract actual values from description
+            const description = settings.description;
+            const descLower = description.toLowerCase();
+            const keypoints = {};
+            
+            // Detect PROMOTIONAL OFFER - extract value if possible
+            if (descLower.match(/discount|rebate|offer|sale|promo|deal|free|percentage|%|\boff\b|rupiah|rm|price|cost/i)) {
+                const amount = description.match(/(rm\s*\d+|\d+\s*%|free)/i);
+                keypoints.promo = {
+                    name: 'PROMOTIONAL OFFER',
+                    value: amount ? amount[0] : 'Special Offer',
+                    priority: 'HIGH'
+                };
+            }
+            
+            // Detect LIMITED TIME / EXCLUSIVITY - extract urgency
+            if (descLower.match(/limited|exclusive|special|unique|only|dont miss|hurry|urgent|rush|ends|deadline/i)) {
+                const urgency = description.match(/(dont miss|limited|exclusive|hurry|urgent)/i);
+                keypoints.exclusivity = {
+                    name: 'LIMITED TIME / EXCLUSIVITY',
+                    value: urgency ? urgency[0] : 'Limited Offer',
+                    priority: 'HIGH'
+                };
+            }
+            
+            // Detect TARGET AUDIENCE - extract group
+            if (descLower.match(/student|youth|young|family|kids|senior|professional|corporate|specific group|for all|everyone/i)) {
+                const audience = description.match(/(student|youth|family|kids|senior|professional)/i);
+                keypoints.audience = {
+                    name: 'TARGET AUDIENCE',
+                    value: audience ? audience[0] : 'Specific Audience',
+                    priority: 'MEDIUM'
+                };
+            }
+            
+            // Detect PRODUCT FOCUS - extract product type
+            if (descLower.match(/product|device|item|laptop|phone|gadget|merchandise|computer|accessory|equipment/i)) {
+                const product = description.match(/(device|product|laptop|phone|gadget|computer)/i);
+                keypoints.product = {
+                    name: 'PRODUCT FOCUS',
+                    value: product ? product[0] : 'Product',
+                    priority: 'HIGH'
+                };
+            }
+            
+            // Detect EVENT TIE-IN - extract event name
+            if (descLower.match(/event|tournament|world cup|fifa|sports|competition|championship|games|cup|league/i)) {
+                const event = description.match(/(world cup|fifa|tournament|championship|sports|competition)/i);
+                keypoints.event = {
+                    name: 'EVENT TIE-IN',
+                    value: event ? event[0] : 'Event',
+                    priority: 'HIGH'
+                };
+            }
+            
+            // Get priority-sorted keypoints
+            const sortedKeypoints = Object.values(keypoints).sort((a, b) => {
+                const priority = { 'HIGH': 1, 'MEDIUM': 2, 'LOW': 3 };
+                return priority[a.priority] - priority[b.priority];
+            });
+            
             let prompt = `CREATE IMAGE PROMPT\n\n`;
             
-            // Campaign Info (Compact)
-            prompt += `CAMPAIGN OVERVIEW:\n`;
+            // PRIMARY FOCUS: Campaign Description
+            prompt += `PRIMARY MESSAGE (PROMOTIONAL FOCUS):\n`;
+            prompt += `"${settings.description}"\n`;
+            prompt += `\n`;
+            
+            // AI-Detected Key Points with extracted values
+            if (sortedKeypoints.length > 0) {
+                prompt += `KEY HIGHLIGHTS TO FEATURE (PRIORITY ORDER):\n`;
+                sortedKeypoints.forEach((kp, idx) => {
+                    const priorityIcon = kp.priority === 'HIGH' ? '★★★' : kp.priority === 'MEDIUM' ? '★★' : '★';
+                    prompt += `${idx + 1}. [${priorityIcon}] ${kp.name}: "${kp.value}"\n`;
+                });
+                prompt += `\n`;
+            }
+            
+            // Campaign Info
+            prompt += `CAMPAIGN DETAILS:\n`;
             prompt += `Brand: "${settings.brandName}" | Title: ${settings.title}\n`;
             prompt += `Category: ${settings.theme} | Style: ${settings.selectedStyle} | Ratio: ${settings.selectedRatio}\n`;
             if (settings.validFrom && settings.validTo) {
                 prompt += `Period: ${settings.validFrom} to ${settings.validTo}\n`;
             }
-            prompt += `Description: ${settings.description}\n`;
             if (settings.themeKeywords) prompt += `Themes: ${settings.themeKeywords}\n`;
             if (settings.personalities) prompt += `Features: ${settings.personalities}\n`;
             prompt += `\n`;
             
-            // Critical specs
+            // Mandatory Requirements with keypoint focus
             prompt += `MANDATORY REQUIREMENTS:\n`;
             prompt += `✓ Brand "${settings.brandName}" EXACTLY as written, prominent & bold\n`;
             prompt += `✓ Rendering: ${allowCartoon ? 'Professional illustration' : 'PHOTOREALISTIC only - NO cartoon'}\n`;
@@ -2241,14 +2316,28 @@ function buildDesignPrompt(settings) {
             prompt += `✓ Aspect ratio: ${settings.selectedRatio}\n`;
             prompt += `✓ Resolution: 4K minimum, print & digital ready\n`;
             prompt += `✓ ${allowCartoon ? 'Colors: vibrant & engaging' : 'Colors: sophisticated, professional palette'}\n`;
+            prompt += `✓ PRIMARY FOCUS: Make promotional message & key highlights DOMINANT visual elements\n`;
             prompt += `\n`;
             
-            // Style guidance (ultra-compact)
+            // Visual Priority for each keypoint
+            if (sortedKeypoints.length > 0) {
+                prompt += `KEYPOINT VISUAL INSTRUCTIONS:\n`;
+                sortedKeypoints.forEach((kp) => {
+                    if (kp.priority === 'HIGH') {
+                        prompt += `[PRIMARY] ${kp.name} ("${kp.value}") - LARGE, BOLD, eye-catching position\n`;
+                    } else {
+                        prompt += `[SECONDARY] ${kp.name} ("${kp.value}") - Visible but supporting primary message\n`;
+                    }
+                });
+                prompt += `\n`;
+            }
+            
+            // Style guidance
             prompt += `STYLE: ${settings.selectedStyle}\n`;
             if (settings.selectedStyle.includes('Minimalist')) {
                 prompt += `Clean layout, 3-4 colors, elegant typography, whitespace, sophisticated\n`;
             } else if (settings.selectedStyle.includes('Bold')) {
-                prompt += `Vibrant colors, dynamic shapes, impact fonts, energetic, attention-grabbing\n`;
+                prompt += `Vibrant colors, dynamic shapes, impact fonts, energetic, attention-grabbing - PERFECT for highlighting promotional keypoints\n`;
             } else if (settings.selectedStyle.includes('Premium')) {
                 prompt += `Luxury aesthetic, gold/jewel tones, refined serif fonts, ornamental details\n`;
             } else if (settings.selectedStyle.includes('Dynamic')) {
@@ -2265,18 +2354,25 @@ function buildDesignPrompt(settings) {
             // Regeneration variation
             if (regenerationCount > 0) {
                 prompt += `VARIATION ${regenerationCount}: `;
-                if (regenerationCount === 1) prompt += `Different layout, composition, colors\n`;
-                else if (regenerationCount === 2) prompt += `Unique approach, opposite composition\n`;
-                else prompt += `Fresh perspective, innovative layout\n`;
+                if (regenerationCount === 1) prompt += `Different layout, composition, colors - KEEP keypoints prominent\n`;
+                else if (regenerationCount === 2) prompt += `Unique approach, opposite composition - MAINTAIN keypoint visibility\n`;
+                else prompt += `Fresh perspective, innovative layout - ENSURE keypoints are highlighted\n`;
                 prompt += `\n`;
             }
             
-            // Image specifications for generation
+            // Image specifications with keypoint integration
             prompt += `IMAGE GENERATION SPECIFICATIONS:\n`;
-            prompt += `COMPOSITION: Main subject, focal point, scene layout, positioning\n`;
-            prompt += `COLORS: Full palette (HEX codes), lighting mood, atmosphere, tone\n`;
-            prompt += `DETAILS: Textures, materials, depth, perspective, shadows, highlights\n`;
-            prompt += `TYPOGRAPHY: Brand "${settings.brandName}" - font family, size, weight, color, exact position\n`;
+            prompt += `COMPOSITION: Layout with promotional keypoints as DOMINANT focal points, composition emphasizes "${sortedKeypoints.length > 0 ? sortedKeypoints[0].value : 'primary message'}"\n`;
+            prompt += `VISUAL HIERARCHY: \n`;
+            prompt += `  1. Promotional Message (largest/boldest)\n`;
+            if (sortedKeypoints.length > 0) {
+                prompt += `  2. Key Highlights: ${sortedKeypoints.map(kp => kp.value).join(', ')}\n`;
+            }
+            prompt += `  3. Brand name & supporting details\n`;
+            prompt += `COLORS: Full palette (HEX codes), lighting mood that emphasizes promotional elements, atmosphere that draws attention to offers\n`;
+            prompt += `DETAILS: Textures, materials, depth, perspective emphasizing keypoint visibility\n`;
+            prompt += `TYPOGRAPHY: Brand "${settings.brandName}" - font family, size, weight, color | Keypoints in BOLD, HIGH-CONTRAST fonts\n`;
+            prompt += `CALL-TO-ACTION: Promotional message VISUALLY PROMINENT & COMPELLING - make keypoints impossible to miss\n`;
             prompt += `QUALITY: "ultra detailed", "professional", "4K", "high-fidelity", "${allowCartoon ? 'illustration style' : 'photorealistic'}", "studio quality"\n`;
             prompt += `NO WATERMARKS - Ready for print & digital use\n`;
             
