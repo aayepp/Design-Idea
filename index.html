@@ -30,21 +30,34 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0d1b2a 0%, #1a2f4a 50%, #2c5f8d 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1a2f4a 25%, #2d5a8c 50%, #1e3a5f 75%, #0f172a 100%);
             min-height: 100vh;
             padding: 16px;
             color: var(--text-primary);
+            position: relative;
+            overflow-x: hidden;
         }
 
         /* Navigation */
         nav {
-            background: linear-gradient(135deg, rgba(15, 40, 71, 0.95) 0%, rgba(30, 58, 95, 0.8) 100%);
-            backdrop-filter: blur(20px);
+            background: rgba(15, 23, 42, 0.3);
+            backdrop-filter: blur(30px) saturate(180%);
             border-radius: 16px;
             padding: 24px 32px;
             margin-bottom: 32px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(59, 130, 246, 0.3);
-            border: 1px solid rgba(59, 130, 246, 0.3);
+            box-shadow: 
+                0 0 40px rgba(59, 130, 246, 0.15),
+                inset 0 1px 0 rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        nav:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            background: rgba(15, 23, 42, 0.4);
+            box-shadow: 
+                0 0 60px rgba(59, 130, 246, 0.25),
+                inset 0 1px 0 rgba(59, 130, 246, 0.3);
         }
 
         .nav-container {
@@ -138,12 +151,23 @@
 
         /* API Setup Card */
         .api-card {
-            background: rgba(15, 40, 71, 0.6);
-            backdrop-filter: blur(20px);
+            background: rgba(15, 23, 42, 0.3);
+            backdrop-filter: blur(30px) saturate(180%);
             border-radius: 16px;
             padding: 20px;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            box-shadow: 
+                0 0 40px rgba(59, 130, 246, 0.15),
+                inset 0 0 30px rgba(59, 130, 246, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .api-card:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            background: rgba(15, 23, 42, 0.4);
+            box-shadow: 
+                0 0 60px rgba(59, 130, 246, 0.25),
+                inset 0 0 40px rgba(59, 130, 246, 0.1);
         }
 
         .api-card h3 {
@@ -204,19 +228,23 @@
         input[type="text"] {
             width: 100%;
             padding: 10px 12px;
-            border: 2px solid rgba(59, 130, 246, 0.2);
-            background: rgba(30, 58, 95, 0.4);
+            border: 1.5px solid rgba(59, 130, 246, 0.2);
+            background: rgba(30, 41, 59, 0.3);
+            backdrop-filter: blur(10px);
             border-radius: 8px;
             color: var(--text-primary);
             font-size: 13px;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         input[type="password"]:focus,
         input[type="text"]:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            border-color: rgba(59, 130, 246, 0.6);
+            background: rgba(30, 41, 59, 0.5);
+            box-shadow: 
+                0 0 20px rgba(59, 130, 246, 0.2),
+                inset 0 0 10px rgba(59, 130, 246, 0.1);
         }
 
         .checkbox-group {
@@ -236,12 +264,23 @@
 
         /* Info Cards */
         .info-card {
-            background: rgba(15, 40, 71, 0.6);
-            backdrop-filter: blur(20px);
+            background: rgba(15, 23, 42, 0.3);
+            backdrop-filter: blur(30px) saturate(180%);
             border-radius: 16px;
             padding: 16px;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            box-shadow: 
+                0 0 40px rgba(59, 130, 246, 0.15),
+                inset 0 0 30px rgba(59, 130, 246, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            background: rgba(15, 23, 42, 0.4);
+            box-shadow: 
+                0 0 60px rgba(59, 130, 246, 0.25),
+                inset 0 0 40px rgba(59, 130, 246, 0.1);
         }
 
         .info-card h4 {
@@ -437,12 +476,23 @@
 
         /* Form Card */
         .form-card {
-            background: rgba(15, 40, 71, 0.6);
-            backdrop-filter: blur(20px);
+            background: rgba(15, 23, 42, 0.3);
+            backdrop-filter: blur(30px) saturate(180%);
             border-radius: 16px;
             padding: 24px;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            box-shadow: 
+                0 0 40px rgba(59, 130, 246, 0.15),
+                inset 0 0 30px rgba(59, 130, 246, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .form-card:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            background: rgba(15, 23, 42, 0.4);
+            box-shadow: 
+                0 0 60px rgba(59, 130, 246, 0.25),
+                inset 0 0 40px rgba(59, 130, 246, 0.1);
         }
 
         .form-title {
@@ -504,29 +554,49 @@
         textarea {
             resize: vertical;
             min-height: 70px;
+            border: 1.5px solid rgba(59, 130, 246, 0.2);
+            background: rgba(30, 41, 59, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            color: var(--text-primary);
+            padding: 10px 12px;
+            font-size: 13px;
+            transition: all 0.3s ease;
         }
 
         select {
             cursor: pointer;
+            border: 1.5px solid rgba(59, 130, 246, 0.2);
+            background: rgba(30, 41, 59, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            color: var(--text-primary);
+            padding: 10px 12px;
+            font-size: 13px;
+            transition: all 0.3s ease;
         }
 
         select option {
-            background: var(--card);
+            background: #1a2f4a;
             color: var(--text-primary);
         }
 
         input:hover,
         textarea:hover,
         select:hover {
-            border-color: rgba(59, 130, 246, 0.5);
+            border-color: rgba(59, 130, 246, 0.4);
+            background: rgba(30, 41, 59, 0.4);
         }
 
         input:focus,
         textarea:focus,
         select:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            border-color: rgba(59, 130, 246, 0.6);
+            background: rgba(30, 41, 59, 0.5);
+            box-shadow: 
+                0 0 20px rgba(59, 130, 246, 0.2),
+                inset 0 0 10px rgba(59, 130, 246, 0.1);
         }
 
         .form-row {
@@ -726,34 +796,44 @@
             font-weight: 700;
             font-size: 12px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-generate {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: var(--card);
-            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+            color: white;
+            box-shadow: 
+                0 0 30px rgba(59, 130, 246, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .btn-generate:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(59, 130, 246, 0.5);
+            box-shadow: 
+                0 0 50px rgba(59, 130, 246, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
         .btn-generate:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
         .btn-reset {
-            background: rgba(30, 58, 95, 0.4);
+            background: rgba(30, 41, 59, 0.3);
+            backdrop-filter: blur(10px);
             color: var(--primary);
-            border: 2px solid var(--primary);
+            border: 1.5px solid rgba(59, 130, 246, 0.4);
+            transition: all 0.3s ease;
         }
 
         .btn-reset:hover {
-            background: rgba(30, 58, 95, 0.6);
+            background: rgba(30, 41, 59, 0.5);
+            border-color: rgba(59, 130, 246, 0.6);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
         }
 
         .error-message {
@@ -1132,21 +1212,391 @@
     </style>
 </head>
 <body>
+    <!-- ===== LOGIN / SIGNUP SCREEN ===== -->
+    <div id="authScreen" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #0f172a 0%, #1a2f4a 25%, #2d5a8c 50%, #1e3a5f 75%, #0f172a 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        overflow: hidden;
+    ">
+        <!-- Animated Background Elements -->
+        <div style="
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+            blur: 40px;
+        "></div>
+        <div style="
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 10s ease-in-out infinite reverse;
+        "></div>
+        <div style="
+            position: absolute;
+            top: 20%;
+            left: -15%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 12s ease-in-out infinite;
+        "></div>
+
+        <style>
+            @keyframes float {
+                0%, 100% { transform: translate(0px, 0px); }
+                25% { transform: translate(30px, -30px); }
+                50% { transform: translate(-20px, 20px); }
+                75% { transform: translate(20px, -20px); }
+            }
+            
+            @keyframes shimmer {
+                0%, 100% { background-position: -1000px 0; }
+                100% { background-position: 1000px 0; }
+            }
+            
+            @keyframes glow {
+                0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), inset 0 0 20px rgba(59, 130, 246, 0.1); }
+                50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.5), inset 0 0 30px rgba(59, 130, 246, 0.2); }
+            }
+        </style>
+
+        <div style="
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 450px;
+            padding: 50px 40px;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(30px) saturate(180%);
+            border-radius: 24px;
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            box-shadow: 
+                0 0 60px rgba(59, 130, 246, 0.2),
+                0 0 120px rgba(34, 197, 94, 0.1),
+                inset 0 0 60px rgba(255, 255, 255, 0.05);
+            animation: glow 3s ease-in-out infinite;
+        ">
+            <!-- Header -->
+            <div style="margin-bottom: 50px; text-align: center;">
+                <div style="
+                    background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #22c55e 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    font-size: 32px;
+                    font-weight: 800;
+                    margin-bottom: 12px;
+                    letter-spacing: -1px;
+                ">Smart Poster Generator Pro</div>
+                
+                <p style="
+                    font-size: 13px;
+                    color: #cbd5e1;
+                    margin: 0 0 4px 0;
+                    font-weight: 500;
+                    letter-spacing: 0.3px;
+                ">AI Marketing Design Studio</p>
+
+                <p style="
+                    font-size: 11px;
+                    background: linear-gradient(90deg, #60a5fa, #22c55e);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    margin: 0;
+                    font-weight: 600;
+                ">Craft & Designed by AYEP</p>
+            </div>
+
+            <!-- Alert -->
+            <div id="authAlert" style="
+                background: rgba(239, 68, 68, 0.12);
+                border: 1px solid rgba(239, 68, 68, 0.35);
+                color: #fecaca;
+                padding: 14px 15px;
+                border-radius: 12px;
+                margin-bottom: 28px;
+                display: none;
+                font-size: 12px;
+                line-height: 1.5;
+                backdrop-filter: blur(10px);
+            "></div>
+
+            <!-- Form -->
+            <form id="authForm" onsubmit="handleAuth(event)" style="display: none;">
+                <div style="margin-bottom: 20px;">
+                    <label style="
+                        display: block;
+                        color: #e2e8f0;
+                        margin-bottom: 8px;
+                        font-size: 12px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    ">Username or Email</label>
+                    <input type="text" id="authUsername" placeholder="username or email" required style="
+                        width: 100%;
+                        padding: 13px 15px;
+                        background: rgba(30, 41, 59, 0.3);
+                        border: 1.5px solid rgba(59, 130, 246, 0.25);
+                        border-radius: 12px;
+                        color: #f1f5f9;
+                        font-size: 13px;
+                        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                        outline: none;
+                        box-sizing: border-box;
+                        backdrop-filter: blur(10px);
+                    " onfocus="
+                        this.style.borderColor='rgba(59, 130, 246, 0.6)';
+                        this.style.backgroundColor='rgba(30, 41, 59, 0.6)';
+                        this.style.boxShadow='0 0 30px rgba(59, 130, 246, 0.2), inset 0 0 15px rgba(59, 130, 246, 0.1)';
+                    " onblur="
+                        this.style.borderColor='rgba(59, 130, 246, 0.25)';
+                        this.style.backgroundColor='rgba(30, 41, 59, 0.3)';
+                        this.style.boxShadow='none';
+                     required style="
+                        width: 100%;
+                        padding: 13px 15px;
+                        background: rgba(30, 41, 59, 0.3);
+                        border: 1.5px solid rgba(59, 130, 246, 0.25);
+                        border-radius: 12px;
+                        color: #f1f5f9;
+                        font-size: 13px;
+                        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                        outline: none;
+                        box-sizing: border-box;
+                        backdrop-filter: blur(10px);
+                    " onfocus="
+                        this.style.borderColor='rgba(59, 130, 246, 0.6)';
+                        this.style.backgroundColor='rgba(30, 41, 59, 0.6)';
+                        this.style.boxShadow='0 0 30px rgba(59, 130, 246, 0.2), inset 0 0 15px rgba(59, 130, 246, 0.1)';
+                    " onblur="
+                        this.style.borderColor='rgba(59, 130, 246, 0.25)';
+                        this.style.backgroundColor='rgba(30, 41, 59, 0.3)';
+                        this.style.boxShadow='none';
+                    ">
+                </div>
+
+                <div style="margin-bottom: 32px;">
+                    <label style="
+                        display: block;
+                        color: #cbd5e1;
+                        margin-bottom: 8px;
+                        font-size: 12px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    ">Password</label>
+                    <input type="password" id="authPassword" placeholder="••••••••••••" required style="
+                        width: 100%;
+                        padding: 13px 15px;
+                        background: rgba(30, 41, 59, 0.3);
+                        border: 1.5px solid rgba(59, 130, 246, 0.25);
+                        border-radius: 12px;
+                        color: #f1f5f9;
+                        font-size: 13px;
+                        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                        outline: none;
+                        box-sizing: border-box;
+                        backdrop-filter: blur(10px);
+                    " onfocus="
+                        this.style.borderColor='rgba(59, 130, 246, 0.6)';
+                        this.style.backgroundColor='rgba(30, 41, 59, 0.6)';
+                        this.style.boxShadow='0 0 30px rgba(59, 130, 246, 0.2), inset 0 0 15px rgba(59, 130, 246, 0.1)';
+                    " onblur="
+                        this.style.borderColor='rgba(59, 130, 246, 0.25)';
+                        this.style.backgroundColor='rgba(30, 41, 59, 0.3)';
+                        this.style.boxShadow='none';
+                    ">
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="authBtn" style="
+                    width: 100%;
+                    padding: 14px;
+                    background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #22c55e 100%);
+                    color: white;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 12px;
+                    font-weight: 700;
+                    cursor: pointer;
+                    font-size: 13px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.6px;
+                    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                    margin-bottom: 12px;
+                    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+                " onmouseover="
+                    this.style.transform='translateY(-2px)';
+                    this.style.boxShadow='0 15px 40px rgba(59, 130, 246, 0.4)';
+                " onmouseout="
+                    this.style.transform='translateY(0)';
+                    this.style.boxShadow='0 10px 30px rgba(59, 130, 246, 0.3)';
+                ">Sign Up</button>
+
+                <!-- Toggle Button -->
+                <button type="button" onclick="toggleAuthMode()" style="
+                    width: 100%;
+                    padding: 14px;
+                    background: rgba(59, 130, 246, 0.1);
+                    color: #60a5fa;
+                    border: 1.5px solid rgba(59, 130, 246, 0.4);
+                    border-radius: 12px;
+                    font-weight: 700;
+                    cursor: pointer;
+                    font-size: 13px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.6px;
+                    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                    backdrop-filter: blur(10px);
+                " onmouseover="
+                    this.style.borderColor='rgba(59, 130, 246, 0.7)';
+                    this.style.background='rgba(59, 130, 246, 0.2)';
+                    this.style.color='#60a5fa';
+                    this.style.boxShadow='0 0 20px rgba(59, 130, 246, 0.2)';
+                    this.style.transform='translateY(-2px)';
+                " onmouseout="
+                    this.style.borderColor='rgba(59, 130, 246, 0.4)';
+                    this.style.background='rgba(59, 130, 246, 0.1)';
+                    this.style.color='#60a5fa';
+                    this.style.boxShadow='none';
+                    this.style.transform='translateY(0)';
+                ">Login Instead</button>
+            </form>
+
+            <!-- Loading -->
+            <div id="loadingScreen" style="text-align: center; display: none;">
+                <p style="color: #cbd5e1; margin-bottom: 24px; font-size: 13px; font-weight: 500;">Setting up your studio...</p>
+                <div style="
+                    width: 40px;
+                    height: 40px;
+                    border: 3px solid rgba(59, 130, 246, 0.15);
+                    border-top: 3px solid #60a5fa;
+                    border-radius: 50%;
+                    margin: 0 auto;
+                    animation: spin 1s linear infinite;
+                "></div>
+            </div>
+
+            <!-- Footer -->
+            <p style="
+                text-align: center;
+                color: #64748b;
+                font-size: 10px;
+                margin-top: 25px;
+                margin-bottom: 10px;
+                line-height: 1.6;
+            ">💡 Login: Use username or email<br>Sign up: Create with username</p>
+
+            <p style="
+                margin-top: 0;
+                line-height: 1.6;
+            ">By signing up, you agree to our<br><span style="color: #60a5fa; font-weight: 600;">Terms of Service</span> and <span style="color: #60a5fa; font-weight: 600;">Privacy Policy</span></p>
+        </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT
+
+    <!-- ===== MAIN CONTENT
+
+    <!-- ===== MAIN CONTENT (Hidden until logged in) ===== -->
+    <div id="mainContent" style="display: none;">
     <!-- Navigation -->
-    <nav>
+    <nav style="
+    background: rgba(15, 23, 42, 0.3);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(59, 130, 246, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+">
+<div class="nav-container">
         <div class="nav-container">
             <div class="nav-left">
-                <div class="logo">✨ Smart Poster Generator Pro</div>
+                <div class="logo">Smart Poster Generator Pro</div>
                 <div style="display: flex; gap: 16px;">
                     <div class="tagline">AI Marketing Design Studio</div>
                     <div class="credit">Crafted by <a href="#" title="Crafted by AYEP">AYEP</a></div>
                 </div>
             </div>
-            <div class="api-status" id="apiStatus">Setup required</div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <div class="api-status" id="apiStatus">Setup required</div>
+                <div class="api-status" id="tokenStatus" style="background: rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.5); display: none;">
+                    🎫 Tokens: <span id="tokenCount" style="color: #60a5fa; font-weight: bold;">0</span>
+                </div>
+                <button onclick="logout()" id="logoutBtn" class="api-status" style="background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); cursor: pointer; display: none; border: 1px solid; padding: 10px 16px;">Logout</button>
+            </div>
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container" style="
+    position: relative;
+    z-index: 10;
+">
+    <!-- Animated Background Elements -->
+    <div style="
+        position: fixed;
+        top: -50%;
+        right: -20%;
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float 8s ease-in-out infinite;
+        z-index: 0;
+        pointer-events: none;
+    "></div>
+    <div style="
+        position: fixed;
+        bottom: -30%;
+        left: -10%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float 10s ease-in-out infinite reverse;
+        z-index: 0;
+        pointer-events: none;
+    "></div>
+    <div style="
+        position: fixed;
+        top: 20%;
+        left: -15%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float 12s ease-in-out infinite;
+        z-index: 0;
+        pointer-events: none;
+    "></div>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translate(0px, 0px); }
+            25% { transform: translate(30px, -30px); }
+            50% { transform: translate(-20px, 20px); }
+            75% { transform: translate(20px, -20px); }
+        }
+    </style>
+    
+    <div class="container" style="position: relative; z-index: 1;">
         <!-- Main Grid: Sidebar + Form -->
         <div class="main-grid">
             <!-- Sidebar -->
@@ -1465,7 +1915,7 @@
 
                     <!-- Action Buttons -->
                     <div class="button-group">
-                        <button type="button" id="generateBtn" class="btn-generate">Generate Design</button>
+                        <button type="button" id="generateBtn" class="btn-generate" onclick="generateDesign(event)">🎨 Generate (Costs 15 tokens)</button>
                         <button type="reset" class="btn-reset">Reset</button>
                     </div>
                 </form>
@@ -1594,7 +2044,253 @@
                 </div>
             </div>
         </div>
+
+        <!-- ===== ADMIN PANEL (Host Only) ===== -->
+        <div id="adminPanelSection" style="display: none; margin-top: 40px;">
+            <div style="
+                background: rgba(15, 40, 71, 0.6);
+                backdrop-filter: blur(20px);
+                border-radius: 16px;
+                padding: 30px;
+                border: 1px solid rgba(245, 158, 11, 0.3);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            ">
+                <h2 style="
+                    font-size: 22px;
+                    font-weight: 700;
+                    color: #f59e0b;
+                    margin-bottom: 10px;
+                ">🛠️ Admin Panel - User Management</h2>
+                
+                <p style="
+                    color: #cbd5e1;
+                    font-size: 13px;
+                    margin-bottom: 25px;
+                ">Manage user tokens and view account information</p>
+
+                <!-- Search User Section -->
+                <div style="margin-bottom: 25px;">
+                    <label style="
+                        display: block;
+                        color: #cbd5e1;
+                        margin-bottom: 8px;
+                        font-size: 12px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.4px;
+                    ">Search User by Username</label>
+                    <input type="text" id="searchUsername" placeholder="username" onkeyup="searchUser()" style="
+                        width: 100%;
+                        padding: 12px;
+                        background: rgba(30, 41, 59, 0.5);
+                        border: 1px solid rgba(59, 130, 246, 0.2);
+                        border-radius: 8px;
+                        color: #f1f5f9;
+                        font-size: 13px;
+                        transition: all 0.3s ease;
+                    " onfocus="this.style.borderColor='rgba(59, 130, 246, 0.6)'" onblur="this.style.borderColor='rgba(59, 130, 246, 0.2)'">
+                </div>
+
+                <!-- User Info Section (Hidden by default) -->
+                <div id="userInfoSection" style="display: none; background: rgba(30, 41, 59, 0.4); border-radius: 12px; padding: 20px; border: 1px solid rgba(59, 130, 246, 0.2); margin-bottom: 20px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div>
+                            <p style="color: #94a3b8; font-size: 11px; margin-bottom: 5px;">USERNAME</p>
+                            <p style="color: #f1f5f9; font-size: 14px; font-weight: 600;" id="userEmail">-</p>
+                        </div>
+                        <div>
+                            <p style="color: #94a3b8; font-size: 11px; margin-bottom: 5px;">CURRENT TOKENS</p>
+                            <p style="color: #60a5fa; font-size: 14px; font-weight: 700;" id="userTokens">0</p>
+                        </div>
+                    </div>
+
+                    <!-- Topup Section -->
+                    <div style="
+                        background: rgba(59, 130, 246, 0.1);
+                        border: 1px solid rgba(59, 130, 246, 0.2);
+                        border-radius: 10px;
+                        padding: 15px;
+                        margin-bottom: 15px;
+                    ">
+                        <p style="color: #cbd5e1; font-size: 12px; margin-bottom: 12px; font-weight: 600;">➕ Add Tokens</p>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="number" id="topupAmount" placeholder="Amount" min="1" value="50" style="
+                                flex: 1;
+                                padding: 10px;
+                                background: rgba(30, 41, 59, 0.6);
+                                border: 1px solid rgba(59, 130, 246, 0.2);
+                                border-radius: 8px;
+                                color: #f1f5f9;
+                                font-size: 12px;
+                            ">
+                            <button onclick="topupUser()" style="
+                                flex: 1;
+                                padding: 10px;
+                                background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                font-weight: 600;
+                                cursor: pointer;
+                                font-size: 12px;
+                                text-transform: uppercase;
+                                transition: all 0.3s ease;
+                            " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Deduct Section -->
+                    <div style="
+                        background: rgba(239, 68, 68, 0.1);
+                        border: 1px solid rgba(239, 68, 68, 0.2);
+                        border-radius: 10px;
+                        padding: 15px;
+                        margin-bottom: 15px;
+                    ">
+                        <p style="color: #cbd5e1; font-size: 12px; margin-bottom: 12px; font-weight: 600;">➖ Deduct Tokens</p>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="number" id="deductAmount" placeholder="Amount" min="1" value="15" style="
+                                flex: 1;
+                                padding: 10px;
+                                background: rgba(30, 41, 59, 0.6);
+                                border: 1px solid rgba(239, 68, 68, 0.2);
+                                border-radius: 8px;
+                                color: #f1f5f9;
+                                font-size: 12px;
+                            ">
+                            <button onclick="deductUser()" style="
+                                flex: 1;
+                                padding: 10px;
+                                background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                font-weight: 600;
+                                cursor: pointer;
+                                font-size: 12px;
+                                text-transform: uppercase;
+                                transition: all 0.3s ease;
+                            " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                                Deduct
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Add Buttons -->
+                    <p style="color: #94a3b8; font-size: 11px; margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px;">Quick Add</p>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px;">
+                        <button onclick="quickTopup(50)" style="
+                            padding: 10px;
+                            background: rgba(16, 185, 129, 0.2);
+                            color: #6ee7b7;
+                            border: 1px solid rgba(16, 185, 129, 0.3);
+                            border-radius: 8px;
+                            cursor: pointer;
+                            font-size: 12px;
+                            font-weight: 600;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(16, 185, 129, 0.3)'" onmouseout="this.style.background='rgba(16, 185, 129, 0.2)'">+50</button>
+                        <button onclick="quickTopup(100)" style="
+                            padding: 10px;
+                            background: rgba(16, 185, 129, 0.2);
+                            color: #6ee7b7;
+                            border: 1px solid rgba(16, 185, 129, 0.3);
+                            border-radius: 8px;
+                            cursor: pointer;
+                            font-size: 12px;
+                            font-weight: 600;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(16, 185, 129, 0.3)'" onmouseout="this.style.background='rgba(16, 185, 129, 0.2)'">+100</button>
+                        <button onclick="quickTopup(250)" style="
+                            padding: 10px;
+                            background: rgba(16, 185, 129, 0.2);
+                            color: #6ee7b7;
+                            border: 1px solid rgba(16, 185, 129, 0.3);
+                            border-radius: 8px;
+                            cursor: pointer;
+                            font-size: 12px;
+                            font-weight: 600;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(16, 185, 129, 0.3)'" onmouseout="this.style.background='rgba(16, 185, 129, 0.2)'">+250</button>
+                        <button onclick="quickTopup(500)" style="
+                            padding: 10px;
+                            background: rgba(16, 185, 129, 0.2);
+                            color: #6ee7b7;
+                            border: 1px solid rgba(16, 185, 129, 0.3);
+                            border-radius: 8px;
+                            cursor: pointer;
+                            font-size: 12px;
+                            font-weight: 600;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(16, 185, 129, 0.3)'" onmouseout="this.style.background='rgba(16, 185, 129, 0.2)'">+500</button>
+                    </div>
+
+                    <!-- Quick Deduct Buttons -->
+                    <p style="color: #94a3b8; font-size: 11px; margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px;">Quick Deduct</p>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+                        <button onclick="quickDeduct(15)" style="
+                            padding: 10px;
+                            background: rgba(239, 68, 68, 0.2);
+                            color: #fca5a5;
+                            border: 1px solid rgba(239, 68, 68, 0.3);
+                            border-radius: 8px;
+                            cursor: pointer;
+                            font-size: 12px;
+                            font-weight: 600;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(239, 68, 68, 0.3)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.2)'">-15</button>
+                        <button onclick="quickDeduct(50)" style="
+                            padding: 10px;
+                            background: rgba(239, 68, 68, 0.2);
+                            color: #fca5a5;
+                            border: 1px solid rgba(239, 68, 68, 0.3);
+                            border-radius: 8px;
+                            cursor: pointer;
+                            font-size: 12px;
+                            font-weight: 600;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(239, 68, 68, 0.3)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.2)'">-50</button>
+                        <button onclick="quickDeduct(100)" style="
+                            padding: 10px;
+                            background: rgba(239, 68, 68, 0.2);
+                            color: #fca5a5;
+                            border: 1px solid rgba(239, 68, 68, 0.3);
+                            border-radius: 8px;
+                            cursor: pointer;
+                            font-size: 12px;
+                            font-weight: 600;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(239, 68, 68, 0.3)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.2)'">-100</button>
+                        <button onclick="quickDeduct(250)" style="
+                            padding: 10px;
+                            background: rgba(239, 68, 68, 0.2);
+                            color: #fca5a5;
+                            border: 1px solid rgba(239, 68, 68, 0.3);
+                            border-radius: 8px;
+                            cursor: pointer;
+                            font-size: 12px;
+                            font-weight: 600;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(239, 68, 68, 0.3)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.2)'">-250</button>
+                    </div>
+                </div>
+
+                <!-- Admin Alert -->
+                <div id="adminAlert" style="
+                    background: rgba(34, 197, 94, 0.15);
+                    border: 1px solid rgba(34, 197, 94, 0.3);
+                    color: #86efac;
+                    padding: 12px;
+                    border-radius: 8px;
+                    font-size: 12px;
+                    display: none;
+                "></div>
+            </div>
+        </div>
     </div>
+    </div> <!-- Close mainContent -->
 
     <script>
         let currentAPI = 'gemini';
@@ -2531,6 +3227,375 @@ function buildDesignPrompt(settings) {
                 closeHowTo();
             }
         });
+    </script>
+
+    <!-- ===== FIREBASE + TOKEN SYSTEM ===== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, doc, getDoc, updateDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+        // ===== FIREBASE CONFIG - REPLACE WITH YOUR CONFIG =====
+        const firebaseConfig = {
+            apiKey: "AIzaSyDEMPXNgjuuIqry3iIKUisqeE_XNyLFXno",
+            authDomain: "poster-designer-86fd0.firebaseapp.com",
+            projectId: "poster-designer-86fd0",
+            storageBucket: "poster-designer-86fd0.firebasestorage.app",
+            messagingSenderId: "686273911265",
+            appId: "1:686273911265:web:85b53a711a80caf1ac1aa0"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let isSignupMode = true;
+        const HOST_EMAIL = "ayep.business@gmail.com"; // CHANGE TO YOUR EMAIL
+
+        // Show auth form
+        document.getElementById('loadingScreen').style.display = 'none';
+        document.getElementById('authForm').style.display = 'block';
+
+        // Auth Functions
+        window.toggleAuthMode = function() {
+            isSignupMode = !isSignupMode;
+            document.getElementById('authBtn').textContent = isSignupMode ? 'Sign Up' : 'Login';
+            document.querySelector('button[onclick="toggleAuthMode()"]').textContent = isSignupMode ? 'Login Instead' : 'Sign Up Instead';
+            document.getElementById('authAlert').style.display = 'none';
+        };
+
+        window.handleAuth = async function(e) {
+            e.preventDefault();
+            const input = document.getElementById('authUsername').value.trim();
+            const password = document.getElementById('authPassword').value;
+            const btn = document.getElementById('authBtn');
+            const alertDiv = document.getElementById('authAlert');
+            
+            btn.disabled = true;
+
+            try {
+                if (isSignupMode) {
+                    // Sign up - input should be username only
+                    const username = input;
+                    const email = username + '@app.local';
+                    
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    // Create user document with username
+                    await addDoc(collection(db, 'users'), {
+                        uid: userCredential.user.uid,
+                        username: username,
+                        email: email,
+                        tokenBalance: 100,
+                        role: email === HOST_EMAIL ? 'host' : 'user',
+                        createdAt: new Date(),
+                        totalTokensUsed: 0
+                    });
+                    alertDiv.textContent = '✅ Account created! Logging in...';
+                    alertDiv.style.background = 'rgba(16, 185, 129, 0.2)';
+                    alertDiv.style.color = '#86efac';
+                    alertDiv.style.display = 'block';
+                } else {
+                    // Login - support both username and email
+                    let loginEmail = input;
+                    
+                    // If input doesn't contain @, treat as username
+                    if (!input.includes('@')) {
+                        loginEmail = input + '@app.local';
+                    }
+                    
+                    await signInWithEmailAndPassword(auth, loginEmail, password);
+                    alertDiv.textContent = '✅ Logged in successfully!';
+                    alertDiv.style.background = 'rgba(16, 185, 129, 0.2)';
+                    alertDiv.style.color = '#86efac';
+                    alertDiv.style.display = 'block';
+                }
+                setTimeout(() => {
+                    // onAuthStateChanged will handle the rest
+                }, 1000);
+            } catch (error) {
+                alertDiv.textContent = '❌ ' + error.message;
+                alertDiv.style.background = 'rgba(239, 68, 68, 0.2)';
+                alertDiv.style.color = '#fca5a5';
+                alertDiv.style.display = 'block';
+            }
+            btn.disabled = false;
+        };
+
+        // Auth State Monitor
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('authScreen').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                document.getElementById('tokenStatus').style.display = 'flex';
+                document.getElementById('logoutBtn').style.display = 'block';
+                
+                // Check if user is host
+                if (user.email === HOST_EMAIL) {
+                    document.getElementById('adminPanelSection').style.display = 'block';
+                }
+                
+                await updateTokenDisplay();
+            } else {
+                currentUser = null;
+                document.getElementById('authScreen').style.display = 'flex';
+                document.getElementById('mainContent').style.display = 'none';
+                document.getElementById('tokenStatus').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'none';
+                document.getElementById('adminPanelSection').style.display = 'none';
+            }
+        });
+
+        window.logout = async function() {
+            if (confirm('Are you sure you want to logout?')) {
+                await signOut(auth);
+                currentUser = null;
+            }
+        };
+
+        async function updateTokenDisplay() {
+            if (!currentUser) return;
+            const q = query(collection(db, 'users'), where('uid', '==', currentUser.uid));
+            const snapshot = await getDocs(q);
+            if (!snapshot.empty) {
+                const tokens = snapshot.docs[0].data().tokenBalance;
+                document.getElementById('tokenCount').textContent = tokens;
+                document.getElementById('generateBtn').disabled = tokens < 15;
+                if (tokens < 15) {
+                    document.getElementById('generateBtn').textContent = `🎨 Generate (Need ${15 - tokens} more tokens)`;
+                }
+            }
+        }
+
+        // Override generate function to check tokens
+        const originalGenerate = window.generateDesign;
+        window.generateDesign = async function(event) {
+            if (event) event.preventDefault();
+
+            if (!currentUser) {
+                alert('Please setup Firebase config and login first!');
+                return;
+            }
+
+            const q = query(collection(db, 'users'), where('uid', '==', currentUser.uid));
+            const snapshot = await getDocs(q);
+            
+            if (snapshot.empty) {
+                // Create user if doesn't exist
+                await addDoc(collection(db, 'users'), {
+                    uid: currentUser.uid,
+                    email: currentUser.email,
+                    tokenBalance: 100,
+                    role: currentUser.email === HOST_EMAIL ? 'host' : 'user',
+                    createdAt: new Date(),
+                    totalTokensUsed: 0
+                });
+                await updateTokenDisplay();
+                return;
+            }
+
+            const userData = snapshot.docs[0].data();
+            const tokens = userData.tokenBalance;
+
+            if (tokens < 15) {
+                alert('Not enough tokens! You need 15 tokens to generate. Current: ' + tokens);
+                return;
+            }
+
+            // Deduct tokens
+            await updateDoc(doc(db, 'users', snapshot.docs[0].id), {
+                tokenBalance: tokens - 15,
+                totalTokensUsed: (userData.totalTokensUsed || 0) + 15
+            });
+
+            // Log transaction
+            await addDoc(collection(db, 'tokenTransactions'), {
+                userId: currentUser.uid,
+                type: 'generate',
+                amount: -15,
+                newBalance: tokens - 15,
+                timestamp: new Date()
+            });
+
+            // Call original generate
+            if (originalGenerate) {
+                originalGenerate.call(this);
+            }
+
+            // Update display
+            await updateTokenDisplay();
+        };
+
+        // ===== ADMIN FUNCTIONS =====
+        let currentSearchedUser = null;
+        let currentSearchedUserId = null;
+
+        window.searchUser = async function() {
+            const username = document.getElementById('searchUsername').value.trim();
+            const userInfoSection = document.getElementById('userInfoSection');
+            const adminAlert = document.getElementById('adminAlert');
+
+            if (!username) {
+                userInfoSection.style.display = 'none';
+                return;
+            }
+
+            try {
+                const q = query(collection(db, 'users'), where('username', '==', username));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    adminAlert.textContent = '❌ User not found';
+                    adminAlert.style.background = 'rgba(239, 68, 68, 0.15)';
+                    adminAlert.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+                    adminAlert.style.color = '#fecaca';
+                    adminAlert.style.display = 'block';
+                    userInfoSection.style.display = 'none';
+                    return;
+                }
+
+                currentSearchedUser = snapshot.docs[0].data();
+                currentSearchedUserId = snapshot.docs[0].id;
+
+                document.getElementById('userEmail').textContent = currentSearchedUser.username || currentSearchedUser.username || currentSearchedUser.email;
+                document.getElementById('userTokens').textContent = currentSearchedUser.tokenBalance;
+                document.getElementById('topupAmount').value = 50;
+
+                userInfoSection.style.display = 'block';
+                adminAlert.style.display = 'none';
+            } catch (error) {
+                adminAlert.textContent = '❌ Error: ' + error.message;
+                adminAlert.style.display = 'block';
+            }
+        };
+
+        window.topupUser = async function() {
+            if (!currentSearchedUserId) {
+                alert('Please search for a user first');
+                return;
+            }
+
+            const amount = parseInt(document.getElementById('topupAmount').value);
+            if (isNaN(amount) || amount < 1) {
+                alert('Please enter a valid amount');
+                return;
+            }
+
+            try {
+                const newBalance = currentSearchedUser.tokenBalance + amount;
+                const userRef = doc(db, 'users', currentSearchedUserId);
+
+                await updateDoc(userRef, {
+                    tokenBalance: newBalance
+                });
+
+                // Log transaction
+                await addDoc(collection(db, 'tokenTransactions'), {
+                    userId: currentSearchedUserId,
+                    type: 'topup',
+                    amount: amount,
+                    newBalance: newBalance,
+                    timestamp: new Date(),
+                    byAdmin: currentUser.email
+                });
+
+                // Update display
+                currentSearchedUser.tokenBalance = newBalance;
+                document.getElementById('userTokens').textContent = newBalance;
+
+                // Show success message
+                const adminAlert = document.getElementById('adminAlert');
+                adminAlert.textContent = `✅ Added ${amount} tokens to ${currentSearchedUser.username || currentSearchedUser.email}`;
+                adminAlert.style.background = 'rgba(34, 197, 94, 0.15)';
+                adminAlert.style.borderColor = 'rgba(34, 197, 94, 0.3)';
+                adminAlert.style.color = '#86efac';
+                adminAlert.style.display = 'block';
+
+                setTimeout(() => {
+                    adminAlert.style.display = 'none';
+                }, 3000);
+            } catch (error) {
+                const adminAlert = document.getElementById('adminAlert');
+                adminAlert.textContent = '❌ Error: ' + error.message;
+                adminAlert.style.background = 'rgba(239, 68, 68, 0.15)';
+                adminAlert.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+                adminAlert.style.color = '#fecaca';
+                adminAlert.style.display = 'block';
+            }
+        };
+
+        window.quickTopup = async function(amount) {
+            document.getElementById('topupAmount').value = amount;
+            await topupUser();
+        };
+
+        // ===== DEDUCT TOKENS FUNCTION =====
+        window.deductUser = async function() {
+            if (!currentSearchedUserId) {
+                alert('Please search for a user first');
+                return;
+            }
+
+            const amount = parseInt(document.getElementById('deductAmount').value);
+            if (isNaN(amount) || amount < 1) {
+                alert('Please enter a valid amount');
+                return;
+            }
+
+            const newBalance = currentSearchedUser.tokenBalance - amount;
+            if (newBalance < 0) {
+                alert(`Cannot deduct ${amount} tokens. User only has ${currentSearchedUser.tokenBalance} tokens.`);
+                return;
+            }
+
+            try {
+                const userRef = doc(db, 'users', currentSearchedUserId);
+
+                await updateDoc(userRef, {
+                    tokenBalance: newBalance
+                });
+
+                // Log transaction
+                await addDoc(collection(db, 'tokenTransactions'), {
+                    userId: currentSearchedUserId,
+                    type: 'deduct',
+                    amount: -amount,
+                    newBalance: newBalance,
+                    timestamp: new Date(),
+                    byAdmin: currentUser.email,
+                    reason: 'Admin deduction'
+                });
+
+                // Update display
+                currentSearchedUser.tokenBalance = newBalance;
+                document.getElementById('userTokens').textContent = newBalance;
+
+                // Show success message
+                const adminAlert = document.getElementById('adminAlert');
+                adminAlert.textContent = `✅ Deducted ${amount} tokens from ${currentSearchedUser.username || currentSearchedUser.email}. New balance: ${newBalance}`;
+                adminAlert.style.background = 'rgba(34, 197, 94, 0.15)';
+                adminAlert.style.borderColor = 'rgba(34, 197, 94, 0.3)';
+                adminAlert.style.color = '#86efac';
+                adminAlert.style.display = 'block';
+
+                setTimeout(() => {
+                    adminAlert.style.display = 'none';
+                }, 3000);
+            } catch (error) {
+                const adminAlert = document.getElementById('adminAlert');
+                adminAlert.textContent = '❌ Error: ' + error.message;
+                adminAlert.style.background = 'rgba(239, 68, 68, 0.15)';
+                adminAlert.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+                adminAlert.style.color = '#fecaca';
+                adminAlert.style.display = 'block';
+            }
+        };
+
+        window.quickDeduct = async function(amount) {
+            document.getElementById('deductAmount').value = amount;
+            await deductUser();
+        };
     </script>
 </body>
 </html>
