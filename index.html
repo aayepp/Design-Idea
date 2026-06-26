@@ -1387,6 +1387,7 @@
                                 <button type="button" class="option-btn" data-style="Dynamic & Energetic">Dynamic</button>
                                 <button type="button" class="option-btn" data-style="Artistic & Creative">Artistic</button>
                                 <button type="button" class="option-btn" data-style="Professional & Corporate">Corporate</button>
+                                <button type="button" class="option-btn" data-style="Creative & Playful">Creative</button>
                             </div>
                         </div>
 
@@ -1850,6 +1851,13 @@
                 text: '#ecf0f1', 
                 pattern: 'corporate',
                 description: '💼 Business & Trust\nStructured layout & professional colors. Ideal for corporate brands.'
+            },
+            'Creative & Playful': { 
+                bg: '#ff7f50', 
+                accent: '#ffb347', 
+                text: '#fff', 
+                pattern: 'creative',
+                description: '🎪 Creative & Playful\nFun, engaging design with artistic flair. Perfect for entertainment & creative projects.'
             }
         };
 
@@ -2018,6 +2026,39 @@
                 text.setAttribute('fill', style.text);
                 text.textContent = 'CORPORATE';
                 previewSVG.appendChild(text);
+            } else if (style.pattern === 'creative') {
+                // Creative - playful and fun
+                const star1 = document.createElementNS(svgNS, 'polygon');
+                star1.setAttribute('points', '150,30 160,60 190,60 170,75 180,105 150,90 120,105 130,75 110,60 140,60');
+                star1.setAttribute('fill', style.accent);
+                previewSVG.appendChild(star1);
+                
+                const circle1 = document.createElementNS(svgNS, 'circle');
+                circle1.setAttribute('cx', '80');
+                circle1.setAttribute('cy', '150');
+                circle1.setAttribute('r', '40');
+                circle1.setAttribute('fill', style.text);
+                circle1.setAttribute('opacity', '0.7');
+                previewSVG.appendChild(circle1);
+                
+                const circle2 = document.createElementNS(svgNS, 'circle');
+                circle2.setAttribute('cx', '220');
+                circle2.setAttribute('cy', '200');
+                circle2.setAttribute('r', '35');
+                circle2.setAttribute('fill', style.accent);
+                circle2.setAttribute('opacity', '0.6');
+                previewSVG.appendChild(circle2);
+                
+                const text = document.createElementNS(svgNS, 'text');
+                text.setAttribute('x', '150');
+                text.setAttribute('y', '300');
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('font-size', '26');
+                text.setAttribute('font-weight', 'bold');
+                text.setAttribute('font-style', 'italic');
+                text.setAttribute('fill', style.text);
+                text.textContent = 'CREATIVE';
+                previewSVG.appendChild(text);
             }
         }
 
@@ -2176,6 +2217,11 @@
             // Add variation prompts for regeneration
             const regenerationCount = settings.regenerationCount || 0;
             
+            // Check if Creative style is selected and theme allows cartoon
+            const isCreativeStyle = settings.selectedStyle.includes('Creative');
+            const cartoonAllowedThemes = ['Gaming & Esports', 'Entertainment & Events', 'Animation', 'Kids', 'Anime Vibe', 'Artistic & Creative'];
+            const allowCartoon = isCreativeStyle && cartoonAllowedThemes.some(theme => settings.theme.includes(theme));
+            
             let prompt = `=== PROFESSIONAL ADVERTISING POSTER DESIGN BRIEF ===\n\n`;
             
             prompt += `BRAND & CAMPAIGN INFORMATION:\n`;
@@ -2213,103 +2259,168 @@
             prompt += `   - Position strategically for maximum visibility\n`;
             prompt += `   - Ensure sufficient contrast with background\n\n`;
             
-            prompt += `2. VISUAL HIERARCHY:\n`;
+            prompt += `2. RENDERING QUALITY & REALISM STANDARD:\n`;
+            if (allowCartoon) {
+                prompt += `   - CREATIVE & PLAYFUL STYLE APPROVED for this category\n`;
+                prompt += `   - Illustration/cartoon style is ACCEPTABLE for ${settings.theme}\n`;
+                prompt += `   - Maintain professional quality even with artistic/cartoon rendering\n`;
+                prompt += `   - Use polished, well-rendered illustrations (NOT rough sketches)\n`;
+                prompt += `   - Ensure smooth, professional artwork quality\n`;
+                prompt += `   - Clean lines and professional color application\n`;
+            } else {
+                prompt += `   - PHOTOREALISTIC or HIGH-FIDELITY rendering REQUIRED\n`;
+                prompt += `   - NO cartoon, illustration, or stylized rendering\n`;
+                prompt += `   - Create professional, realistic visual appearance\n`;
+                prompt += `   - Photographic quality or professional 3D rendering\n`;
+                prompt += `   - High production value, polished look\n`;
+                prompt += `   - Sharp details and professional finish\n`;
+            }
+            prompt += `\n`;
+            
+            prompt += `3. VISUAL HIERARCHY:\n`;
             prompt += `   - Clear focal point that draws the eye immediately\n`;
             prompt += `   - Secondary elements support the primary message\n`;
             prompt += `   - Typography creates visual flow and guides reading order\n`;
-            prompt += `   - Balance composition for professional appearance\n\n`;
+            prompt += `   - Balance composition for professional appearance\n`;
+            prompt += `   - Professional grade layout execution\n\n`;
             
-            prompt += `3. COLOR STRATEGY:\n`;
+            prompt += `4. COLOR STRATEGY:\n`;
             prompt += `   - Use psychologically appropriate colors for ${settings.theme}\n`;
             prompt += `   - Maintain high contrast for text readability\n`;
             prompt += `   - Create color harmony throughout the design\n`;
-            prompt += `   - Ensure colors reflect brand identity and campaign mood\n\n`;
+            prompt += `   - Ensure colors reflect brand identity and campaign mood\n`;
+            prompt += `   - Professional color grading if photorealistic\n\n`;
             
-            prompt += `4. DESIGN STYLE GUIDELINES (${settings.selectedStyle}):\n`;
+            prompt += `5. DESIGN STYLE GUIDELINES (${settings.selectedStyle}):\n`;
             if (settings.selectedStyle.includes('Minimalist')) {
                 prompt += `   - Clean, uncluttered layout with generous whitespace\n`;
                 prompt += `   - Limited color palette, maximum 3-4 colors\n`;
                 prompt += `   - Simple, elegant typography\n`;
                 prompt += `   - Focus on essential elements only\n`;
                 prompt += `   - Emphasis on typography and negative space\n`;
+                if (!allowCartoon) prompt += `   - Sophisticated, refined photorealistic execution\n`;
             } else if (settings.selectedStyle.includes('Bold')) {
                 prompt += `   - Vibrant, eye-catching color combinations\n`;
                 prompt += `   - Dynamic shapes and graphic elements\n`;
                 prompt += `   - Strong typography with high impact fonts\n`;
                 prompt += `   - Energetic composition that commands attention\n`;
                 prompt += `   - Rich visual textures and patterns\n`;
+                if (!allowCartoon) prompt += `   - Professional photorealistic rendering of dynamic elements\n`;
             } else if (settings.selectedStyle.includes('Premium')) {
                 prompt += `   - Sophisticated, luxurious aesthetic\n`;
                 prompt += `   - Gold, silver, or jewel tone accents\n`;
                 prompt += `   - Refined typography with elegant serifs\n`;
                 prompt += `   - High-end materials appearance (velvet, silk effects)\n`;
                 prompt += `   - Subtle patterns and ornamental elements\n`;
+                if (!allowCartoon) prompt += `   - Premium photorealistic rendering with luxury finish\n`;
             } else if (settings.selectedStyle.includes('Dynamic')) {
                 prompt += `   - Geometric shapes and modern composition\n`;
                 prompt += `   - Bold angular layouts with movement\n`;
                 prompt += `   - Contemporary typography\n`;
                 prompt += `   - Layered elements creating depth\n`;
                 prompt += `   - Forward-moving, progressive visual flow\n`;
-            } else if (settings.selectedStyle.includes('Artistic')) {
+                if (!allowCartoon) prompt += `   - Professional 3D rendering or photorealistic dynamic elements\n`;
+            } else if (settings.selectedStyle.includes('Artistic') && !settings.selectedStyle.includes('Creative')) {
                 prompt += `   - Creative, expressive visual language\n`;
-                prompt += `   - Organic shapes and hand-drawn elements\n`;
-                prompt += `   - Artistic, unconventional layout\n`;
+                prompt += `   - Organic shapes and artistic elements\n`;
+                prompt += `   - Artistic, thoughtful layout\n`;
                 prompt += `   - Rich textures and artistic effects\n`;
                 prompt += `   - Unique color combinations that evoke emotion\n`;
+                if (!allowCartoon) prompt += `   - Professional artistic rendering (NOT cartoon style)\n`;
             } else if (settings.selectedStyle.includes('Professional')) {
                 prompt += `   - Corporate, business-appropriate design\n`;
                 prompt += `   - Structured grid-based layout\n`;
                 prompt += `   - Professional sans-serif typography\n`;
                 prompt += `   - Conservative color palette\n`;
                 prompt += `   - Trustworthy, authoritative appearance\n`;
+                if (!allowCartoon) prompt += `   - Photorealistic professional executive-level production\n`;
+            } else if (settings.selectedStyle.includes('Creative')) {
+                prompt += `   - Creative and playful visual approach\n`;
+                if (allowCartoon) {
+                    prompt += `   - ILLUSTRATION/CARTOON style permitted for this category\n`;
+                    prompt += `   - Polished, professional quality illustrations\n`;
+                    prompt += `   - Vibrant, fun aesthetic while maintaining professionalism\n`;
+                    prompt += `   - Well-rendered character/design work\n`;
+                    prompt += `   - Professional illustration production quality\n`;
+                } else {
+                    prompt += `   - Creative design approach with photorealistic execution\n`;
+                    prompt += `   - Innovative composition while maintaining professional quality\n`;
+                    prompt += `   - High-fidelity rendering of creative concepts\n`;
+                    prompt += `   - Professional production grade creative work\n`;
+                }
             }
             prompt += `\n`;
             
-            prompt += `5. TECHNICAL QUALITY REQUIREMENTS:\n`;
+            prompt += `6. TECHNICAL QUALITY REQUIREMENTS:\n`;
+            prompt += `   - Studio-quality production standards\n`;
             prompt += `   - High resolution, crisp and clear\n`;
-            prompt += `   - Professional production quality\n`;
+            prompt += `   - Professional finish throughout\n`;
             prompt += `   - Sharp text and smooth gradients\n`;
-            prompt += `   - Consistent file format suitable for printing/digital\n`;
-            prompt += `   - Color calibrated for both screen and print\n\n`;
+            prompt += `   - Perfect color calibration\n`;
+            prompt += `   - No amateur or rough elements\n`;
+            prompt += `   - Suitable for professional printing and digital use\n\n`;
             
-            prompt += `6. COMPOSITION & LAYOUT:\n`;
+            prompt += `7. COMPOSITION & LAYOUT:\n`;
             prompt += `   - Aspect ratio ${settings.selectedRatio} strictly adhered to\n`;
             prompt += `   - Safe margins maintained from edges\n`;
             prompt += `   - All text easily readable from distance\n`;
             prompt += `   - Strategic use of empty space\n`;
-            prompt += `   - Perfect visual balance\n\n`;
+            prompt += `   - Perfect visual balance\n`;
+            prompt += `   - Professional composition principles applied\n\n`;
             
-            prompt += `7. CALL-TO-ACTION & TEXT:\n`;
+            prompt += `8. ANTI-CARTOON GUIDELINES (if not Creative style with cartoon-appropriate theme):\n`;
+            if (!allowCartoon) {
+                prompt += `   - DO NOT create cartoon, comic, or animated style artwork\n`;
+                prompt += `   - DO NOT use exaggerated, stylized proportions\n`;
+                prompt += `   - DO NOT create hand-drawn sketch style\n`;
+                prompt += `   - DO NOT use bright primary colors typical of cartoons\n`;
+                prompt += `   - Create PROFESSIONAL, REALISTIC visual appearance\n`;
+                prompt += `   - Maintain sophisticated, mature aesthetic\n`;
+            } else {
+                prompt += `   - For Creative style with cartoon-appropriate themes ONLY:\n`;
+                prompt += `   - Professional illustration quality is mandatory\n`;
+                prompt += `   - Even with cartoon style, maintain polish and quality\n`;
+                prompt += `   - Use professional color rendering\n`;
+                prompt += `   - Clean, high-quality artistic execution\n`;
+            }
+            prompt += `\n`;
+            
+            prompt += `9. CALL-TO-ACTION & TEXT:\n`;
             prompt += `   - Clear, compelling message hierarchy\n`;
             prompt += `   - Easy to read taglines or slogans\n`;
             prompt += `   - Contact information or website clearly visible\n`;
-            prompt += `   - Professional, error-free copy\n\n`;
+            prompt += `   - Professional, error-free copy\n`;
+            prompt += `   - Professional typography execution\n\n`;
             
             // Add variation based on regeneration count
-            prompt += `8. DESIGN BRIEF INSTRUCTION:\n`;
+            prompt += `10. DESIGN BRIEF INSTRUCTION:\n`;
             if (regenerationCount === 0) {
                 prompt += `   - Create a FIRST CONCEPT with professional, eye-catching design\n`;
                 prompt += `   - Focus on immediate visual impact and brand clarity\n`;
                 prompt += `   - Ensure all specifications above are perfectly executed\n`;
                 prompt += `   - Make this the PRIMARY, most polished concept\n`;
+                prompt += `   - Studio-quality professional production\n`;
             } else if (regenerationCount === 1) {
                 prompt += `   - Create an ALTERNATIVE CONCEPT with COMPLETELY DIFFERENT layout\n`;
                 prompt += `   - Different focal point and composition approach\n`;
                 prompt += `   - Different color arrangement or accent colors\n`;
                 prompt += `   - Different typography arrangement\n`;
                 prompt += `   - This should feel distinctly different from the first concept\n`;
+                prompt += `   - Maintain same professional quality standards\n`;
             } else if (regenerationCount === 2) {
                 prompt += `   - Create a THIRD UNIQUE CONCEPT with fresh perspective\n`;
                 prompt += `   - Opposite composition style (horizontal vs vertical focus)\n`;
                 prompt += `   - Different visual weight distribution\n`;
                 prompt += `   - Alternative design elements arrangement\n`;
                 prompt += `   - Showcase variety in approach while maintaining professionalism\n`;
+                prompt += `   - Studio-grade production quality maintained\n`;
             } else {
                 prompt += `   - Create a NEW INNOVATIVE CONCEPT with creative twist\n`;
                 prompt += `   - Bold reimagining of layout and hierarchy\n`;
                 prompt += `   - Unique compositional approach\n`;
                 prompt += `   - Maintains all technical requirements while pushing creativity\n`;
                 prompt += `   - Offers fresh visual perspective on campaign\n`;
+                prompt += `   - Professional production standards throughout\n`;
             }
             prompt += `\n`;
             
@@ -2321,9 +2432,11 @@
             prompt += `• Layout and composition details\n`;
             prompt += `• Positioning of all visual elements\n`;
             prompt += `• Brand name placement and styling\n`;
+            prompt += `• Rendering approach (${allowCartoon ? 'professional illustration/cartoon' : 'photorealistic/professional'})\n`;
             prompt += `• Any special effects or textures\n`;
             prompt += `• Professional design tips for implementation\n`;
             prompt += `• Technical specifications for production\n`;
+            prompt += `• Quality assurance checklist for professional execution\n`;
             
             return prompt;
         }
