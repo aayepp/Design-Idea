@@ -855,6 +855,62 @@
             rawIdeaInput.value = '';
         });
 
+        // Available Gemini models in order of preference
+        const GEMINI_MODELS = [
+            'gemini-2.0-flash',
+            'gemini-1.5-pro',
+            'gemini-1.5-flash',
+            'gemini-pro'
+        ];
+
+        async function callGeminiAPI(prompt, apiKey, modelIndex = 0) {
+            if (modelIndex >= GEMINI_MODELS.length) {
+                throw new Error('All Gemini models failed. Please check your API key and try again.');
+            }
+
+            const model = GEMINI_MODELS[modelIndex];
+            
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: prompt
+                            }]
+                        }]
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    const errorMessage = errorData.error?.message || 'API request failed';
+                    
+                    // If model not available, try next one
+                    if (errorMessage.includes('no longer available') || response.status === 404) {
+                        console.log(`Model ${model} not available, trying next...`);
+                        return callGeminiAPI(prompt, apiKey, modelIndex + 1);
+                    }
+                    
+                    throw new Error(errorMessage);
+                }
+
+                const data = await response.json();
+                return data.candidates[0].content.parts[0].text;
+                
+            } catch (error) {
+                // Try next model on error
+                if (modelIndex < GEMINI_MODELS.length - 1) {
+                    console.log(`Model ${model} failed, trying next: ${error.message}`);
+                    return callGeminiAPI(prompt, apiKey, modelIndex + 1);
+                }
+                throw error;
+            }
+        }
+
         suggestBtn.addEventListener('click', async (e) => {
             e.preventDefault();
 
@@ -876,28 +932,9 @@
             errorDiv.style.display = 'none';
 
             try {
-                const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{
-                                text: `Analyze this product and suggest 3-4 key selling points, features, or angles that would be compelling for a marketing poster/design.\n\nProduct: ${productName}\n\nProvide brief, punchy selling points (one sentence each). Focus on what makes it special - performance, design, innovation, lifestyle fit, quality, value, etc.\n\nFormat as bullet points.`
-                            }]
-                        }]
-                    })
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error?.message || 'Failed to get suggestions');
-                }
-
-                const data = await response.json();
-                const suggestions = data.candidates[0].content.parts[0].text;
-
+                const prompt = `Analyze this product and suggest 3-4 key selling points, features, or angles that would be compelling for a marketing poster/design.\n\nProduct: ${productName}\n\nProvide brief, punchy selling points (one sentence each). Focus on what makes it special - performance, design, innovation, lifestyle fit, quality, value, etc.\n\nFormat as bullet points.`;
+                
+                const suggestions = await callGeminiAPI(prompt, apiKey);
                 rawIdeaInput.value = suggestions;
                 errorDiv.style.display = 'none';
 
