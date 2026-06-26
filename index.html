@@ -2213,336 +2213,77 @@
             }
         }
 
-        function buildDesignPrompt(settings) {
-            // Add variation prompts for regeneration
+function buildDesignPrompt(settings) {
             const regenerationCount = settings.regenerationCount || 0;
-            
-            // Check if Creative style is selected and theme allows cartoon
             const isCreativeStyle = settings.selectedStyle.includes('Creative');
             const cartoonAllowedThemes = ['Gaming & Esports', 'Entertainment & Events', 'Animation', 'Kids', 'Anime Vibe', 'Artistic & Creative'];
             const allowCartoon = isCreativeStyle && cartoonAllowedThemes.some(theme => settings.theme.includes(theme));
             
-            let prompt = `╔════════════════════════════════════════════════════════════════╗\n`;
-            prompt += `║  PROFESSIONAL POSTER DESIGNER AI - IMAGE GENERATION BRIEF        ║\n`;
-            prompt += `║  Status: Expert Poster Design Consultation                       ║\n`;
-            prompt += `╚════════════════════════════════════════════════════════════════╝\n\n`;
+            let prompt = `PROFESSIONAL POSTER DESIGN BRIEF - AI IMAGE GENERATION\n\n`;
             
-            prompt += `TUGAS & PERSONA:\n`;
-            prompt += `Anda adalah seorang DESIGNER POSTER PROFESIONAL dengan pengalaman bertahun-tahun.\n`;
-            prompt += `Tugas anda: Membantu saya menulis PROMPT IMEJ AI yang sangat SPESIFIK dan BERSKALA TINGGI (HIGH-FIDELITY).\n`;
-            prompt += `Berdasarkan maklumat dan pilihan yang telah disediakan.\n`;
-            prompt += `TUJUAN: Menghasilkan imej poster profesional berkualiti tinggi yang siap untuk cetak dan digital.\n\n`;
-            
-            prompt += `PETUNJUK UMUM:\n`;
-            prompt += `• Bertindak sebagai Design Director dengan keahlian dalam advertising poster\n`;
-            prompt += `• Setiap spesifikasi adalah MANDATORY - tidak boleh diabaikan\n`;
-            prompt += `• Fokus PENUH pada kualiti tinggi (high-fidelity) dan detail profesional\n`;
-            prompt += `• Hasilkan prompt yang SIAP SALIN-TAMPAL ke AI image generator (Midjourney, DALL-E, dll)\n`;
-            prompt += `• Tidak ada analisa panjang - TERUS ke spesifikasi teknikal dan visual\n\n`;
-            
-            prompt += `═══════════════════════════════════════════════════════════════════\n\n`;
-            prompt += `=== MAKLUMAT KAMPANYE & BRAND ===\n\n`;
-            
-            prompt += `BRAND & CAMPAIGN INFORMATION:\n`;
-            prompt += `Brand Name: "${settings.brandName}"\n`;
-            prompt += `Campaign Title: ${settings.title}\n`;
-            prompt += `Campaign Description: ${settings.description}\n`;
-            prompt += `Product Category: ${settings.theme}\n\n`;
-            
-            prompt += `DESIGN SPECIFICATIONS:\n`;
-            prompt += `Design Style: ${settings.selectedStyle}\n`;
-            prompt += `Aspect Ratio: ${settings.selectedRatio}\n`;
+            // Campaign Info (Compact)
+            prompt += `CAMPAIGN OVERVIEW:\n`;
+            prompt += `Brand: "${settings.brandName}" | Title: ${settings.title}\n`;
+            prompt += `Category: ${settings.theme} | Style: ${settings.selectedStyle} | Ratio: ${settings.selectedRatio}\n`;
             if (settings.validFrom && settings.validTo) {
-                prompt += `Campaign Period: ${settings.validFrom} to ${settings.validTo}\n`;
+                prompt += `Period: ${settings.validFrom} to ${settings.validTo}\n`;
             }
+            prompt += `Description: ${settings.description}\n`;
+            if (settings.themeKeywords) prompt += `Themes: ${settings.themeKeywords}\n`;
+            if (settings.personalities) prompt += `Features: ${settings.personalities}\n`;
             prompt += `\n`;
             
-            // Add theme keywords if provided
-            if (settings.themeKeywords) {
-                prompt += `VISUAL THEMES & KEYWORDS:\n`;
-                prompt += `${settings.themeKeywords}\n`;
-                prompt += `Incorporate these thematic elements naturally throughout the design.\n\n`;
-            }
-            
-            // Add personalities if provided
-            if (settings.personalities) {
-                prompt += `FEATURED PERSONALITIES/ATHLETES:\n`;
-                prompt += `${settings.personalities}\n`;
-                prompt += `Position them prominently as focal points. Ensure they are recognizable and appropriately styled.\n\n`;
-            }
-            
-            prompt += `═══════════════════════════════════════════════════════════════════\n\n`;
-            prompt += `=== KEBUTUHAN DESAIN KRITIS (MANDATORY SPECIFICATIONS) ===\n`;
-            prompt += `Sebagai Design Director Profesional, berikut adalah spesifikasi WAJIB yang TIDAK boleh diabaikan:\n\n`;
-            
-            prompt += `1. PENEMPATAN NAMA BRAND (CRITICAL):\n`;
-            prompt += `   - Nama brand "${settings.brandName}" MESTI muncul TEPAT seperti yang ditulis\n`;
-            prompt += `   - Tampilkan secara PROMINENT dengan font BOLD yang jelas\n`;
-            prompt += `   - Posisikan strategis untuk visibiliti maksimal\n`;
-            prompt += `   - Pastikan CONTRAST cukup dengan latar belakang\n`;
-            prompt += `   - Font weight: BOLD atau EXTRA-BOLD\n`;
-            prompt += `   - Readability: SEMPURNA dari jarak jauh\n\n`;
-            
-            prompt += `2. STANDARD KUALITI RENDERING & REALISM (HIGH-FIDELITY):\n`;
-            if (allowCartoon) {
-                prompt += `   ✓ GAYA KREATIF & PLAYFUL DILULUSKAN untuk kategori ini: ${settings.theme}\n`;
-                prompt += `   ✓ Illustration/cartoon style DITERIMA tetapi BERKUALITI TINGGI\n`;
-                prompt += `   ✓ Pertahankan kualiti profesional bahkan dengan rendering artistik\n`;
-                prompt += `   ✓ Gunakan ilustrasi POLISHED dan WELL-RENDERED (BUKAN sketsa kasar)\n`;
-                prompt += `   ✓ Pastikan SMOOTH, professional artwork quality\n`;
-                prompt += `   ✓ Garis BERSIH dan aplikasi warna PROFESIONAL\n`;
-                prompt += `   ✓ Detail TAJAM dan warna VIBRANT\n`;
-            } else {
-                prompt += `   ✓ PHOTOREALISTIC atau HIGH-FIDELITY rendering WAJIB\n`;
-                prompt += `   ✓ TIADA cartoon, illustration, atau stylized rendering\n`;
-                prompt += `   ✓ Ciptakan tampilan PROFESIONAL, REALISTIK\n`;
-                prompt += `   ✓ Kualiti fotografi atau rendering 3D profesional\n`;
-                prompt += `   ✓ Nilai produksi TINGGI, penampilan POLISHED\n`;
-                prompt += `   ✓ Detail TAJAM dan finishing SEMPURNA\n`;
-                prompt += `   ✓ Studio-grade production quality\n`;
-            }
+            // Critical specs
+            prompt += `MANDATORY REQUIREMENTS:\n`;
+            prompt += `✓ Brand "${settings.brandName}" EXACTLY as written, prominent & bold\n`;
+            prompt += `✓ Rendering: ${allowCartoon ? 'Professional illustration' : 'PHOTOREALISTIC only - NO cartoon'}\n`;
+            prompt += `✓ Quality: Ultra-detailed, sharp, studio-grade, professional finish\n`;
+            prompt += `✓ Aspect ratio: ${settings.selectedRatio}\n`;
+            prompt += `✓ Resolution: 4K minimum, print & digital ready\n`;
+            prompt += `✓ ${allowCartoon ? 'Colors: vibrant & engaging' : 'Colors: sophisticated, professional palette'}\n`;
             prompt += `\n`;
             
-            prompt += `3. VISUAL HIERARCHY:\n`;
-            prompt += `   - Clear focal point that draws the eye immediately\n`;
-            prompt += `   - Secondary elements support the primary message\n`;
-            prompt += `   - Typography creates visual flow and guides reading order\n`;
-            prompt += `   - Balance composition for professional appearance\n`;
-            prompt += `   - Professional grade layout execution\n\n`;
-            
-            prompt += `4. COLOR STRATEGY:\n`;
-            prompt += `   - Use psychologically appropriate colors for ${settings.theme}\n`;
-            prompt += `   - Maintain high contrast for text readability\n`;
-            prompt += `   - Create color harmony throughout the design\n`;
-            prompt += `   - Ensure colors reflect brand identity and campaign mood\n`;
-            prompt += `   - Professional color grading if photorealistic\n\n`;
-            
-            prompt += `5. DESIGN STYLE GUIDELINES (${settings.selectedStyle}):\n`;
+            // Style guidance (ultra-compact)
+            prompt += `STYLE: ${settings.selectedStyle}\n`;
             if (settings.selectedStyle.includes('Minimalist')) {
-                prompt += `   - Clean, uncluttered layout with generous whitespace\n`;
-                prompt += `   - Limited color palette, maximum 3-4 colors\n`;
-                prompt += `   - Simple, elegant typography\n`;
-                prompt += `   - Focus on essential elements only\n`;
-                prompt += `   - Emphasis on typography and negative space\n`;
-                if (!allowCartoon) prompt += `   - Sophisticated, refined photorealistic execution\n`;
+                prompt += `Clean layout, 3-4 colors, elegant typography, whitespace, sophisticated\n`;
             } else if (settings.selectedStyle.includes('Bold')) {
-                prompt += `   - Vibrant, eye-catching color combinations\n`;
-                prompt += `   - Dynamic shapes and graphic elements\n`;
-                prompt += `   - Strong typography with high impact fonts\n`;
-                prompt += `   - Energetic composition that commands attention\n`;
-                prompt += `   - Rich visual textures and patterns\n`;
-                if (!allowCartoon) prompt += `   - Professional photorealistic rendering of dynamic elements\n`;
+                prompt += `Vibrant colors, dynamic shapes, impact fonts, energetic, attention-grabbing\n`;
             } else if (settings.selectedStyle.includes('Premium')) {
-                prompt += `   - Sophisticated, luxurious aesthetic\n`;
-                prompt += `   - Gold, silver, or jewel tone accents\n`;
-                prompt += `   - Refined typography with elegant serifs\n`;
-                prompt += `   - High-end materials appearance (velvet, silk effects)\n`;
-                prompt += `   - Subtle patterns and ornamental elements\n`;
-                if (!allowCartoon) prompt += `   - Premium photorealistic rendering with luxury finish\n`;
+                prompt += `Luxury aesthetic, gold/jewel tones, refined serif fonts, ornamental details\n`;
             } else if (settings.selectedStyle.includes('Dynamic')) {
-                prompt += `   - Geometric shapes and modern composition\n`;
-                prompt += `   - Bold angular layouts with movement\n`;
-                prompt += `   - Contemporary typography\n`;
-                prompt += `   - Layered elements creating depth\n`;
-                prompt += `   - Forward-moving, progressive visual flow\n`;
-                if (!allowCartoon) prompt += `   - Professional 3D rendering or photorealistic dynamic elements\n`;
-            } else if (settings.selectedStyle.includes('Artistic') && !settings.selectedStyle.includes('Creative')) {
-                prompt += `   - Creative, expressive visual language\n`;
-                prompt += `   - Organic shapes and artistic elements\n`;
-                prompt += `   - Artistic, thoughtful layout\n`;
-                prompt += `   - Rich textures and artistic effects\n`;
-                prompt += `   - Unique color combinations that evoke emotion\n`;
-                if (!allowCartoon) prompt += `   - Professional artistic rendering (NOT cartoon style)\n`;
+                prompt += `Geometric shapes, angular layouts, movement, layered depth, modern\n`;
+            } else if (settings.selectedStyle.includes('Artistic')) {
+                prompt += `Organic shapes, artistic expression, rich textures, creative colors\n`;
             } else if (settings.selectedStyle.includes('Professional')) {
-                prompt += `   - Corporate, business-appropriate design\n`;
-                prompt += `   - Structured grid-based layout\n`;
-                prompt += `   - Professional sans-serif typography\n`;
-                prompt += `   - Conservative color palette\n`;
-                prompt += `   - Trustworthy, authoritative appearance\n`;
-                if (!allowCartoon) prompt += `   - Photorealistic professional executive-level production\n`;
+                prompt += `Corporate, grid-based, sans-serif, conservative colors, trustworthy\n`;
             } else if (settings.selectedStyle.includes('Creative')) {
-                prompt += `   - Creative and playful visual approach\n`;
-                if (allowCartoon) {
-                    prompt += `   - ILLUSTRATION/CARTOON style permitted for this category\n`;
-                    prompt += `   - Polished, professional quality illustrations\n`;
-                    prompt += `   - Vibrant, fun aesthetic while maintaining professionalism\n`;
-                    prompt += `   - Well-rendered character/design work\n`;
-                    prompt += `   - Professional illustration production quality\n`;
-                } else {
-                    prompt += `   - Creative design approach with photorealistic execution\n`;
-                    prompt += `   - Innovative composition while maintaining professional quality\n`;
-                    prompt += `   - High-fidelity rendering of creative concepts\n`;
-                    prompt += `   - Professional production grade creative work\n`;
-                }
+                prompt += `${allowCartoon ? 'Playful, fun aesthetic, vibrant, illustrated' : 'Creative with photorealistic execution'}\n`;
             }
             prompt += `\n`;
             
-            prompt += `6. TECHNICAL QUALITY REQUIREMENTS:\n`;
-            prompt += `   - Studio-quality production standards\n`;
-            prompt += `   - High resolution, crisp and clear\n`;
-            prompt += `   - Professional finish throughout\n`;
-            prompt += `   - Sharp text and smooth gradients\n`;
-            prompt += `   - Perfect color calibration\n`;
-            prompt += `   - No amateur or rough elements\n`;
-            prompt += `   - Suitable for professional printing and digital use\n\n`;
-            
-            prompt += `7. COMPOSITION & LAYOUT:\n`;
-            prompt += `   - Aspect ratio ${settings.selectedRatio} strictly adhered to\n`;
-            prompt += `   - Safe margins maintained from edges\n`;
-            prompt += `   - All text easily readable from distance\n`;
-            prompt += `   - Strategic use of empty space\n`;
-            prompt += `   - Perfect visual balance\n`;
-            prompt += `   - Professional composition principles applied\n\n`;
-            
-            prompt += `8. ANTI-CARTOON GUIDELINES (if not Creative style with cartoon-appropriate theme):\n`;
-            if (!allowCartoon) {
-                prompt += `   - DO NOT create cartoon, comic, or animated style artwork\n`;
-                prompt += `   - DO NOT use exaggerated, stylized proportions\n`;
-                prompt += `   - DO NOT create hand-drawn sketch style\n`;
-                prompt += `   - DO NOT use bright primary colors typical of cartoons\n`;
-                prompt += `   - Create PROFESSIONAL, REALISTIC visual appearance\n`;
-                prompt += `   - Maintain sophisticated, mature aesthetic\n`;
-            } else {
-                prompt += `   - For Creative style with cartoon-appropriate themes ONLY:\n`;
-                prompt += `   - Professional illustration quality is mandatory\n`;
-                prompt += `   - Even with cartoon style, maintain polish and quality\n`;
-                prompt += `   - Use professional color rendering\n`;
-                prompt += `   - Clean, high-quality artistic execution\n`;
+            // Regeneration variation
+            if (regenerationCount > 0) {
+                prompt += `VARIATION ${regenerationCount}: `;
+                if (regenerationCount === 1) prompt += `Different layout, composition, colors\n`;
+                else if (regenerationCount === 2) prompt += `Unique approach, opposite composition\n`;
+                else prompt += `Fresh perspective, innovative layout\n`;
+                prompt += `\n`;
             }
+            
+            // Image generation instruction (Direct & concise)
+            prompt += `GENERATE DETAILED AI IMAGE PROMPT:\n`;
+            prompt += `Create specific prompt for Midjourney/DALL-E/Stable Diffusion with:\n`;
             prompt += `\n`;
             
-            prompt += `9. CALL-TO-ACTION & TEXT:\n`;
-            prompt += `   - Clear, compelling message hierarchy\n`;
-            prompt += `   - Easy to read taglines or slogans\n`;
-            prompt += `   - Contact information or website clearly visible\n`;
-            prompt += `   - Professional, error-free copy\n`;
-            prompt += `   - Professional typography execution\n\n`;
-            
-            // Add variation based on regeneration count
-            prompt += `10. DESIGN BRIEF INSTRUCTION:\n`;
-            if (regenerationCount === 0) {
-                prompt += `   - Create a FIRST CONCEPT with professional, eye-catching design\n`;
-                prompt += `   - Focus on immediate visual impact and brand clarity\n`;
-                prompt += `   - Ensure all specifications above are perfectly executed\n`;
-                prompt += `   - Make this the PRIMARY, most polished concept\n`;
-                prompt += `   - Studio-quality professional production\n`;
-            } else if (regenerationCount === 1) {
-                prompt += `   - Create an ALTERNATIVE CONCEPT with COMPLETELY DIFFERENT layout\n`;
-                prompt += `   - Different focal point and composition approach\n`;
-                prompt += `   - Different color arrangement or accent colors\n`;
-                prompt += `   - Different typography arrangement\n`;
-                prompt += `   - This should feel distinctly different from the first concept\n`;
-                prompt += `   - Maintain same professional quality standards\n`;
-            } else if (regenerationCount === 2) {
-                prompt += `   - Create a THIRD UNIQUE CONCEPT with fresh perspective\n`;
-                prompt += `   - Opposite composition style (horizontal vs vertical focus)\n`;
-                prompt += `   - Different visual weight distribution\n`;
-                prompt += `   - Alternative design elements arrangement\n`;
-                prompt += `   - Showcase variety in approach while maintaining professionalism\n`;
-                prompt += `   - Studio-grade production quality maintained\n`;
-            } else {
-                prompt += `   - Create a NEW INNOVATIVE CONCEPT with creative twist\n`;
-                prompt += `   - Bold reimagining of layout and hierarchy\n`;
-                prompt += `   - Unique compositional approach\n`;
-                prompt += `   - Maintains all technical requirements while pushing creativity\n`;
-                prompt += `   - Offers fresh visual perspective on campaign\n`;
-                prompt += `   - Professional production standards throughout\n`;
-            }
+            prompt += `COMPOSITION: Main subject, focal point, scene layout, positioning\n`;
+            prompt += `COLORS: Full palette (HEX codes), lighting mood, atmosphere, tone\n`;
+            prompt += `DETAILS: Textures, materials, depth, perspective, shadows, highlights\n`;
+            prompt += `TYPOGRAPHY: Brand "${settings.brandName}" - font family, size, weight, color, exact position\n`;
+            prompt += `QUALITY: "ultra detailed", "professional", "4K", "high-fidelity", "${allowCartoon ? 'illustration style' : 'photorealistic'}", "studio quality"\n`;
+            prompt += `NO WATERMARKS - Ready for print & digital use\n`;
             prompt += `\n`;
-            
-            prompt += `═══════════════════════════════════════════════════════════════════\n\n`;
-            prompt += `=== ARAHAN FINAL: SEBAGAI DESIGN DIRECTOR PROFESIONAL ===\n\n`;
-            prompt += `Anda ADALAH design director dengan pengalaman puluhan tahun.\n`;
-            prompt += `JANGAN analisa atau bincang brief ini panjang lebar.\n`;
-            prompt += `JANGAN berikan commentary atau penjelasan umum.\n`;
-            prompt += `TERUS KE: Hasilkan spesifikasi visual LENGKAP dan SANGAT DETAIL untuk image generation.\n`;
-            prompt += `Ini adalah PROMPT IMEJ AI - bukan diskusi/analisa.\n`;
-            prompt += `Anggapan: Saya sudah faham design - saya perlukan PROMPT yang SIAP SALIN ke AI image generator.\n\n`;
-            
-            prompt += `=== GENERATE SPECIFICATIONS UNTUK IMAGE GENERATOR ===\n\n`;
-            prompt += `Berdasarkan SEMUA specification di atas, hasilkan LENGKAP dan DETAIL specifications:\n\n`;
-            
-            prompt += `COMPOSITION & LAYOUT:\n`;
-            prompt += `• Exact layout dan positioning setiap visual element\n`;
-            prompt += `• Detailed description dari main focal point\n`;
-            prompt += `• Background composition dan treatment spesifik\n`;
-            prompt += `• Foreground elements dan placement presisi\n`;
-            prompt += `• Depth layers dan perspective\n\n`;
-            
-            prompt += `VISUAL ELEMENTS (DETAILED):\n`;
-            prompt += `• Deskripsi DETAIL setiap visual component\n`;
-            prompt += `• Textures, materials, dan surface qualities spesifik\n`;
-            prompt += `• Lighting direction, intensity, dan mood\n`;
-            prompt += `• Shadows, highlights, dan reflections\n`;
-            prompt += `• Depth, perspective, dan dimensionality\n\n`;
-            
-            prompt += `WARNA & RENDERING (COLOR & RENDERING):\n`;
-            prompt += `• Specific color codes (HEX) untuk semua primary colors\n`;
-            prompt += `• Color palette lengkap: 5-7 main colors dengan HEX codes\n`;
-            prompt += `• Rendering style: ${allowCartoon ? 'Professional illustration/cartoon berkualiti tinggi' : 'Photorealistic/3D rendering high-fidelity'}\n`;
-            prompt += `• Finish: ${allowCartoon ? 'Polished illustrated artwork profesional' : 'Kualiti fotografi high-fidelity'}\n`;
-            prompt += `• Lighting mood dan atmospheric treatment\n`;
-            prompt += `• Color grading dan tone untuk professional look\n\n`;
-            
-            prompt += `TIPOGRAFI & TEXT (TYPOGRAPHY & BRAND NAME):\n`;
-            prompt += `• Brand name: "${settings.brandName}" \n`;
-            prompt += `  - Font family, style, size, weight, color SPESIFIK\n`;
-            prompt += `  - Exact positioning dan placement\n`;
-            prompt += `  - Letter spacing, line height, alignment\n`;
-            prompt += `• Text elements lain - Font, size, color, positioning\n`;
-            prompt += `• Text effects, shadows, atau decorative elements jika ada\n`;
-            prompt += `• Kerning dan spacing presisi\n\n`;
-            
-            prompt += `KUALITI & FINISH (QUALITY SPECIFICATIONS):\n`;
-            prompt += `• Resolution: Ultra high resolution (4K, 6K, atau lebih)\n`;
-            prompt += `• Finish: Professional studio-grade production quality\n`;
-            prompt += `• Tiada watermarks atau text overlays\n`;
-            prompt += `• Siap untuk print quality dan digital use\n`;
-            prompt += `• Color accuracy dan vibrance optimal\n\n`;
-            
-            prompt += `═══════════════════════════════════════════════════════════════════\n\n`;
-            prompt += `=== FINAL: HASILKAN PROMPT IMEJ AI PROFESIONAL ===\n\n`;
-            prompt += `SEBAGAI DESIGN DIRECTOR YANG BERPENGALAMAN:\n\n`;
-            
-            prompt += `Anda sekarang bertugas sebagai seorang DESIGNER POSTER PROFESIONAL dengan pengalaman puluhan tahun.\n`;
-            prompt += `Pengalaman dalam:\n`;
-            prompt += `• Advertising design dan marketing posters\n`;
-            prompt += `• AI image generation optimization\n`;
-            prompt += `• High-fidelity visual specifications\n`;
-            prompt += `• Professional brand presentation\n\n`;
-            
-            prompt += `TUGAS FINAL ANDA:\n`;
-            prompt += `Berdasarkan SEMUA specification di atas yang telah saya sediakan,\n`;
-            prompt += `Hasilkan SATU PROMPT IMEJ AI yang sangat SPESIFIK dan BERSKALA TINGGI (HIGH-FIDELITY).\n\n`;
-            
-            prompt += `PROMPT INI MESTI:\n`;
-            prompt += `✓ SANGAT DETAIL dan SPESIFIK - tidak ada yang samar\n`;
-            prompt += `✓ MENCAKUP SEMUA visual requirements dari specification\n`;
-            prompt += `✓ TENTUKAN warna exact (HEX codes), style, composition\n`;
-            prompt += `✓ OPTIMIZED untuk AI image generator professional\n`;
-            prompt += `✓ SIAP SALIN-TAMPAL ke Midjourney, DALL-E, Stable Diffusion, Leonardo.AI\n`;
-            prompt += `✓ HASILKAN konsisten professional-grade output\n`;
-            prompt += `✓ TIDAK ada ambiguriti atau vague language\n\n`;
-            
-            prompt += `INSTRUKSI PENULISAN PROMPT:\n`;
-            prompt += `1. Mulai dengan subject/scene utama yang JELAS\n`;
-            prompt += `2. Berikan DETAIL lengkap tentang composition, layout, positioning\n`;
-            prompt += `3. SPESIFIK tentang warna dengan HEX codes atau color names yang presisi\n`;
-            prompt += `4. DETAIL tentang lighting, shadows, depth, perspective\n`;
-            prompt += `5. TENTUKAN rendering style dan finish quality\n`;
-            prompt += `6. CANTUMKAN semua typography dan text requirements\n`;
-            prompt += `7. TAMBAH quality markers: "ultra detailed", "high resolution", "professional", "studio lighting"\n`;
-            prompt += `8. AKHIRI dengan style reference jika bersesuaian\n\n`;
-            
-            prompt += `TARGET IMAGE GENERATORS:\n`;
-            prompt += `• Midjourney (gunakan --ar untuk aspect ratio, quality parameters)\n`;
-            prompt += `• DALL-E 3 (descriptive, natural language)\n`;
-            prompt += `• Stable Diffusion (technical, parameter-friendly)\n`;
-            prompt += `• Leonardo.AI (detailed, style-specific)\n\n`;
-            
-            prompt += `SEKARANG HASILKAN PROMPT IMEJ AI PROFESIONAL:\n`;
-            prompt += `(Tidak perlu pengenalan, terus ke prompt. User sudah faham spec. Berikan PROMPT yang siap copy-paste.)\n`;
-            prompt += `═══════════════════════════════════════════════════════════════════\n\n`;
+            prompt += `Make prompt copy-paste ready for AI image generators.\n`;
             
             return prompt;
         }
