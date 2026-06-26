@@ -2219,8 +2219,7 @@ function buildDesignPrompt(settings) {
             const cartoonAllowedThemes = ['Gaming & Esports', 'Entertainment & Events', 'Animation', 'Kids', 'Anime Vibe', 'Artistic & Creative'];
             const allowCartoon = isCreativeStyle && cartoonAllowedThemes.some(theme => settings.theme.includes(theme));
             
-            let prompt = `PROFESSIONAL POSTER DESIGN BRIEF - AI IMAGE GENERATION\n\n`;
-            prompt += `⚡ IMMEDIATE ACTION: Generate a detailed, specific image generation prompt based on the specifications below. Do NOT analyze or discuss - CREATE THE IMAGE PROMPT directly.\n\n`;
+            let prompt = `CREATE IMAGE PROMPT\n\n`;
             
             // Campaign Info (Compact)
             prompt += `CAMPAIGN OVERVIEW:\n`;
@@ -2272,24 +2271,14 @@ function buildDesignPrompt(settings) {
                 prompt += `\n`;
             }
             
-            // Image generation instruction (Direct & concise)
-            prompt += `═══════════════════════════════════════════════════════════════\n`;
-            prompt += `>>> CREATE IMAGE PROMPT NOW <<<\n`;
-            prompt += `\n`;
-            prompt += `Write a detailed, specific image generation prompt for Midjourney/DALL-E/Stable Diffusion.\n`;
-            prompt += `Do NOT analyze, discuss, or comment - ONLY CREATE THE PROMPT.\n`;
-            prompt += `The prompt must include these elements:\n`;
-            prompt += `\n`;
-            
+            // Image specifications for generation
+            prompt += `IMAGE GENERATION SPECIFICATIONS:\n`;
             prompt += `COMPOSITION: Main subject, focal point, scene layout, positioning\n`;
             prompt += `COLORS: Full palette (HEX codes), lighting mood, atmosphere, tone\n`;
             prompt += `DETAILS: Textures, materials, depth, perspective, shadows, highlights\n`;
             prompt += `TYPOGRAPHY: Brand "${settings.brandName}" - font family, size, weight, color, exact position\n`;
             prompt += `QUALITY: "ultra detailed", "professional", "4K", "high-fidelity", "${allowCartoon ? 'illustration style' : 'photorealistic'}", "studio quality"\n`;
             prompt += `NO WATERMARKS - Ready for print & digital use\n`;
-            prompt += `\n`;
-            prompt += `═══════════════════════════════════════════════════════════════\n`;
-            prompt += `OUTPUT: Only the image generation prompt. Copy-paste ready for AI generators.\n`;
             
             return prompt;
         }
