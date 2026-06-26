@@ -942,13 +942,14 @@
             apiStatusDiv.innerHTML = '';
         });
 
-        // Available Gemini models - using actual available model names
-        // These are the models that support generateContent
+        // Available Gemini models - LATEST versions that actually exist
+        // Updated based on actual available models from Google API
         const GEMINI_MODELS = [
-            'gemini-pro',
-            'gemini-1.5-pro',
-            'gemini-1.0-pro',
-            'gemini-pro-vision'
+            'gemini-2.5-flash',
+            'gemini-2.5-pro',
+            'gemini-2.0-flash',
+            'gemini-3.5-flash',
+            'gemini-3.1-flash-lite'
         ];
 
         // Alternative: Try different API versions if v1beta fails
