@@ -2220,6 +2220,7 @@ function buildDesignPrompt(settings) {
             const allowCartoon = isCreativeStyle && cartoonAllowedThemes.some(theme => settings.theme.includes(theme));
             
             let prompt = `PROFESSIONAL POSTER DESIGN BRIEF - AI IMAGE GENERATION\n\n`;
+            prompt += `⚡ IMMEDIATE ACTION: Generate a detailed, specific image generation prompt based on the specifications below. Do NOT analyze or discuss - CREATE THE IMAGE PROMPT directly.\n\n`;
             
             // Campaign Info (Compact)
             prompt += `CAMPAIGN OVERVIEW:\n`;
@@ -2272,8 +2273,12 @@ function buildDesignPrompt(settings) {
             }
             
             // Image generation instruction (Direct & concise)
-            prompt += `GENERATE DETAILED AI IMAGE PROMPT:\n`;
-            prompt += `Create specific prompt for Midjourney/DALL-E/Stable Diffusion with:\n`;
+            prompt += `═══════════════════════════════════════════════════════════════\n`;
+            prompt += `>>> CREATE IMAGE PROMPT NOW <<<\n`;
+            prompt += `\n`;
+            prompt += `Write a detailed, specific image generation prompt for Midjourney/DALL-E/Stable Diffusion.\n`;
+            prompt += `Do NOT analyze, discuss, or comment - ONLY CREATE THE PROMPT.\n`;
+            prompt += `The prompt must include these elements:\n`;
             prompt += `\n`;
             
             prompt += `COMPOSITION: Main subject, focal point, scene layout, positioning\n`;
@@ -2283,7 +2288,8 @@ function buildDesignPrompt(settings) {
             prompt += `QUALITY: "ultra detailed", "professional", "4K", "high-fidelity", "${allowCartoon ? 'illustration style' : 'photorealistic'}", "studio quality"\n`;
             prompt += `NO WATERMARKS - Ready for print & digital use\n`;
             prompt += `\n`;
-            prompt += `Make prompt copy-paste ready for AI image generators.\n`;
+            prompt += `═══════════════════════════════════════════════════════════════\n`;
+            prompt += `OUTPUT: Only the image generation prompt. Copy-paste ready for AI generators.\n`;
             
             return prompt;
         }
