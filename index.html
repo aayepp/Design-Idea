@@ -2214,6 +2214,16 @@
         }
 
 function buildDesignPrompt(settings) {
+            // Helper function to format date from yyyy-mm-dd to dd/mm/yyyy
+            const formatDate = (dateStr) => {
+                if (!dateStr) return dateStr;
+                const parts = dateStr.split('-');
+                if (parts.length === 3) {
+                    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                }
+                return dateStr;
+            };
+            
             const regenerationCount = settings.regenerationCount || 0;
             const isCreativeStyle = settings.selectedStyle.includes('Creative');
             const cartoonAllowedThemes = ['Gaming & Esports', 'Entertainment & Events', 'Animation', 'Kids', 'Anime Vibe', 'Artistic & Creative'];
@@ -2302,7 +2312,7 @@ function buildDesignPrompt(settings) {
             prompt += `Brand: "${settings.brandName}" | Title: ${settings.title}\n`;
             prompt += `Category: ${settings.theme} | Style: ${settings.selectedStyle} | Ratio: ${settings.selectedRatio}\n`;
             if (settings.validFrom && settings.validTo) {
-                prompt += `Period: ${settings.validFrom} to ${settings.validTo}\n`;
+                prompt += `Period: ${formatDate(settings.validFrom)} to ${formatDate(settings.validTo)}\n`;
             }
             if (settings.themeKeywords) prompt += `Themes: ${settings.themeKeywords}\n`;
             if (settings.personalities) prompt += `Features: ${settings.personalities}\n`;
@@ -2375,6 +2385,8 @@ function buildDesignPrompt(settings) {
             prompt += `CALL-TO-ACTION: Promotional message VISUALLY PROMINENT & COMPELLING - make keypoints impossible to miss\n`;
             prompt += `QUALITY: "ultra detailed", "professional", "4K", "high-fidelity", "${allowCartoon ? 'illustration style' : 'photorealistic'}", "studio quality"\n`;
             prompt += `NO WATERMARKS - Ready for print & digital use\n`;
+            prompt += `\n`;
+            prompt += `OUTPUT INSTRUCTION: Generate EXACTLY 2 different design options (Design 1 & Design 2). Both must follow all specifications above. Create 2 DISTINCT layout approaches so user can choose the best option. Label each as "Design 1:" and "Design 2:"\n`;
             
             return prompt;
         }
