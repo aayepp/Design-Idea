@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Blueprint Creator | AI-Powered Marketing Design Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #764ba2;
+            --secondary: #f093fb;
+            --accent: #4facfe;
+            --success: #43e97b;
+            --danger: #e74c3c;
+            --warning: #f5a623;
+            --bg-dark: #0f0c29;
+            --bg-light: #f8f9fa;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555;
+            --text-muted: #999;
+            --border-color: #e0e0e0;
+            --white: #ffffff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 20px;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: var(--white);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .hero-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 18px;
+            opacity: 0.95;
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            background: var(--white);
+            color: var(--primary);
+            padding: 14px 36px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Features Section */
+        .features {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 48px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            margin-bottom: 60px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Main Form Container */
+        .form-section {
+            background: var(--white);
+            padding: 60px 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .form-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .form-intro {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-intro h2 {
+            font-size: 32px;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .form-intro p {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        /* Form Styling */
+        .form-container {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 40px;
+        }
+
+        .section-header {
+            font-size: 13px;
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 32px 0 20px 0;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .section-header:first-of-type {
+            margin-top: 0;
+        }
+
+        .product-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 12px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text-primary);
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .input-group input {
+            flex: 1;
+        }
+
+        .btn-suggest {
+            padding: 12px 20px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-suggest:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-suggest:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .ai-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--white);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-left: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-style: italic;
+        }
+
+        .api-info {
+            background: #f0f4ff;
+            border: 1px solid #d0d9ff;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn-reset,
+        .btn-continue {
+            padding: 14px 40px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 200px;
+        }
+
+        .btn-continue {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-continue:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-reset {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-reset:hover {
+            background: var(--bg-light);
+        }
+
+        #error {
+            color: var(--danger);
+            background: #fadbd8;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            border-left: 4px solid var(--danger);
+            margin-top: 20px;
+            display: none;
+        }
+
+        .spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--white);
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-primary);
+            color: var(--white);
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        footer p {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .nav-links {
+                gap: 16px;
+                font-size: 12px;
+            }
+
+            .form-grid,
+            .product-section {
+                grid-template-columns: 1fr;
+            }
+
+            .form-container {
+                padding: 24px;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .btn-reset,
+            .btn-continue {
+                min-width: 100%;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .input-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn-suggest {
+                width: 100%;
+            }
+
+            .hero {
+                padding: 40px 20px;
+            }
+
+            .features {
+                margin: 60px auto;
+            }
+
+            .form-section {
+                padding: 40px 20px;
+            }
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Success State */
+        .success-message {
+            background: #e8f5e9;
+            border: 1px solid #4caf50;
+            border-left: 4px solid #4caf50;
+            color: #2e7d32;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">🎨 Design Blueprint Creator</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#form">Start Now</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <h1>AI-Powered Design Blueprint Generator</h1>
+            <p>Instantly generate marketing designs with AI-suggested product features and professional design preferences</p>
+            <a href="#form" class="hero-cta">Start Creating</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">Three simple steps to create your perfect marketing design</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">✨</div>
+                <h3>1. AI Suggests Ideas</h3>
+                <p>Enter your product name and let AI automatically analyze and suggest key features, specs, and selling points tailored to your product.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>2. Choose Preferences</h3>
+                <p>Select from 8 design dimensions: target audience, mood, setting, lighting, colors, and more to tailor the visual direction.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3>3. Generate Design</h3>
+                <p>Get a customized generator that uses Gemini API to refine your prompt and create a professional marketing design image.</p>
+            </div>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>Smart AI Suggestions</h3>
+                <p>Powered by Gemini API to analyze any product and suggest relevant marketing angles and key features automatically.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>8 Design Dimensions</h3>
+                <p>Comprehensive preference system covering product type, audience, mood, setting, lighting, colors, features, and platform.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Instant Results</h3>
+                <p>Get professional marketing designs within minutes using Gemini's powerful image generation capabilities.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Section -->
+    <section class="form-section" id="form">
+        <div class="form-wrapper">
+            <div class="form-intro">
+                <h2>Create Your Design Blueprint</h2>
+                <p>Fill in your product details and design preferences to get started</p>
+            </div>
+
+            <div class="form-container">
+                <form id="preferencesForm">
+                    <!-- API Key -->
+                    <div class="section-header">Step 1: API Configuration</div>
+                    <div class="product-section" style="grid-column: 1 / -1;">
+                        <div class="form-group">
+                            <label for="apiKey">Gemini API Key</label>
+                            <input 
+                                type="password" 
+                                id="apiKey" 
+                                placeholder="Paste your Gemini API key"
+                                required
+                            >
+                            <div class="api-info">Get free API key from <strong>ai.google.dev</strong> — Required for AI to suggest features and generate images</div>
+                        </div>
+                    </div>
+
+                    <!-- Product Info -->
+                    <div class="section-header">Step 2: Product Information</div>
+                    <div class="product-section" style="grid-column: 1 / -1;">
+                        <div style="flex: 1;">
+                            <div class="form-group">
+                                <label for="productName">Product Name / Model</label>
+                                <div class="input-group">
+                                    <input 
+                                        type="text" 
+                                        id="productName" 
+                                        placeholder="e.g., Sony WH-1000XM5, MacBook Pro M4"
+                                        required
+                                    >
+                                    <button type="button" class="btn-suggest" id="suggestBtn">
+                                        <span id="suggestBtnText">AI Suggest</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-section" style="grid-column: 1 / -1;">
+                        <div class="form-group">
+                            <label for="rawIdea">Raw Idea / Key Features <span class="ai-badge">AI-Generated</span></label>
+                            <textarea 
+                                id="rawIdea" 
+                                placeholder="AI will populate this with suggested features based on product name..."
+                                required
+                            ></textarea>
+                            <p class="help-text">Edit the AI suggestions or add your own details about specs, design, performance, etc.</p>
+                        </div>
+                    </div>
+
+                    <!-- Design Preferences -->
+                    <div class="section-header">Step 3: Design Preferences (8 Dimensions)</div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="productType">Product Type</label>
+                            <select id="productType" required>
+                                <option value="">-- Select --</option>
+                                <option value="Electronics (Laptop, Phone, Camera, Headphones, Watch, etc.)">Electronics</option>
+                                <option value="Furniture & Home Decor">Furniture & Home Decor</option>
+                                <option value="Fashion & Clothing">Fashion & Clothing</option>
+                                <option value="Food & Beverage">Food & Beverage</option>
+                                <option value="Cosmetics & Beauty">Cosmetics & Beauty</option>
+                                <option value="Sports & Fitness Equipment">Sports & Fitness</option>
+                                <option value="Accessories (Bags, Jewelry, Watches)">Accessories</option>
+                                <option value="Software & Apps">Software & Apps</option>
+                                <option value="Services & Digital">Services & Digital</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="targetAudience">Target Audience</label>
+                            <select id="targetAudience" required>
+                                <option value="">-- Select --</option>
+                                <option value="Gamers & Esports Players">Gamers & Esports Players</option>
+                                <option value="Corporate & Business Professionals">Corporate & Business</option>
+                                <option value="Students & Young Professionals">Students & Young Prof.</option>
+                                <option value="Luxury & Premium Buyers">Luxury & Premium Buyers</option>
+                                <option value="Budget-Conscious & Value Seekers">Budget-Conscious</option>
+                                <option value="Creative Professionals (Designers, Photographers, Videographers)">Creative Professionals</option>
+                                <option value="Tech Enthusiasts & Early Adopters">Tech Enthusiasts</option>
+                                <option value="Fitness & Health-Conscious">Fitness & Health</option>
+                                <option value="Families & Casual Users">Families & Casual Users</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mood">Mood & Positioning</label>
+                            <select id="mood" required>
+                                <option value="">-- Select --</option>
+                                <option value="Premium & Luxury (High-end, Exclusive)">Premium & Luxury</option>
+                                <option value="Modern & Sleek (Contemporary, Minimalist)">Modern & Sleek</option>
+                                <option value="Bold & Energetic (Dynamic, Powerful)">Bold & Energetic</option>
+                                <option value="Professional & Corporate (Trustworthy, Reliable)">Professional & Corporate</option>
+                                <option value="Creative & Artistic (Innovative, Inspiring)">Creative & Artistic</option>
+                                <option value="Playful & Fun (Approachable, Youthful)">Playful & Fun</option>
+                                <option value="Eco-Friendly & Sustainable (Natural, Conscious)">Eco-Friendly</option>
+                                <option value="Futuristic & Tech-Forward (Cutting-edge, Advanced)">Futuristic</option>
+                                <option value="Warm & Approachable (Friendly, Accessible)">Warm & Approachable</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="setting">Setting & Context</label>
+                            <select id="setting" required>
+                                <option value="">-- Select --</option>
+                                <option value="Studio Setting (Clean, Minimal Background)">Studio (Clean, Minimal)</option>
+                                <option value="In-Use/Action Scene (Product Being Used)">In-Use/Action Scene</option>
+                                <option value="Lifestyle/Aspirational (Real-world Context)">Lifestyle/Aspirational</option>
+                                <option value="Abstract/Artistic (Creative, Experimental)">Abstract/Artistic</option>
+                                <option value="Flat-lay Composition (Overhead, Organized)">Flat-lay Composition</option>
+                                <option value="Environmental/Real-world (Natural Context)">Environmental/Real-world</option>
+                                <option value="360° Product View (Showcase Design)">360° Product View</option>
+                                <option value="Detail Shot (Close-up, Macro)">Detail Shot</option>
+                                <option value="Lifestyle Photography (Integrated in Scene)">Lifestyle Photography</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lighting">Lighting Style</label>
+                            <select id="lighting" required>
+                                <option value="">-- Select --</option>
+                                <option value="Studio Professional (Controlled Lighting, Softbox)">Studio Professional</option>
+                                <option value="Natural & Soft (Window Light, Diffused)">Natural & Soft</option>
+                                <option value="Dramatic & Moody (Shadows, Contrast)">Dramatic & Moody</option>
+                                <option value="Bright & Clean (High Key, Airy)">Bright & Clean</option>
+                                <option value="Neon & Vibrant (Colorful, Bold)">Neon & Vibrant</option>
+                                <option value="Golden Hour & Warm (Sunset Tones)">Golden Hour & Warm</option>
+                                <option value="Dark & Cinematic (Low Key, Atmospheric)">Dark & Cinematic</option>
+                                <option value="Minimalist (Simple, Key Light Only)">Minimalist</option>
+                                <option value="High Contrast (Bold Shadows & Highlights)">High Contrast</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="colors">Color Palette</label>
+                            <select id="colors" required>
+                                <option value="">-- Select --</option>
+                                <option value="Neutral & Timeless (Black, White, Gray)">Neutral & Timeless</option>
+                                <option value="Cool Tones (Blues, Purples, Teals)">Cool Tones</option>
+                                <option value="Warm Tones (Oranges, Reds, Golds)">Warm Tones</option>
+                                <option value="Vibrant & Bold (Rainbow, Multi-color)">Vibrant & Bold</option>
+                                <option value="Monochrome + Accent Color">Monochrome + Accent</option>
+                                <option value="Natural & Earth Tones (Beige, Brown, Green)">Natural & Earth Tones</option>
+                                <option value="Dark Mode & Moody (Dark Background)">Dark Mode & Moody</option>
+                                <option value="Light & Airy (Whites, Pastels)">Light & Airy</option>
+                                <option value="Brand-Specific Colors">Brand-Specific Colors</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="feature">Key Feature to Highlight</label>
+                            <select id="feature" required>
+                                <option value="">-- Select --</option>
+                                <option value="Design & Aesthetics (Form, Shape, Visual Appeal)">Design & Aesthetics</option>
+                                <option value="Performance & Power (Speed, Capability, Specs)">Performance & Power</option>
+                                <option value="Functionality & Features (What It Does)">Functionality & Features</option>
+                                <option value="Quality & Craftsmanship (Materials, Build)">Quality & Craftsmanship</option>
+                                <option value="Innovation & Technology (Cutting-edge, Advanced)">Innovation & Technology</option>
+                                <option value="Price & Value (Affordability, Worth)">Price & Value</option>
+                                <option value="Sustainability & Eco-Friendly (Conscious, Green)">Sustainability & Eco</option>
+                                <option value="User Experience & Usability (Ease of Use)">User Experience</option>
+                                <option value="Lifestyle Integration (How It Fits Life)">Lifestyle Integration</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="platform">Primary Use & Platform</label>
+                            <select id="platform" required>
+                                <option value="">-- Select --</option>
+                                <option value="Social Media (TikTok, Instagram, Reels)">Social Media</option>
+                                <option value="Print Advertisement (Magazine, Billboard, Poster)">Print Advertisement</option>
+                                <option value="Website Banner (Website Header, Hero Section)">Website Banner</option>
+                                <option value="E-commerce Listing (Product Page, Marketplace)">E-commerce Listing</option>
+                                <option value="Email Marketing (Newsletter, Campaign)">Email Marketing</option>
+                                <option value="Video Thumbnail (YouTube, Social Media)">Video Thumbnail</option>
+                                <option value="Presentation/Pitch Deck (Business Pitch)">Presentation/Pitch Deck</option>
+                                <option value="Digital Ad (Google, Facebook, Display)">Digital Ad</option>
+                                <option value="Portfolio/Showcase (Behance, Website)">Portfolio/Showcase</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="button-group">
+                        <button type="button" class="btn-reset" id="resetBtn">Reset All</button>
+                        <button type="submit" class="btn-continue" id="continueBtn">Continue to Generator →</button>
+                    </div>
+
+                    <div id="error"></div>
+                    <div class="success-message" id="successMessage">
+                        ✓ All preferences saved! Redirecting to generator...
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p><strong>Design Blueprint Creator</strong> — AI-Powered Marketing Design Generator</p>
+            <p>Powered by Gemini API | Built for creative professionals</p>
+            <p style="margin-top: 20px; font-size: 12px; opacity: 0.6;">
+                By using this tool, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        const form = document.getElementById('preferencesForm');
+        const resetBtn = document.getElementById('resetBtn');
+        const suggestBtn = document.getElementById('suggestBtn');
+        const suggestBtnText = document.getElementById('suggestBtnText');
+        const productNameInput = document.getElementById('productName');
+        const rawIdeaInput = document.getElementById('rawIdea');
+        const apiKeyInput = document.getElementById('apiKey');
+        const errorDiv = document.getElementById('error');
+        const successMessage = document.getElementById('successMessage');
+
+        resetBtn.addEventListener('click', () => {
+            form.reset();
+            errorDiv.style.display = 'none';
+            rawIdeaInput.value = '';
+        });
+
+        suggestBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            const productName = productNameInput.value.trim();
+            const apiKey = apiKeyInput.value.trim();
+
+            if (!productName) {
+                showError('Please enter product name/model first');
+                return;
+            }
+
+            if (!apiKey) {
+                showError('Please enter your Gemini API key');
+                return;
+            }
+
+            suggestBtn.disabled = true;
+            suggestBtnText.innerHTML = '<span class="spinner"></span>Analyzing...';
+            errorDiv.style.display = 'none';
+
+            try {
+                const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: `Analyze this product and suggest 3-4 key selling points, features, or angles that would be compelling for a marketing poster/design.\n\nProduct: ${productName}\n\nProvide brief, punchy selling points (one sentence each). Focus on what makes it special - performance, design, innovation, lifestyle fit, quality, value, etc.\n\nFormat as bullet points.`
+                            }]
+                        }]
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error?.message || 'Failed to get suggestions');
+                }
+
+                const data = await response.json();
+                const suggestions = data.candidates[0].content.parts[0].text;
+
+                rawIdeaInput.value = suggestions;
+                errorDiv.style.display = 'none';
+
+            } catch (error) {
+                showError(`Error: ${error.message}`);
+            } finally {
+                suggestBtn.disabled = false;
+                suggestBtnText.textContent = 'AI Suggest';
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const preferences = {
+                apiKey: apiKeyInput.value.trim(),
+                productName: productNameInput.value.trim(),
+                rawIdea: rawIdeaInput.value.trim(),
+                productType: document.getElementById('productType').value,
+                targetAudience: document.getElementById('targetAudience').value,
+                mood: document.getElementById('mood').value,
+                setting: document.getElementById('setting').value,
+                lighting: document.getElementById('lighting').value,
+                colors: document.getElementById('colors').value,
+                feature: document.getElementById('feature').value,
+                platform: document.getElementById('platform').value
+            };
+
+            for (let key in preferences) {
+                if (!preferences[key]) {
+                    showError('Please fill in all fields');
+                    return;
+                }
+            }
+
+            errorDiv.style.display = 'none';
+            
+            // Store in localStorage for next page
+            localStorage.setItem('userPreferences', JSON.stringify(preferences));
+            
+            successMessage.style.display = 'block';
+            
+            // Redirect to generator page (you can create a separate generator.html)
+            setTimeout(() => {
+                // Option 1: Redirect to a separate generator page
+                // window.location.href = 'generator.html';
+                
+                // Option 2: Show success message
+                alert('✓ Preferences saved! You can now use these settings in your design generator.\n\nPreferences:\n' + 
+                    Object.entries(preferences).map(([key, value]) => `${key}: ${value}`).join('\n'));
+            }, 1500);
+        });
+
+        function showError(message) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            window.scrollTo({ top: errorDiv.offsetTop - 100, behavior: 'smooth' });
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
