@@ -2222,7 +2222,26 @@
             const cartoonAllowedThemes = ['Gaming & Esports', 'Entertainment & Events', 'Animation', 'Kids', 'Anime Vibe', 'Artistic & Creative'];
             const allowCartoon = isCreativeStyle && cartoonAllowedThemes.some(theme => settings.theme.includes(theme));
             
-            let prompt = `=== PROFESSIONAL ADVERTISING POSTER DESIGN BRIEF ===\n\n`;
+            let prompt = `╔════════════════════════════════════════════════════════════════╗\n`;
+            prompt += `║  PROFESSIONAL POSTER DESIGNER AI - IMAGE GENERATION BRIEF        ║\n`;
+            prompt += `║  Status: Expert Poster Design Consultation                       ║\n`;
+            prompt += `╚════════════════════════════════════════════════════════════════╝\n\n`;
+            
+            prompt += `TUGAS & PERSONA:\n`;
+            prompt += `Anda adalah seorang DESIGNER POSTER PROFESIONAL dengan pengalaman bertahun-tahun.\n`;
+            prompt += `Tugas anda: Membantu saya menulis PROMPT IMEJ AI yang sangat SPESIFIK dan BERSKALA TINGGI (HIGH-FIDELITY).\n`;
+            prompt += `Berdasarkan maklumat dan pilihan yang telah disediakan.\n`;
+            prompt += `TUJUAN: Menghasilkan imej poster profesional berkualiti tinggi yang siap untuk cetak dan digital.\n\n`;
+            
+            prompt += `PETUNJUK UMUM:\n`;
+            prompt += `• Bertindak sebagai Design Director dengan keahlian dalam advertising poster\n`;
+            prompt += `• Setiap spesifikasi adalah MANDATORY - tidak boleh diabaikan\n`;
+            prompt += `• Fokus PENUH pada kualiti tinggi (high-fidelity) dan detail profesional\n`;
+            prompt += `• Hasilkan prompt yang SIAP SALIN-TAMPAL ke AI image generator (Midjourney, DALL-E, dll)\n`;
+            prompt += `• Tidak ada analisa panjang - TERUS ke spesifikasi teknikal dan visual\n\n`;
+            
+            prompt += `═══════════════════════════════════════════════════════════════════\n\n`;
+            prompt += `=== MAKLUMAT KAMPANYE & BRAND ===\n\n`;
             
             prompt += `BRAND & CAMPAIGN INFORMATION:\n`;
             prompt += `Brand Name: "${settings.brandName}"\n`;
@@ -2252,28 +2271,35 @@
                 prompt += `Position them prominently as focal points. Ensure they are recognizable and appropriately styled.\n\n`;
             }
             
-            prompt += `=== CRITICAL DESIGN REQUIREMENTS ===\n`;
-            prompt += `1. BRAND NAME PLACEMENT:\n`;
-            prompt += `   - Brand name "${settings.brandName}" MUST appear EXACTLY as written\n`;
-            prompt += `   - Display prominently in a readable, bold font\n`;
-            prompt += `   - Position strategically for maximum visibility\n`;
-            prompt += `   - Ensure sufficient contrast with background\n\n`;
+            prompt += `═══════════════════════════════════════════════════════════════════\n\n`;
+            prompt += `=== KEBUTUHAN DESAIN KRITIS (MANDATORY SPECIFICATIONS) ===\n`;
+            prompt += `Sebagai Design Director Profesional, berikut adalah spesifikasi WAJIB yang TIDAK boleh diabaikan:\n\n`;
             
-            prompt += `2. RENDERING QUALITY & REALISM STANDARD:\n`;
+            prompt += `1. PENEMPATAN NAMA BRAND (CRITICAL):\n`;
+            prompt += `   - Nama brand "${settings.brandName}" MESTI muncul TEPAT seperti yang ditulis\n`;
+            prompt += `   - Tampilkan secara PROMINENT dengan font BOLD yang jelas\n`;
+            prompt += `   - Posisikan strategis untuk visibiliti maksimal\n`;
+            prompt += `   - Pastikan CONTRAST cukup dengan latar belakang\n`;
+            prompt += `   - Font weight: BOLD atau EXTRA-BOLD\n`;
+            prompt += `   - Readability: SEMPURNA dari jarak jauh\n\n`;
+            
+            prompt += `2. STANDARD KUALITI RENDERING & REALISM (HIGH-FIDELITY):\n`;
             if (allowCartoon) {
-                prompt += `   - CREATIVE & PLAYFUL STYLE APPROVED for this category\n`;
-                prompt += `   - Illustration/cartoon style is ACCEPTABLE for ${settings.theme}\n`;
-                prompt += `   - Maintain professional quality even with artistic/cartoon rendering\n`;
-                prompt += `   - Use polished, well-rendered illustrations (NOT rough sketches)\n`;
-                prompt += `   - Ensure smooth, professional artwork quality\n`;
-                prompt += `   - Clean lines and professional color application\n`;
+                prompt += `   ✓ GAYA KREATIF & PLAYFUL DILULUSKAN untuk kategori ini: ${settings.theme}\n`;
+                prompt += `   ✓ Illustration/cartoon style DITERIMA tetapi BERKUALITI TINGGI\n`;
+                prompt += `   ✓ Pertahankan kualiti profesional bahkan dengan rendering artistik\n`;
+                prompt += `   ✓ Gunakan ilustrasi POLISHED dan WELL-RENDERED (BUKAN sketsa kasar)\n`;
+                prompt += `   ✓ Pastikan SMOOTH, professional artwork quality\n`;
+                prompt += `   ✓ Garis BERSIH dan aplikasi warna PROFESIONAL\n`;
+                prompt += `   ✓ Detail TAJAM dan warna VIBRANT\n`;
             } else {
-                prompt += `   - PHOTOREALISTIC or HIGH-FIDELITY rendering REQUIRED\n`;
-                prompt += `   - NO cartoon, illustration, or stylized rendering\n`;
-                prompt += `   - Create professional, realistic visual appearance\n`;
-                prompt += `   - Photographic quality or professional 3D rendering\n`;
-                prompt += `   - High production value, polished look\n`;
-                prompt += `   - Sharp details and professional finish\n`;
+                prompt += `   ✓ PHOTOREALISTIC atau HIGH-FIDELITY rendering WAJIB\n`;
+                prompt += `   ✓ TIADA cartoon, illustration, atau stylized rendering\n`;
+                prompt += `   ✓ Ciptakan tampilan PROFESIONAL, REALISTIK\n`;
+                prompt += `   ✓ Kualiti fotografi atau rendering 3D profesional\n`;
+                prompt += `   ✓ Nilai produksi TINGGI, penampilan POLISHED\n`;
+                prompt += `   ✓ Detail TAJAM dan finishing SEMPURNA\n`;
+                prompt += `   ✓ Studio-grade production quality\n`;
             }
             prompt += `\n`;
             
@@ -2424,19 +2450,99 @@
             }
             prompt += `\n`;
             
-            prompt += `=== FINAL OUTPUT REQUIREMENTS ===\n`;
-            prompt += `Generate a comprehensive design brief that includes:\n`;
-            prompt += `• Detailed visual description of the poster\n`;
-            prompt += `• Color palette with specific color recommendations\n`;
-            prompt += `• Typography specifications\n`;
-            prompt += `• Layout and composition details\n`;
-            prompt += `• Positioning of all visual elements\n`;
-            prompt += `• Brand name placement and styling\n`;
-            prompt += `• Rendering approach (${allowCartoon ? 'professional illustration/cartoon' : 'photorealistic/professional'})\n`;
-            prompt += `• Any special effects or textures\n`;
-            prompt += `• Professional design tips for implementation\n`;
-            prompt += `• Technical specifications for production\n`;
-            prompt += `• Quality assurance checklist for professional execution\n`;
+            prompt += `═══════════════════════════════════════════════════════════════════\n\n`;
+            prompt += `=== ARAHAN FINAL: SEBAGAI DESIGN DIRECTOR PROFESIONAL ===\n\n`;
+            prompt += `Anda ADALAH design director dengan pengalaman puluhan tahun.\n`;
+            prompt += `JANGAN analisa atau bincang brief ini panjang lebar.\n`;
+            prompt += `JANGAN berikan commentary atau penjelasan umum.\n`;
+            prompt += `TERUS KE: Hasilkan spesifikasi visual LENGKAP dan SANGAT DETAIL untuk image generation.\n`;
+            prompt += `Ini adalah PROMPT IMEJ AI - bukan diskusi/analisa.\n`;
+            prompt += `Anggapan: Saya sudah faham design - saya perlukan PROMPT yang SIAP SALIN ke AI image generator.\n\n`;
+            
+            prompt += `=== GENERATE SPECIFICATIONS UNTUK IMAGE GENERATOR ===\n\n`;
+            prompt += `Berdasarkan SEMUA specification di atas, hasilkan LENGKAP dan DETAIL specifications:\n\n`;
+            
+            prompt += `COMPOSITION & LAYOUT:\n`;
+            prompt += `• Exact layout dan positioning setiap visual element\n`;
+            prompt += `• Detailed description dari main focal point\n`;
+            prompt += `• Background composition dan treatment spesifik\n`;
+            prompt += `• Foreground elements dan placement presisi\n`;
+            prompt += `• Depth layers dan perspective\n\n`;
+            
+            prompt += `VISUAL ELEMENTS (DETAILED):\n`;
+            prompt += `• Deskripsi DETAIL setiap visual component\n`;
+            prompt += `• Textures, materials, dan surface qualities spesifik\n`;
+            prompt += `• Lighting direction, intensity, dan mood\n`;
+            prompt += `• Shadows, highlights, dan reflections\n`;
+            prompt += `• Depth, perspective, dan dimensionality\n\n`;
+            
+            prompt += `WARNA & RENDERING (COLOR & RENDERING):\n`;
+            prompt += `• Specific color codes (HEX) untuk semua primary colors\n`;
+            prompt += `• Color palette lengkap: 5-7 main colors dengan HEX codes\n`;
+            prompt += `• Rendering style: ${allowCartoon ? 'Professional illustration/cartoon berkualiti tinggi' : 'Photorealistic/3D rendering high-fidelity'}\n`;
+            prompt += `• Finish: ${allowCartoon ? 'Polished illustrated artwork profesional' : 'Kualiti fotografi high-fidelity'}\n`;
+            prompt += `• Lighting mood dan atmospheric treatment\n`;
+            prompt += `• Color grading dan tone untuk professional look\n\n`;
+            
+            prompt += `TIPOGRAFI & TEXT (TYPOGRAPHY & BRAND NAME):\n`;
+            prompt += `• Brand name: "${settings.brandName}" \n`;
+            prompt += `  - Font family, style, size, weight, color SPESIFIK\n`;
+            prompt += `  - Exact positioning dan placement\n`;
+            prompt += `  - Letter spacing, line height, alignment\n`;
+            prompt += `• Text elements lain - Font, size, color, positioning\n`;
+            prompt += `• Text effects, shadows, atau decorative elements jika ada\n`;
+            prompt += `• Kerning dan spacing presisi\n\n`;
+            
+            prompt += `KUALITI & FINISH (QUALITY SPECIFICATIONS):\n`;
+            prompt += `• Resolution: Ultra high resolution (4K, 6K, atau lebih)\n`;
+            prompt += `• Finish: Professional studio-grade production quality\n`;
+            prompt += `• Tiada watermarks atau text overlays\n`;
+            prompt += `• Siap untuk print quality dan digital use\n`;
+            prompt += `• Color accuracy dan vibrance optimal\n\n`;
+            
+            prompt += `═══════════════════════════════════════════════════════════════════\n\n`;
+            prompt += `=== FINAL: HASILKAN PROMPT IMEJ AI PROFESIONAL ===\n\n`;
+            prompt += `SEBAGAI DESIGN DIRECTOR YANG BERPENGALAMAN:\n\n`;
+            
+            prompt += `Anda sekarang bertugas sebagai seorang DESIGNER POSTER PROFESIONAL dengan pengalaman puluhan tahun.\n`;
+            prompt += `Pengalaman dalam:\n`;
+            prompt += `• Advertising design dan marketing posters\n`;
+            prompt += `• AI image generation optimization\n`;
+            prompt += `• High-fidelity visual specifications\n`;
+            prompt += `• Professional brand presentation\n\n`;
+            
+            prompt += `TUGAS FINAL ANDA:\n`;
+            prompt += `Berdasarkan SEMUA specification di atas yang telah saya sediakan,\n`;
+            prompt += `Hasilkan SATU PROMPT IMEJ AI yang sangat SPESIFIK dan BERSKALA TINGGI (HIGH-FIDELITY).\n\n`;
+            
+            prompt += `PROMPT INI MESTI:\n`;
+            prompt += `✓ SANGAT DETAIL dan SPESIFIK - tidak ada yang samar\n`;
+            prompt += `✓ MENCAKUP SEMUA visual requirements dari specification\n`;
+            prompt += `✓ TENTUKAN warna exact (HEX codes), style, composition\n`;
+            prompt += `✓ OPTIMIZED untuk AI image generator professional\n`;
+            prompt += `✓ SIAP SALIN-TAMPAL ke Midjourney, DALL-E, Stable Diffusion, Leonardo.AI\n`;
+            prompt += `✓ HASILKAN konsisten professional-grade output\n`;
+            prompt += `✓ TIDAK ada ambiguriti atau vague language\n\n`;
+            
+            prompt += `INSTRUKSI PENULISAN PROMPT:\n`;
+            prompt += `1. Mulai dengan subject/scene utama yang JELAS\n`;
+            prompt += `2. Berikan DETAIL lengkap tentang composition, layout, positioning\n`;
+            prompt += `3. SPESIFIK tentang warna dengan HEX codes atau color names yang presisi\n`;
+            prompt += `4. DETAIL tentang lighting, shadows, depth, perspective\n`;
+            prompt += `5. TENTUKAN rendering style dan finish quality\n`;
+            prompt += `6. CANTUMKAN semua typography dan text requirements\n`;
+            prompt += `7. TAMBAH quality markers: "ultra detailed", "high resolution", "professional", "studio lighting"\n`;
+            prompt += `8. AKHIRI dengan style reference jika bersesuaian\n\n`;
+            
+            prompt += `TARGET IMAGE GENERATORS:\n`;
+            prompt += `• Midjourney (gunakan --ar untuk aspect ratio, quality parameters)\n`;
+            prompt += `• DALL-E 3 (descriptive, natural language)\n`;
+            prompt += `• Stable Diffusion (technical, parameter-friendly)\n`;
+            prompt += `• Leonardo.AI (detailed, style-specific)\n\n`;
+            
+            prompt += `SEKARANG HASILKAN PROMPT IMEJ AI PROFESIONAL:\n`;
+            prompt += `(Tidak perlu pengenalan, terus ke prompt. User sudah faham spec. Berikan PROMPT yang siap copy-paste.)\n`;
+            prompt += `═══════════════════════════════════════════════════════════════════\n\n`;
             
             return prompt;
         }
