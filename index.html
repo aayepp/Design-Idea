@@ -4316,142 +4316,17 @@ function buildDesignPrompt(settings) {
         }
 
         function changeLanguage(lang) {
-            console.log('🌍 CHANGING LANGUAGE TO:', lang);
-            currentLanguage = lang;
-            localStorage.setItem('appLanguage', lang);
-            document.getElementById('languageDropdown').value = lang;
-            applyLanguageToAllElements();
-            console.log('✅ LANGUAGE CHANGED:', currentLanguage);
+            // Translation disabled - keeping English only
+            console.log('Language selection disabled - English only');
+            currentLanguage = 'en';
+            localStorage.setItem('appLanguage', 'en');
+            document.getElementById('languageDropdown').value = 'en';
         }
 
-        // ===== AGGRESSIVE TRANSLATION FUNCTION =====
+        // Translation system disabled - English only
         function applyLanguageToAllElements() {
-            const replaceMap = {
-                'en': {
-                    'Logout': 'Logout', 'Keluar': 'Logout', '登出': 'Logout',
-                    'Create Poster': 'Create Poster', 'Cipta Poster': 'Create Poster', '创建海报': 'Create Poster',
-                    'Search': 'Search', 'Cari': 'Search', '搜索': 'Search',
-                    'Add Credits': 'Add Credits', 'Tambah Kredit': 'Add Credits', '添加积分': 'Add Credits',
-                    'Deduct Credits': 'Deduct Credits', 'Tolak Kredit': 'Deduct Credits', '扣除积分': 'Deduct Credits',
-                    'Delete': 'Delete', 'Padam': 'Delete', '删除': 'Delete',
-                    'Refresh': 'Refresh', 'Segarkan': 'Refresh', '刷新': 'Refresh',
-                    'Generate': 'Generate', 'Janakan': 'Generate', '生成': 'Generate',
-                    'Save': 'Save', 'Simpan': 'Save', '保存': 'Save',
-                    'Cancel': 'Cancel', 'Batal': 'Cancel', '取消': 'Cancel',
-                    'All Users': 'All Users', 'Semua Pengguna': 'All Users', '所有用户': 'All Users',
-                    'Total Users': 'Total Users', 'Jumlah Pengguna': 'Total Users', '用户总数': 'Total Users',
-                    'Brand Name': 'Brand Name', 'Nama Jenama': 'Brand Name', '品牌名称': 'Brand Name',
-                    'Campaign Title': 'Campaign Title', 'Tajuk Kempen': 'Campaign Title', '活动标题': 'Campaign Title',
-                    'Target Audience': 'Target Audience', 'Audiens Sasaran': 'Target Audience', '目标受众': 'Target Audience',
-                    'Description': 'Description', 'Penerangan': 'Description', '描述': 'Description',
-                    'Call to Action': 'Call to Action', 'Ajakan Bertindak': 'Call to Action', '行动号召': 'Call to Action',
-                    'Style': 'Style', 'Gaya': 'Style', '风格': 'Style',
-                    'Tone': 'Tone', 'Nada': 'Tone', '语气': 'Tone',
-                    'Language': 'Language', 'Bahasa': 'Language', '语言': 'Language',
-                    'Category': 'Category', 'Kategori': 'Category', '类别': 'Category',
-                    'Design Settings': 'Design Settings', 'Tetapan Reka Bentuk': 'Design Settings', '设计设置': 'Design Settings',
-                    'Aspect Ratio': 'Aspect Ratio', 'Nisbah Aspek': 'Aspect Ratio', '宽高比': 'Aspect Ratio',
-                    'Admin Panel': 'Admin Panel', 'Panel Admin': 'Admin Panel', '管理面板': 'Admin Panel',
-                    'API Configuration': 'API Configuration', 'Konfigurasi API': 'API Configuration', 'API配置': 'API Configuration',
-                    'Settings Management': 'Settings Management', 'Pengurusan Tetapan': 'Settings Management', '设置管理': 'Settings Management',
-                    'Getting Started': 'Getting Started', 'Memulakan': 'Getting Started', '开始使用': 'Getting Started',
-                    'Test API Key': 'Test API Key', 'Uji Kunci API': 'Test API Key', '测试API密钥': 'Test API Key',
-                    'Get Gemini Key': 'Get Gemini Key', 'Dapatkan Kunci Gemini': 'Get Gemini Key', '获取Gemini密钥': 'Get Gemini Key',
-                    'Get ChatGPT Key': 'Get ChatGPT Key', 'Dapatkan Kunci ChatGPT': 'Get ChatGPT Key', '获取ChatGPT密钥': 'Get ChatGPT Key',
-                },
-                'ms': {
-                    'Logout': 'Keluar', 'Keluar': 'Keluar', '登出': 'Keluar',
-                    'Create Poster': 'Cipta Poster', 'Cipta Poster': 'Cipta Poster', '创建海报': 'Cipta Poster',
-                    'Search': 'Cari', 'Cari': 'Cari', '搜索': 'Cari',
-                    'Add Credits': 'Tambah Kredit', 'Tambah Kredit': 'Tambah Kredit', '添加积分': 'Tambah Kredit',
-                    'Deduct Credits': 'Tolak Kredit', 'Tolak Kredit': 'Tolak Kredit', '扣除积分': 'Tolak Kredit',
-                    'Delete': 'Padam', 'Padam': 'Padam', '删除': 'Padam',
-                    'Refresh': 'Segarkan', 'Segarkan': 'Segarkan', '刷新': 'Segarkan',
-                    'Generate': 'Janakan', 'Janakan': 'Janakan', '生成': 'Janakan',
-                    'Save': 'Simpan', 'Simpan': 'Simpan', '保存': 'Simpan',
-                    'Cancel': 'Batal', 'Batal': 'Batal', '取消': 'Batal',
-                    'All Users': 'Semua Pengguna', 'Semua Pengguna': 'Semua Pengguna', '所有用户': 'Semua Pengguna',
-                    'Total Users': 'Jumlah Pengguna', 'Jumlah Pengguna': 'Jumlah Pengguna', '用户总数': 'Jumlah Pengguna',
-                    'Brand Name': 'Nama Jenama', 'Nama Jenama': 'Nama Jenama', '品牌名称': 'Nama Jenama',
-                    'Campaign Title': 'Tajuk Kempen', 'Tajuk Kempen': 'Tajuk Kempen', '活动标题': 'Tajuk Kempen',
-                    'Target Audience': 'Audiens Sasaran', 'Audiens Sasaran': 'Audiens Sasaran', '目标受众': 'Audiens Sasaran',
-                    'Description': 'Penerangan', 'Penerangan': 'Penerangan', '描述': 'Penerangan',
-                    'Call to Action': 'Ajakan Bertindak', 'Ajakan Bertindak': 'Ajakan Bertindak', '行动号召': 'Ajakan Bertindak',
-                    'Style': 'Gaya', 'Gaya': 'Gaya', '风格': 'Gaya',
-                    'Tone': 'Nada', 'Nada': 'Nada', '语气': 'Nada',
-                    'Language': 'Bahasa', 'Bahasa': 'Bahasa', '语言': 'Bahasa',
-                    'Category': 'Kategori', 'Kategori': 'Kategori', '类别': 'Kategori',
-                    'Design Settings': 'Tetapan Reka Bentuk', 'Tetapan Reka Bentuk': 'Tetapan Reka Bentuk', '设计设置': 'Tetapan Reka Bentuk',
-                    'Aspect Ratio': 'Nisbah Aspek', 'Nisbah Aspek': 'Nisbah Aspek', '宽高比': 'Nisbah Aspek',
-                    'Admin Panel': 'Panel Admin', 'Panel Admin': 'Panel Admin', '管理面板': 'Panel Admin',
-                    'API Configuration': 'Konfigurasi API', 'Konfigurasi API': 'Konfigurasi API', 'API配置': 'Konfigurasi API',
-                    'Settings Management': 'Pengurusan Tetapan', 'Pengurusan Tetapan': 'Pengurusan Tetapan', '设置管理': 'Pengurusan Tetapan',
-                    'Getting Started': 'Memulakan', 'Memulakan': 'Memulakan', '开始使用': 'Memulakan',
-                    'Test API Key': 'Uji Kunci API', 'Uji Kunci API': 'Uji Kunci API', '测试API密钥': 'Uji Kunci API',
-                    'Get Gemini Key': 'Dapatkan Kunci Gemini', 'Dapatkan Kunci Gemini': 'Dapatkan Kunci Gemini', '获取Gemini密钥': 'Dapatkan Kunci Gemini',
-                    'Get ChatGPT Key': 'Dapatkan Kunci ChatGPT', 'Dapatkan Kunci ChatGPT': 'Dapatkan Kunci ChatGPT', '获取ChatGPT密钥': 'Dapatkan Kunci ChatGPT',
-                },
-                'zh': {
-                    'Logout': '登出', 'Keluar': '登出', '登出': '登出',
-                    'Create Poster': '创建海报', 'Cipta Poster': '创建海报', '创建海报': '创建海报',
-                    'Search': '搜索', 'Cari': '搜索', '搜索': '搜索',
-                    'Add Credits': '添加积分', 'Tambah Kredit': '添加积分', '添加积分': '添加积分',
-                    'Deduct Credits': '扣除积分', 'Tolak Kredit': '扣除积分', '扣除积分': '扣除积分',
-                    'Delete': '删除', 'Padam': '删除', '删除': '删除',
-                    'Refresh': '刷新', 'Segarkan': '刷新', '刷新': '刷新',
-                    'Generate': '生成', 'Janakan': '生成', '生成': '生成',
-                    'Save': '保存', 'Simpan': '保存', '保存': '保存',
-                    'Cancel': '取消', 'Batal': '取消', '取消': '取消',
-                    'All Users': '所有用户', 'Semua Pengguna': '所有用户', '所有用户': '所有用户',
-                    'Total Users': '用户总数', 'Jumlah Pengguna': '用户总数', '用户总数': '用户总数',
-                    'Brand Name': '品牌名称', 'Nama Jenama': '品牌名称', '品牌名称': '品牌名称',
-                    'Campaign Title': '活动标题', 'Tajuk Kempen': '活动标题', '活动标题': '活动标题',
-                    'Target Audience': '目标受众', 'Audiens Sasaran': '目标受众', '目标受众': '目标受众',
-                    'Description': '描述', 'Penerangan': '描述', '描述': '描述',
-                    'Call to Action': '行动号召', 'Ajakan Bertindak': '行动号召', '行动号召': '行动号召',
-                    'Style': '风格', 'Gaya': '风格', '风格': '风格',
-                    'Tone': '语气', 'Nada': '语气', '语气': '语气',
-                    'Language': '语言', 'Bahasa': '语言', '语言': '语言',
-                    'Category': '类别', 'Kategori': '类别', '类别': '类别',
-                    'Design Settings': '设计设置', 'Tetapan Reka Bentuk': '设计设置', '设计设置': '设计设置',
-                    'Aspect Ratio': '宽高比', 'Nisbah Aspek': '宽高比', '宽高比': '宽高比',
-                    'Admin Panel': '管理面板', 'Panel Admin': '管理面板', '管理面板': '管理面板',
-                    'API Configuration': 'API配置', 'Konfigurasi API': 'API配置', 'API配置': 'API配置',
-                    'Settings Management': '设置管理', 'Pengurusan Tetapan': '设置管理', '设置管理': '设置管理',
-                    'Getting Started': '开始使用', 'Memulakan': '开始使用', '开始使用': '开始使用',
-                    'Test API Key': '测试API密钥', 'Uji Kunci API': '测试API密钥', '测试API密钥': '测试API密钥',
-                    'Get Gemini Key': '获取Gemini密钥', 'Dapatkan Kunci Gemini': '获取Gemini密钥', '获取Gemini密钥': '获取Gemini密钥',
-                    'Get ChatGPT Key': '获取ChatGPT密钥', 'Dapatkan Kunci ChatGPT': '获取ChatGPT密钥', '获取ChatGPT密钥': '获取ChatGPT密钥',
-                }
-            };
-            
-            const target = replaceMap[currentLanguage] || replaceMap['en'];
-            
-            function walk(node) {
-                if (node.nodeType === 3) { // TEXT_NODE
-                    let text = node.textContent;
-                    for (const [src, tgt] of Object.entries(target)) {
-                        text = text.replace(new RegExp(src.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), tgt);
-                    }
-                    node.textContent = text;
-                } else {
-                    if (node.placeholder) {
-                        for (const [src, tgt] of Object.entries(target)) {
-                            node.placeholder = node.placeholder.replace(new RegExp(src.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), tgt);
-                        }
-                    }
-                    if (node.title) {
-                        for (const [src, tgt] of Object.entries(target)) {
-                            node.title = node.title.replace(new RegExp(src.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), tgt);
-                        }
-                    }
-                    for (let child of node.childNodes) {
-                        walk(child);
-                    }
-                }
-            }
-            walk(document.body);
-            console.log('✅ TRANSLATION APPLIED');
+            // All text stays in English - no translation applied
+            return;
         }
         function updateElementsByContent() {
             // TEXT MAPPING - English to translation keys
@@ -5380,8 +5255,10 @@ function buildDesignPrompt(settings) {
                 document.getElementById('adminTokens').textContent = userData.tokenBalance;
                 document.getElementById('adminCreated').textContent = new Date(userData.createdAt.toDate()).toLocaleDateString();
                 
-                // Display last online
+                // Display last online with location
                 let lastOnlineText = 'Never';
+                let locationText = '';
+                
                 if (userData.lastOnline) {
                     const lastOnlineDate = new Date(userData.lastOnline.toDate());
                     const now = new Date();
@@ -5401,8 +5278,14 @@ function buildDesignPrompt(settings) {
                     } else {
                         lastOnlineText = lastOnlineDate.toLocaleDateString();
                     }
+                    
+                    // Add location if available
+                    if (userData.lastLocation) {
+                        locationText = ` • 📍 ${userData.lastLocation}`;
+                    }
                 }
-                document.getElementById('adminLastOnline').textContent = lastOnlineText;
+                
+                document.getElementById('adminLastOnline').textContent = lastOnlineText + locationText;
                 document.getElementById('adminUserInfo').style.display = 'block';
 
                 // Clear input fields
@@ -5622,13 +5505,32 @@ function buildDesignPrompt(settings) {
         // ===== UPDATE LAST ONLINE =====
         async function updateLastOnline(uid) {
             try {
+                // Get user's location based on IP
+                let location = 'Unknown Location';
+                try {
+                    const geoResponse = await fetch('https://ipapi.co/json/');
+                    const geoData = await geoResponse.json();
+                    if (geoData.city && geoData.region) {
+                        location = `${geoData.city}, ${geoData.region}, ${geoData.country_name}`;
+                    } else if (geoData.city) {
+                        location = `${geoData.city}, ${geoData.country_name}`;
+                    } else {
+                        location = geoData.country_name || 'Unknown Location';
+                    }
+                    console.log('📍 User location:', location);
+                } catch (locationError) {
+                    console.log('Location detection skipped');
+                }
+                
                 const q = query(collection(db, 'users'), where('uid', '==', uid));
                 const snapshot = await getDocs(q);
                 
                 if (!snapshot.empty) {
                     const userRef = doc(db, 'users', snapshot.docs[0].id);
                     await updateDoc(userRef, {
-                        lastOnline: new Date()
+                        lastOnline: new Date(),
+                        lastLocation: location,
+                        lastLocationTime: new Date()
                     });
                 }
             } catch (error) {
@@ -5883,6 +5785,10 @@ function buildDesignPrompt(settings) {
                                     <span style="color: #cbd5e1; font-weight: 600;">🟢 Last Online:</span> ${lastOnlineText}
                                 </div>
                             </div>
+                            
+                            ${user.lastLocation ? `<div style="color: #94a3b8; font-size: 9px; margin-bottom: 8px;">
+                                <span style="color: #cbd5e1; font-weight: 600;">📍 Location:</span> ${user.lastLocation}
+                            </div>` : ''}
                             
                             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
                                 <button onclick="quickAddTokens('${user.username}', '${user.email}', '${user.id}')" style="padding: 6px; background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.3); color: #86efac; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: 600;">➕ Add</button>
