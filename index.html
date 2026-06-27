@@ -1638,6 +1638,21 @@
                 opacity: 0;
             }
         }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            25% {
+                transform: translateY(-10px);
+            }
+            50% {
+                transform: translateY(0);
+            }
+            75% {
+                transform: translateY(-5px);
+            }
+        }
     </style>
     
     <div class="container" style="position: relative; z-index: 1;">
@@ -3164,7 +3179,7 @@ function buildDesignPrompt(settings) {
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, doc, getDoc, updateDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, doc, getDoc, updateDoc, query, where, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
         // ===== FIREBASE CONFIG - REPLACE WITH YOUR CONFIG =====
         const firebaseConfig = {
@@ -3271,6 +3286,11 @@ function buildDesignPrompt(settings) {
                 }
                 
                 await updateTokenDisplay();
+                
+                // Real-time listener for token updates (for normal users)
+                if (user.email !== HOST_EMAIL) {
+                    setupTokenUpdateListener(user.uid);
+                }
             } else {
                 currentUser = null;
                 document.getElementById('authScreen').style.display = 'flex';
@@ -3280,6 +3300,271 @@ function buildDesignPrompt(settings) {
                 document.getElementById('adminPanelSection').style.display = 'none';
             }
         });
+
+        // Real-time token update listener
+        let lastKnownTokenBalance = null;
+        
+        function setupTokenUpdateListener(uid) {
+            try {
+                const q = query(collection(db, 'users'), where('uid', '==', uid));
+                
+                // Unsubscribe old listener if exists
+                if (window.tokenUpdateUnsubscribe) {
+                    window.tokenUpdateUnsubscribe();
+                }
+                
+                // Subscribe to real-time updates
+                window.tokenUpdateUnsubscribe = onSnapshot(q, (snapshot) => {
+                    if (!snapshot.empty) {
+                        const userData = snapshot.docs[0].data();
+                        const currentBalance = userData.tokenBalance;
+                        
+                        // First time - just set the balance
+                        if (lastKnownTokenBalance === null) {
+                            lastKnownTokenBalance = currentBalance;
+                            return;
+                        }
+                        
+                        // If balance changed
+                        if (currentBalance !== lastKnownTokenBalance) {
+                            const difference = currentBalance - lastKnownTokenBalance;
+                            
+                            if (difference > 0) {
+                                // Tokens were ADDED
+                                showTokenAddedNotification(difference, currentBalance);
+                            } else if (difference < 0) {
+                                // Tokens were DEDUCTED
+                                showTokenDeductedNotification(Math.abs(difference), currentBalance);
+                            }
+                            
+                            lastKnownTokenBalance = currentBalance;
+                            updateTokenDisplay(); // Update display
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error setting up token listener:', error);
+            }
+        }
+
+        // Notification popup when tokens are ADDED
+        function showTokenAddedNotification(amount, newBalance) {
+            const popup = document.createElement('div');
+            popup.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(15, 23, 42, 0.95);
+                backdrop-filter: blur(30px) saturate(180%);
+                border: 2px solid rgba(34, 197, 94, 0.6);
+                border-radius: 16px;
+                padding: 40px;
+                z-index: 3001;
+                text-align: center;
+                box-shadow: 
+                    0 0 80px rgba(34, 197, 94, 0.4),
+                    inset 0 0 30px rgba(34, 197, 94, 0.1);
+                min-width: 320px;
+                animation: popupSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            `;
+            
+            const icon = document.createElement('div');
+            icon.style.cssText = `
+                font-size: 48px;
+                margin-bottom: 16px;
+                animation: bounce 0.6s ease;
+            `;
+            icon.textContent = '🎁';
+            
+            const title = document.createElement('div');
+            title.style.cssText = `
+                color: #86efac;
+                font-size: 20px;
+                font-weight: 800;
+                margin-bottom: 12px;
+                letter-spacing: 0.5px;
+            `;
+            title.textContent = `🎉 Tokens Added!`;
+            
+            const amountText = document.createElement('div');
+            amountText.style.cssText = `
+                color: #22c55e;
+                font-size: 32px;
+                font-weight: 900;
+                margin-bottom: 16px;
+                font-family: 'Courier New', monospace;
+            `;
+            amountText.textContent = `+${amount}`;
+            
+            const details = document.createElement('div');
+            details.style.cssText = `
+                color: #cbd5e1;
+                font-size: 13px;
+                margin-bottom: 20px;
+                line-height: 1.6;
+            `;
+            details.innerHTML = `
+                <div>Host added ${amount} tokens to your account!</div>
+                <div style="margin-top: 8px; color: #60a5fa; font-weight: 600;">
+                    Current Balance: <span style="color: #86efac;">${newBalance}</span>
+                </div>
+            `;
+            
+            const button = document.createElement('button');
+            button.textContent = '✨ Got It!';
+            button.style.cssText = `
+                padding: 12px 36px;
+                background: linear-gradient(135deg, #34d399 0%, #22c55e 100%);
+                color: #0f172a;
+                border: none;
+                border-radius: 8px;
+                font-weight: 700;
+                cursor: pointer;
+                font-size: 14px;
+                letter-spacing: 0.5px;
+                transition: all 0.3s ease;
+            `;
+            
+            button.onmouseover = function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 0 30px rgba(34, 197, 94, 0.5)';
+            };
+            
+            button.onmouseout = function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = 'none';
+            };
+            
+            button.onclick = function() {
+                popup.style.animation = 'popupSlideOut 0.3s ease forwards';
+                setTimeout(() => popup.remove(), 300);
+            };
+            
+            popup.appendChild(icon);
+            popup.appendChild(title);
+            popup.appendChild(amountText);
+            popup.appendChild(details);
+            popup.appendChild(button);
+            document.body.appendChild(popup);
+            
+            // Auto close after 6 seconds
+            setTimeout(() => {
+                if (popup.parentElement) {
+                    popup.style.animation = 'popupSlideOut 0.3s ease forwards';
+                    setTimeout(() => popup.remove(), 300);
+                }
+            }, 6000);
+        }
+
+        // Notification popup when tokens are DEDUCTED
+        function showTokenDeductedNotification(amount, newBalance) {
+            const popup = document.createElement('div');
+            popup.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(15, 23, 42, 0.95);
+                backdrop-filter: blur(30px) saturate(180%);
+                border: 2px solid rgba(239, 68, 68, 0.6);
+                border-radius: 16px;
+                padding: 40px;
+                z-index: 3001;
+                text-align: center;
+                box-shadow: 
+                    0 0 80px rgba(239, 68, 68, 0.4),
+                    inset 0 0 30px rgba(239, 68, 68, 0.1);
+                min-width: 320px;
+                animation: popupSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            `;
+            
+            const icon = document.createElement('div');
+            icon.style.cssText = `
+                font-size: 48px;
+                margin-bottom: 16px;
+            `;
+            icon.textContent = '⚠️';
+            
+            const title = document.createElement('div');
+            title.style.cssText = `
+                color: #fca5a5;
+                font-size: 20px;
+                font-weight: 800;
+                margin-bottom: 12px;
+                letter-spacing: 0.5px;
+            `;
+            title.textContent = `Tokens Deducted`;
+            
+            const amountText = document.createElement('div');
+            amountText.style.cssText = `
+                color: #ef4444;
+                font-size: 32px;
+                font-weight: 900;
+                margin-bottom: 16px;
+                font-family: 'Courier New', monospace;
+            `;
+            amountText.textContent = `-${amount}`;
+            
+            const details = document.createElement('div');
+            details.style.cssText = `
+                color: #cbd5e1;
+                font-size: 13px;
+                margin-bottom: 20px;
+                line-height: 1.6;
+            `;
+            details.innerHTML = `
+                <div>Admin removed ${amount} tokens from your account.</div>
+                <div style="margin-top: 8px; color: #60a5fa; font-weight: 600;">
+                    Current Balance: <span style="color: #fca5a5;">${newBalance}</span>
+                </div>
+            `;
+            
+            const button = document.createElement('button');
+            button.textContent = '✓ OK';
+            button.style.cssText = `
+                padding: 12px 36px;
+                background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-weight: 700;
+                cursor: pointer;
+                font-size: 14px;
+                letter-spacing: 0.5px;
+                transition: all 0.3s ease;
+            `;
+            
+            button.onmouseover = function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 0 30px rgba(239, 68, 68, 0.5)';
+            };
+            
+            button.onmouseout = function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = 'none';
+            };
+            
+            button.onclick = function() {
+                popup.style.animation = 'popupSlideOut 0.3s ease forwards';
+                setTimeout(() => popup.remove(), 300);
+            };
+            
+            popup.appendChild(icon);
+            popup.appendChild(title);
+            popup.appendChild(amountText);
+            popup.appendChild(details);
+            popup.appendChild(button);
+            document.body.appendChild(popup);
+            
+            // Auto close after 6 seconds
+            setTimeout(() => {
+                if (popup.parentElement) {
+                    popup.style.animation = 'popupSlideOut 0.3s ease forwards';
+                    setTimeout(() => popup.remove(), 300);
+                }
+            }, 6000);
+        }
 
         // Daily token reset function for normal users
         async function resetDailyTokens(uid, email) {
