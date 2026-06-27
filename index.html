@@ -1541,7 +1541,7 @@
                 <div class="api-status" id="tokenStatus" style="background: rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.5); display: none;">
                     💳 Credits: <span id="tokenCount" style="color: #60a5fa; font-weight: bold;">0</span>
                 </div>
-                <button onclick="logout()" id="logoutBtn" class="api-status" style="background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); cursor: pointer; display: none; border: 1px solid; padding: 10px 16px;">Logout</button>
+                <button onclick="logout()" data-translate="logout" id="logoutBtn" class="api-status" style="background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); cursor: pointer; display: none; border: 1px solid; padding: 10px 16px;">Logout</button>
                 
                 <!-- Language Selector -->
                 <div id="languageSelector" style="display: none; margin-left: 10px;">
@@ -3791,12 +3791,143 @@ function buildDesignPrompt(settings) {
                 const key = element.getAttribute('data-translate-placeholder');
                 element.placeholder = t(key);
             });
+            
+            // ===== UPDATE SPECIFIC UI ELEMENTS =====
+            
+            // Logout button
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) logoutBtn.textContent = t('logout');
+            
+            // Sidebar headings
+            const elements = {
+                // Sidebar
+                'apiConfig': '🔐 ' + t('apiConfig'),
+                'settingsManagement': '⚙️ ' + t('settingsManagement'),
+                'gettingStarted': '🚀 ' + t('gettingStarted'),
+                'imageGenGuide': '🎨 ' + t('imageGenGuide'),
+                
+                // Admin panel
+                'adminPanelTitle': '⚙️ ' + t('adminPanel'),
+                'searchUserLabel': t('searchUser'),
+                'searchUserBtn': '🔍 ' + t('searchUser'),
+                'tabSearchBtn': '🔍 ' + t('searchUser'),
+                'tabAllBtn': '👥 ' + t('allUsers'),
+                'refreshBtn': '🔄 ' + t('refresh'),
+                'totalUsersLabel': t('totalUsers'),
+                'totalCreditsLabel': t('totalCreditsIssued'),
+                'sortByLabel': t('sortBy'),
+                'clearSearchBtn': '🔄 ' + t('clearSearch'),
+                'addCreditsLabel': t('addCredits'),
+                'deductCreditsLabel': t('deductCredits'),
+            };
+            
+            // Apply text updates to elements by class or ID pattern
+            Object.entries(elements).forEach(([id, text]) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = text;
+            });
+            
+            // Update form labels
+            const formLabels = {
+                'brandNameLabel': t('brandName'),
+                'campaignTitleLabel': t('campaignTitle'),
+                'targetAudienceLabel': t('targetAudience'),
+                'styleLabel': t('style'),
+                'toneLabel': t('tone'),
+                'languageLabel': t('language'),
+                'descriptionLabel': t('description'),
+                'callToActionLabel': t('callToAction'),
+            };
+            
+            Object.entries(formLabels).forEach(([id, text]) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = text;
+            });
+            
+            // Update button text
+            const generateBtn = document.getElementById('generateBtn');
+            if (generateBtn) {
+                generateBtn.textContent = '🎨 ' + t('generateBtn');
+            }
+            
+            // Update form title
+            const formTitle = document.querySelector('.form-title');
+            if (formTitle) formTitle.textContent = t('formTitle');
+            
+            const formSubtitle = document.querySelector('.form-subtitle');
+            if (formSubtitle) formSubtitle.textContent = t('formSubtitle');
+            
+            // Update option texts in selects
+            const selectElements = document.querySelectorAll('select option');
+            selectElements.forEach(option => {
+                const text = option.textContent.trim();
+                // Map original text to translation keys
+                const textMap = {
+                    'Most Recent': 'mostRecent',
+                    'Most Tokens': 'mostCredits',
+                    'Most Credits': 'mostCredits',
+                };
+                
+                // Check if this is a translatable option
+                for (const [original, key] of Object.entries(textMap)) {
+                    if (text === original || text.includes(original)) {
+                        option.textContent = t(key);
+                        break;
+                    }
+                }
+            });
+            
+            // Update all elements with specific text content
+            updateAllText();
+        }
+        
+        // Helper function to update text in elements by searching for original text
+        function updateAllText() {
+            const walker = document.createTreeWalker(
+                document.body,
+                NodeFilter.SHOW_TEXT,
+                null
+            );
+            
+            const textReplacements = {
+                'API Configuration': 'apiConfig',
+                'Settings Management': 'settingsManagement',
+                'Getting Started': 'gettingStarted',
+                'Add Tokens': 'addCredits',
+                'Deduct Tokens': 'deductCredits',
+                'Add Credits': 'addCredits',
+                'Deduct Credits': 'deductCredits',
+                'Total Tokens Issued': 'totalCreditsIssued',
+                'Total Credits Issued': 'totalCreditsIssued',
+                'Costs 15 Credits': 'generateBtn',
+                'Search User': 'searchUser',
+                'All Users': 'allUsers',
+                'Refresh': 'refresh',
+                'Brand Name': 'brandName',
+                'Campaign Title': 'campaignTitle',
+                'Target Audience': 'targetAudience',
+            };
+            
+            let node;
+            while (node = walker.nextNode()) {
+                const text = node.textContent.trim();
+                for (const [original, key] of Object.entries(textReplacements)) {
+                    if (text === original && node.parentElement) {
+                        if (!node.parentElement.hasAttribute('data-translate')) {
+                            node.textContent = t(key);
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         // Initialize language on page load
         window.addEventListener('load', () => {
-            document.getElementById('languageDropdown').value = currentLanguage;
-            applyLanguageChanges();
+            setTimeout(() => {
+                document.getElementById('languageDropdown').value = currentLanguage;
+                applyLanguageChanges();
+            }, 500);
         });
         let isSignupMode = true;
         const HOST_EMAIL = "ayep.business@gmail.com"; // CHANGE TO YOUR EMAIL
