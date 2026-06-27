@@ -1594,6 +1594,50 @@
             50% { transform: translate(-20px, 20px); }
             75% { transform: translate(20px, -20px); }
         }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes popupSlideIn {
+            from {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes popupSlideOut {
+            from {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0;
+            }
+        }
     </style>
     
     <div class="container" style="position: relative; z-index: 1;">
@@ -1691,84 +1735,128 @@
                     </div>
                 </div>
 
-                <!-- Features -->
+                <!-- How to Use Prompt for Image Generation -->
                 <div class="info-card">
-                    <h4>✨ Key Features</h4>
-                    <div class="feature-list">
-                        <div class="feature-item">
-                            <span class="feature-icon">🎨</span>
-                            <span>6 design styles</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">📐</span>
-                            <span>5 aspect ratios</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">🖼️</span>
-                            <span>Upload backgrounds</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">🏢</span>
-                            <span>Add your logo</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">💾</span>
-                            <span>Save API keys</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">🔄</span>
-                            <span>Regenerate designs</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Design Inspiration -->
-                <div class="info-card">
-                    <h4>🎯 Quick Start</h4>
-                    <div class="gallery-grid">
-                        <div class="gallery-item" onclick="insertExample('Sports Campaign')">
-                            <div class="gallery-icon">🏆</div>
-                            <div class="gallery-label">Sports</div>
-                        </div>
-                        <div class="gallery-item" onclick="insertExample('Tech Product Launch')">
-                            <div class="gallery-icon">💻</div>
-                            <div class="gallery-label">Technology</div>
-                        </div>
-                        <div class="gallery-item" onclick="insertExample('Summer Fashion Sale')">
-                            <div class="gallery-icon">👗</div>
-                            <div class="gallery-label">Fashion</div>
-                        </div>
-                        <div class="gallery-item" onclick="insertExample('Food & Beverage Promo')">
-                            <div class="gallery-icon">🍔</div>
-                            <div class="gallery-label">Food</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tips -->
-                <div class="info-card">
-                    <h4>💡 Pro Tips</h4>
+                    <h4>🎨 Use Prompt for Image Generation</h4>
                     <div class="info-content">
                         <div class="feature-list">
                             <div class="feature-item">
-                                <span class="feature-icon">✓</span>
-                                <span>Use all 13 categories</span>
+                                <span class="feature-icon">1️⃣</span>
+                                <span><strong>Generate:</strong> Click "Generate Design" to create your prompt</span>
                             </div>
                             <div class="feature-item">
-                                <span class="feature-icon">✓</span>
-                                <span>Add theme keywords</span>
+                                <span class="feature-icon">2️⃣</span>
+                                <span><strong>Copy Prompt:</strong> Click "Copy Prompt" button in results</span>
                             </div>
                             <div class="feature-item">
-                                <span class="feature-icon">✓</span>
-                                <span>Transparent BG logos</span>
+                                <span class="feature-icon">3️⃣</span>
+                                <span><strong>Choose AI Tool:</strong> Pick from image generation sites</span>
                             </div>
                             <div class="feature-item">
-                                <span class="feature-icon">✓</span>
-                                <span>Try multiple styles</span>
+                                <span class="feature-icon">4️⃣</span>
+                                <span><strong>Paste & Generate:</strong> Paste prompt and create image</span>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(59, 130, 246, 0.2);">
+                            <p style="color: #cbd5e1; font-size: 12px; margin: 8px 0; font-weight: 600;">💻 Recommended Image Generation Tools:</p>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                                <!-- Gemini -->
+                                <div style="background: rgba(30, 58, 138, 0.3); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 8px; padding: 10px;">
+                                    <p style="color: #60a5fa; font-size: 12px; font-weight: 700; margin: 0 0 4px 0;">🔵 Google Gemini</p>
+                                    <p style="color: #cbd5e1; font-size: 11px; margin: 0; line-height: 1.4;">Free image generation with text descriptions</p>
+                                    <p style="color: #94a3b8; font-size: 10px; margin: 6px 0 0 0;"><a href="https://gemini.google.com" target="_blank" style="color: #60a5fa; text-decoration: none;">gemini.google.com</a></p>
+                                </div>
+
+                                <!-- ChatGPT -->
+                                <div style="background: rgba(30, 58, 138, 0.3); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 8px; padding: 10px;">
+                                    <p style="color: #60a5fa; font-size: 12px; font-weight: 700; margin: 0 0 4px 0;">⚫ OpenAI ChatGPT</p>
+                                    <p style="color: #cbd5e1; font-size: 11px; margin: 0; line-height: 1.4;">DALL-E 3 powered image generation (Plus/Pro)</p>
+                                    <p style="color: #94a3b8; font-size: 10px; margin: 6px 0 0 0;"><a href="https://chatgpt.com" target="_blank" style="color: #60a5fa; text-decoration: none;">chatgpt.com</a></p>
+                                </div>
+
+                                <!-- DALL-E -->
+                                <div style="background: rgba(30, 58, 138, 0.3); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 8px; padding: 10px;">
+                                    <p style="color: #60a5fa; font-size: 12px; font-weight: 700; margin: 0 0 4px 0;">🎨 DALL-E (Davinci)</p>
+                                    <p style="color: #cbd5e1; font-size: 11px; margin: 0; line-height: 1.4;">Professional AI image generation from OpenAI</p>
+                                    <p style="color: #94a3b8; font-size: 10px; margin: 6px 0 0 0;"><a href="https://labs.openai.com" target="_blank" style="color: #60a5fa; text-decoration: none;">labs.openai.com</a></p>
+                                </div>
+
+                                <!-- Midjourney -->
+                                <div style="background: rgba(30, 58, 138, 0.3); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 8px; padding: 10px;">
+                                    <p style="color: #60a5fa; font-size: 12px; font-weight: 700; margin: 0 0 4px 0;">🌈 Midjourney</p>
+                                    <p style="color: #cbd5e1; font-size: 11px; margin: 0; line-height: 1.4;">Advanced AI art generation via Discord</p>
+                                    <p style="color: #94a3b8; font-size: 10px; margin: 6px 0 0 0;"><a href="https://midjourney.com" target="_blank" style="color: #60a5fa; text-decoration: none;">midjourney.com</a></p>
+                                </div>
+
+                                <!-- Ideogram -->
+                                <div style="background: rgba(30, 58, 138, 0.3); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 8px; padding: 10px;">
+                                    <p style="color: #60a5fa; font-size: 12px; font-weight: 700; margin: 0 0 4px 0;">✨ Ideogram AI</p>
+                                    <p style="color: #cbd5e1; font-size: 11px; margin: 0; line-height: 1.4;">Fast image generation with text rendering</p>
+                                    <p style="color: #94a3b8; font-size: 10px; margin: 6px 0 0 0;"><a href="https://ideogram.ai" target="_blank" style="color: #60a5fa; text-decoration: none;">ideogram.ai</a></p>
+                                </div>
+
+                                <!-- Flux AI -->
+                                <div style="background: rgba(30, 58, 138, 0.3); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 8px; padding: 10px;">
+                                    <p style="color: #60a5fa; font-size: 12px; font-weight: 700; margin: 0 0 4px 0;">⚡ Flux AI</p>
+                                    <p style="color: #cbd5e1; font-size: 11px; margin: 0; line-height: 1.4;">High-quality open source image generation</p>
+                                    <p style="color: #94a3b8; font-size: 10px; margin: 6px 0 0 0;"><a href="https://replicate.com/black-forest-labs/flux-pro" target="_blank" style="color: #60a5fa; text-decoration: none;">black-forest-labs</a></p>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 12px; padding: 10px; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 6px;">
+                                <p style="color: #86efac; font-size: 11px; margin: 0; line-height: 1.5;">
+                                    💡 <strong>Pro Tips:</strong> 
+                                    1. Use detailed prompts from Smart Poster Generator
+                                    2. Adjust quality/style in AI tool settings
+                                    3. Generate multiple versions to choose best
+                                    4. Download & edit in your design tool
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
+
+                <!-- Admin Panel (Only for Host) -->
+                <div id="adminPanelSection" class="info-card" style="display: none; border: 1px solid rgba(59, 130, 246, 0.5); background: rgba(30, 58, 138, 0.2);">
+                    <h4>⚙️ Admin Panel</h4>
+                    <div class="info-content">
+                        <div style="margin-bottom: 16px;">
+                            <label style="color: #cbd5e1; font-size: 12px; display: block; margin-bottom: 8px;">Search User by Username</label>
+                            <input type="text" id="searchUsername" placeholder="Enter username" style="width: 100%; padding: 10px; background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 6px; color: #f1f5f9; font-size: 12px; box-sizing: border-box;">
+                            <button onclick="searchUser()" style="width: 100%; padding: 10px; margin-top: 8px; background: rgba(59, 130, 246, 0.3); border: 1px solid rgba(59, 130, 246, 0.5); color: #60a5fa; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">🔍 Search</button>
+                        </div>
+
+                        <div id="adminUserInfo" style="display: none; background: rgba(15, 23, 42, 0.5); padding: 12px; border-radius: 8px; margin-bottom: 16px; border: 1px solid rgba(59, 130, 246, 0.3);">
+                            <div style="color: #cbd5e1; font-size: 11px; margin-bottom: 12px;">
+                                <div><strong>Username:</strong> <span id="adminUsername">-</span></div>
+                                <div><strong>Email:</strong> <span id="adminEmail">-</span></div>
+                                <div><strong>Tokens:</strong> <span id="adminTokens">-</span></div>
+                                <div><strong>Created:</strong> <span id="adminCreated">-</span></div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                <div>
+                                    <label style="color: #cbd5e1; font-size: 11px; display: block; margin-bottom: 4px;">Add Tokens</label>
+                                    <input type="number" id="addTokensAmount" placeholder="10" min="1" style="width: 100%; padding: 8px; background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 6px; color: #f1f5f9; font-size: 11px; box-sizing: border-box;">
+                                    <button onclick="addUserTokens()" style="width: 100%; padding: 8px; margin-top: 4px; background: rgba(34, 197, 94, 0.3); border: 1px solid rgba(34, 197, 94, 0.5); color: #86efac; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600;">➕ Add</button>
+                                </div>
+
+                                <div>
+                                    <label style="color: #cbd5e1; font-size: 11px; display: block; margin-bottom: 4px;">Deduct Tokens</label>
+                                    <input type="number" id="deductTokensAmount" placeholder="5" min="1" style="width: 100%; padding: 8px; background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 6px; color: #f1f5f9; font-size: 11px; box-sizing: border-box;">
+                                    <button onclick="deductUserTokens()" style="width: 100%; padding: 8px; margin-top: 4px; background: rgba(239, 68, 68, 0.3); border: 1px solid rgba(239, 68, 68, 0.5); color: #fca5a5; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600;">➖ Deduct</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="resetSearch()" style="width: 100%; padding: 10px; background: rgba(100, 116, 139, 0.3); border: 1px solid rgba(148, 163, 184, 0.3); color: #cbd5e1; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">🔄 Clear Search</button>
+                    </div>
+                </div>
+
             </div>
 
             <!-- Style Preview Tooltip -->
@@ -2045,251 +2133,6 @@
             </div>
         </div>
 
-        <!-- ===== ADMIN PANEL (Host Only) ===== -->
-        <div id="adminPanelSection" style="display: none; margin-top: 40px;">
-            <div style="
-                background: rgba(15, 40, 71, 0.6);
-                backdrop-filter: blur(20px);
-                border-radius: 16px;
-                padding: 30px;
-                border: 1px solid rgba(245, 158, 11, 0.3);
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            ">
-                <h2 style="
-                    font-size: 22px;
-                    font-weight: 700;
-                    color: #f59e0b;
-                    margin-bottom: 10px;
-                ">🛠️ Admin Panel - User Management</h2>
-                
-                <p style="
-                    color: #cbd5e1;
-                    font-size: 13px;
-                    margin-bottom: 25px;
-                ">Manage user tokens and view account information</p>
-
-                <!-- Search User Section -->
-                <div style="margin-bottom: 25px;">
-                    <label style="
-                        display: block;
-                        color: #cbd5e1;
-                        margin-bottom: 8px;
-                        font-size: 12px;
-                        font-weight: 600;
-                        text-transform: uppercase;
-                        letter-spacing: 0.4px;
-                    ">Search User by Username</label>
-                    <input type="text" id="searchUsername" placeholder="username" onkeyup="searchUser()" style="
-                        width: 100%;
-                        padding: 12px;
-                        background: rgba(30, 41, 59, 0.5);
-                        border: 1px solid rgba(59, 130, 246, 0.2);
-                        border-radius: 8px;
-                        color: #f1f5f9;
-                        font-size: 13px;
-                        transition: all 0.3s ease;
-                    " onfocus="this.style.borderColor='rgba(59, 130, 246, 0.6)'" onblur="this.style.borderColor='rgba(59, 130, 246, 0.2)'">
-                </div>
-
-                <!-- User Info Section (Hidden by default) -->
-                <div id="userInfoSection" style="display: none; background: rgba(30, 41, 59, 0.4); border-radius: 12px; padding: 20px; border: 1px solid rgba(59, 130, 246, 0.2); margin-bottom: 20px;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                        <div>
-                            <p style="color: #94a3b8; font-size: 11px; margin-bottom: 5px;">USERNAME</p>
-                            <p style="color: #f1f5f9; font-size: 14px; font-weight: 600;" id="userEmail">-</p>
-                        </div>
-                        <div>
-                            <p style="color: #94a3b8; font-size: 11px; margin-bottom: 5px;">CURRENT TOKENS</p>
-                            <p style="color: #60a5fa; font-size: 14px; font-weight: 700;" id="userTokens">0</p>
-                        </div>
-                    </div>
-
-                    <!-- Topup Section -->
-                    <div style="
-                        background: rgba(59, 130, 246, 0.1);
-                        border: 1px solid rgba(59, 130, 246, 0.2);
-                        border-radius: 10px;
-                        padding: 15px;
-                        margin-bottom: 15px;
-                    ">
-                        <p style="color: #cbd5e1; font-size: 12px; margin-bottom: 12px; font-weight: 600;">➕ Add Tokens</p>
-                        <div style="display: flex; gap: 10px;">
-                            <input type="number" id="topupAmount" placeholder="Amount" min="1" value="50" style="
-                                flex: 1;
-                                padding: 10px;
-                                background: rgba(30, 41, 59, 0.6);
-                                border: 1px solid rgba(59, 130, 246, 0.2);
-                                border-radius: 8px;
-                                color: #f1f5f9;
-                                font-size: 12px;
-                            ">
-                            <button onclick="topupUser()" style="
-                                flex: 1;
-                                padding: 10px;
-                                background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
-                                color: white;
-                                border: none;
-                                border-radius: 8px;
-                                font-weight: 600;
-                                cursor: pointer;
-                                font-size: 12px;
-                                text-transform: uppercase;
-                                transition: all 0.3s ease;
-                            " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-                                Add
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Deduct Section -->
-                    <div style="
-                        background: rgba(239, 68, 68, 0.1);
-                        border: 1px solid rgba(239, 68, 68, 0.2);
-                        border-radius: 10px;
-                        padding: 15px;
-                        margin-bottom: 15px;
-                    ">
-                        <p style="color: #cbd5e1; font-size: 12px; margin-bottom: 12px; font-weight: 600;">➖ Deduct Tokens</p>
-                        <div style="display: flex; gap: 10px;">
-                            <input type="number" id="deductAmount" placeholder="Amount" min="1" value="15" style="
-                                flex: 1;
-                                padding: 10px;
-                                background: rgba(30, 41, 59, 0.6);
-                                border: 1px solid rgba(239, 68, 68, 0.2);
-                                border-radius: 8px;
-                                color: #f1f5f9;
-                                font-size: 12px;
-                            ">
-                            <button onclick="deductUser()" style="
-                                flex: 1;
-                                padding: 10px;
-                                background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
-                                color: white;
-                                border: none;
-                                border-radius: 8px;
-                                font-weight: 600;
-                                cursor: pointer;
-                                font-size: 12px;
-                                text-transform: uppercase;
-                                transition: all 0.3s ease;
-                            " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-                                Deduct
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Quick Add Buttons -->
-                    <p style="color: #94a3b8; font-size: 11px; margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px;">Quick Add</p>
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px;">
-                        <button onclick="quickTopup(50)" style="
-                            padding: 10px;
-                            background: rgba(16, 185, 129, 0.2);
-                            color: #6ee7b7;
-                            border: 1px solid rgba(16, 185, 129, 0.3);
-                            border-radius: 8px;
-                            cursor: pointer;
-                            font-size: 12px;
-                            font-weight: 600;
-                            transition: all 0.3s ease;
-                        " onmouseover="this.style.background='rgba(16, 185, 129, 0.3)'" onmouseout="this.style.background='rgba(16, 185, 129, 0.2)'">+50</button>
-                        <button onclick="quickTopup(100)" style="
-                            padding: 10px;
-                            background: rgba(16, 185, 129, 0.2);
-                            color: #6ee7b7;
-                            border: 1px solid rgba(16, 185, 129, 0.3);
-                            border-radius: 8px;
-                            cursor: pointer;
-                            font-size: 12px;
-                            font-weight: 600;
-                            transition: all 0.3s ease;
-                        " onmouseover="this.style.background='rgba(16, 185, 129, 0.3)'" onmouseout="this.style.background='rgba(16, 185, 129, 0.2)'">+100</button>
-                        <button onclick="quickTopup(250)" style="
-                            padding: 10px;
-                            background: rgba(16, 185, 129, 0.2);
-                            color: #6ee7b7;
-                            border: 1px solid rgba(16, 185, 129, 0.3);
-                            border-radius: 8px;
-                            cursor: pointer;
-                            font-size: 12px;
-                            font-weight: 600;
-                            transition: all 0.3s ease;
-                        " onmouseover="this.style.background='rgba(16, 185, 129, 0.3)'" onmouseout="this.style.background='rgba(16, 185, 129, 0.2)'">+250</button>
-                        <button onclick="quickTopup(500)" style="
-                            padding: 10px;
-                            background: rgba(16, 185, 129, 0.2);
-                            color: #6ee7b7;
-                            border: 1px solid rgba(16, 185, 129, 0.3);
-                            border-radius: 8px;
-                            cursor: pointer;
-                            font-size: 12px;
-                            font-weight: 600;
-                            transition: all 0.3s ease;
-                        " onmouseover="this.style.background='rgba(16, 185, 129, 0.3)'" onmouseout="this.style.background='rgba(16, 185, 129, 0.2)'">+500</button>
-                    </div>
-
-                    <!-- Quick Deduct Buttons -->
-                    <p style="color: #94a3b8; font-size: 11px; margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px;">Quick Deduct</p>
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
-                        <button onclick="quickDeduct(15)" style="
-                            padding: 10px;
-                            background: rgba(239, 68, 68, 0.2);
-                            color: #fca5a5;
-                            border: 1px solid rgba(239, 68, 68, 0.3);
-                            border-radius: 8px;
-                            cursor: pointer;
-                            font-size: 12px;
-                            font-weight: 600;
-                            transition: all 0.3s ease;
-                        " onmouseover="this.style.background='rgba(239, 68, 68, 0.3)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.2)'">-15</button>
-                        <button onclick="quickDeduct(50)" style="
-                            padding: 10px;
-                            background: rgba(239, 68, 68, 0.2);
-                            color: #fca5a5;
-                            border: 1px solid rgba(239, 68, 68, 0.3);
-                            border-radius: 8px;
-                            cursor: pointer;
-                            font-size: 12px;
-                            font-weight: 600;
-                            transition: all 0.3s ease;
-                        " onmouseover="this.style.background='rgba(239, 68, 68, 0.3)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.2)'">-50</button>
-                        <button onclick="quickDeduct(100)" style="
-                            padding: 10px;
-                            background: rgba(239, 68, 68, 0.2);
-                            color: #fca5a5;
-                            border: 1px solid rgba(239, 68, 68, 0.3);
-                            border-radius: 8px;
-                            cursor: pointer;
-                            font-size: 12px;
-                            font-weight: 600;
-                            transition: all 0.3s ease;
-                        " onmouseover="this.style.background='rgba(239, 68, 68, 0.3)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.2)'">-100</button>
-                        <button onclick="quickDeduct(250)" style="
-                            padding: 10px;
-                            background: rgba(239, 68, 68, 0.2);
-                            color: #fca5a5;
-                            border: 1px solid rgba(239, 68, 68, 0.3);
-                            border-radius: 8px;
-                            cursor: pointer;
-                            font-size: 12px;
-                            font-weight: 600;
-                            transition: all 0.3s ease;
-                        " onmouseover="this.style.background='rgba(239, 68, 68, 0.3)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.2)'">-250</button>
-                    </div>
-                </div>
-
-                <!-- Admin Alert -->
-                <div id="adminAlert" style="
-                    background: rgba(34, 197, 94, 0.15);
-                    border: 1px solid rgba(34, 197, 94, 0.3);
-                    color: #86efac;
-                    padding: 12px;
-                    border-radius: 8px;
-                    font-size: 12px;
-                    display: none;
-                "></div>
-            </div>
-        </div>
-    </div>
     </div> <!-- Close mainContent -->
 
     <script>
@@ -2900,6 +2743,9 @@
 
                 promptText.textContent = prompt;
                 resultsCard.classList.add('active');
+                
+                // Show success popup
+                showSuccessPopup('✅ Prompt Generated Successfully!');
             } catch (error) {
                 showError(`Error: ${error.message}`);
                 console.error(error);
@@ -2907,6 +2753,91 @@
                 generateBtn.disabled = false;
                 generateBtn.textContent = 'Generate Design';
             }
+        }
+
+        // Success popup function
+        function showSuccessPopup(message) {
+            const popup = document.createElement('div');
+            popup.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(15, 23, 42, 0.95);
+                backdrop-filter: blur(30px) saturate(180%);
+                border: 1px solid rgba(34, 197, 94, 0.5);
+                border-radius: 16px;
+                padding: 40px;
+                z-index: 3001;
+                text-align: center;
+                box-shadow: 
+                    0 0 60px rgba(34, 197, 94, 0.3),
+                    inset 0 0 30px rgba(34, 197, 94, 0.1);
+                min-width: 300px;
+                animation: popupSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            `;
+            
+            const content = document.createElement('div');
+            content.style.cssText = `
+                color: #86efac;
+                font-size: 18px;
+                font-weight: 700;
+                margin-bottom: 20px;
+                letter-spacing: 0.5px;
+            `;
+            content.textContent = message;
+            
+            const subtext = document.createElement('div');
+            subtext.style.cssText = `
+                color: #cbd5e1;
+                font-size: 13px;
+                margin-bottom: 24px;
+                line-height: 1.6;
+            `;
+            subtext.textContent = 'Your design prompt is ready! You can copy it, regenerate, or download your design.';
+            
+            const button = document.createElement('button');
+            button.textContent = '✨ Continue';
+            button.style.cssText = `
+                padding: 12px 32px;
+                background: linear-gradient(135deg, #34d399 0%, #22c55e 100%);
+                color: #0f172a;
+                border: none;
+                border-radius: 8px;
+                font-weight: 700;
+                cursor: pointer;
+                font-size: 14px;
+                letter-spacing: 0.5px;
+                transition: all 0.3s ease;
+            `;
+            
+            button.onmouseover = function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 0 30px rgba(34, 197, 94, 0.5)';
+            };
+            
+            button.onmouseout = function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = 'none';
+            };
+            
+            button.onclick = function() {
+                popup.style.animation = 'popupSlideOut 0.3s ease forwards';
+                setTimeout(() => popup.remove(), 300);
+            };
+            
+            popup.appendChild(content);
+            popup.appendChild(subtext);
+            popup.appendChild(button);
+            document.body.appendChild(popup);
+            
+            // Auto close after 5 seconds
+            setTimeout(() => {
+                if (popup.parentElement) {
+                    popup.style.animation = 'popupSlideOut 0.3s ease forwards';
+                    setTimeout(() => popup.remove(), 300);
+                }
+            }, 5000);
         }
 
 function buildDesignPrompt(settings) {
@@ -3334,6 +3265,9 @@ function buildDesignPrompt(settings) {
                 // Check if user is host
                 if (user.email === HOST_EMAIL) {
                     document.getElementById('adminPanelSection').style.display = 'block';
+                } else {
+                    // For normal users - check and reset daily tokens
+                    await resetDailyTokens(user.uid, user.email);
                 }
                 
                 await updateTokenDisplay();
@@ -3346,6 +3280,85 @@ function buildDesignPrompt(settings) {
                 document.getElementById('adminPanelSection').style.display = 'none';
             }
         });
+
+        // Daily token reset function for normal users
+        async function resetDailyTokens(uid, email) {
+            try {
+                const q = query(collection(db, 'users'), where('uid', '==', uid));
+                const snapshot = await getDocs(q);
+                
+                if (!snapshot.empty) {
+                    const userDoc = snapshot.docs[0];
+                    const userData = userDoc.data();
+                    
+                    // Get Malaysia time (UTC+8)
+                    const malaysiaTime = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kuala_Lumpur' }));
+                    
+                    // Get today's date in Malaysia timezone
+                    const malaysiaTodayDate = malaysiaTime.toDateString();
+                    
+                    // Get last reset date
+                    const lastResetDate = userData.lastTokenReset;
+                    
+                    // Check if last reset was before today (Malaysia time)
+                    // Reset happens daily at 12:00 AM Malaysia time
+                    if (lastResetDate !== malaysiaTodayDate) {
+                        const userRef = doc(db, 'users', userDoc.id);
+                        
+                        // Reset to 100 tokens
+                        await updateDoc(userRef, {
+                            tokenBalance: 100,
+                            lastTokenReset: malaysiaTodayDate,
+                            lastResetTime: malaysiaTime
+                        });
+                        
+                        // Log the reset in Firestore
+                        await addDoc(collection(db, 'tokenTransactions'), {
+                            userId: uid,
+                            type: 'daily_reset',
+                            amount: 100,
+                            newBalance: 100,
+                            timestamp: new Date(),
+                            malaysiaTime: malaysiaTodayDate,
+                            description: 'Daily token reset at 12:00 AM Malaysia time'
+                        });
+                        
+                        console.log('✅ Daily tokens reset to 100 (Malaysia time: ' + malaysiaTodayDate + ')');
+                        
+                        // Show notification
+                        showTokenResetNotification();
+                    }
+                }
+            } catch (error) {
+                console.error('Token reset error:', error);
+            }
+        }
+
+        // Show notification when tokens are reset
+        function showTokenResetNotification() {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(34, 197, 94, 0.2);
+                border: 1px solid rgba(34, 197, 94, 0.5);
+                color: #86efac;
+                padding: 16px 24px;
+                border-radius: 8px;
+                z-index: 3000;
+                font-weight: 600;
+                backdrop-filter: blur(10px);
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = '🎉 Daily tokens reset! You have 100 tokens now.';
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
 
         window.logout = async function() {
             if (confirm('Are you sure you want to logout?')) {
@@ -3367,6 +3380,135 @@ function buildDesignPrompt(settings) {
                 }
             }
         }
+
+        // ===== ADMIN FUNCTIONS =====
+        let selectedUserDoc = null;
+
+        window.searchUser = async function() {
+            const username = document.getElementById('searchUsername').value.trim();
+            if (!username) {
+                alert('Please enter a username');
+                return;
+            }
+
+            try {
+                const q = query(collection(db, 'users'), where('username', '==', username));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    alert('User not found: ' + username);
+                    document.getElementById('adminUserInfo').style.display = 'none';
+                    return;
+                }
+
+                selectedUserDoc = snapshot.docs[0];
+                const userData = selectedUserDoc.data();
+                
+                // Display user info
+                document.getElementById('adminUsername').textContent = userData.username;
+                document.getElementById('adminEmail').textContent = userData.email;
+                document.getElementById('adminTokens').textContent = userData.tokenBalance;
+                document.getElementById('adminCreated').textContent = new Date(userData.createdAt.toDate()).toLocaleDateString();
+                document.getElementById('adminUserInfo').style.display = 'block';
+
+                // Clear input fields
+                document.getElementById('addTokensAmount').value = '';
+                document.getElementById('deductTokensAmount').value = '';
+            } catch (error) {
+                alert('Search error: ' + error.message);
+            }
+        };
+
+        window.addUserTokens = async function() {
+            if (!selectedUserDoc) {
+                alert('Please search for a user first');
+                return;
+            }
+
+            const amount = parseInt(document.getElementById('addTokensAmount').value);
+            if (!amount || amount < 1) {
+                alert('Please enter a valid amount');
+                return;
+            }
+
+            try {
+                const userData = selectedUserDoc.data();
+                const newBalance = userData.tokenBalance + amount;
+
+                await updateDoc(doc(db, 'users', selectedUserDoc.id), {
+                    tokenBalance: newBalance
+                });
+
+                // Log transaction
+                await addDoc(collection(db, 'tokenTransactions'), {
+                    userId: userData.uid,
+                    type: 'admin_add',
+                    amount: amount,
+                    newBalance: newBalance,
+                    timestamp: new Date(),
+                    byAdmin: currentUser.email,
+                    description: `Admin added ${amount} tokens`
+                });
+
+                // Update display
+                document.getElementById('adminTokens').textContent = newBalance;
+                document.getElementById('addTokensAmount').value = '';
+                alert('✅ Added ' + amount + ' tokens to ' + userData.username);
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        };
+
+        window.deductUserTokens = async function() {
+            if (!selectedUserDoc) {
+                alert('Please search for a user first');
+                return;
+            }
+
+            const amount = parseInt(document.getElementById('deductTokensAmount').value);
+            if (!amount || amount < 1) {
+                alert('Please enter a valid amount');
+                return;
+            }
+
+            try {
+                const userData = selectedUserDoc.data();
+                if (userData.tokenBalance < amount) {
+                    alert('User does not have enough tokens (Current: ' + userData.tokenBalance + ')');
+                    return;
+                }
+
+                const newBalance = userData.tokenBalance - amount;
+
+                await updateDoc(doc(db, 'users', selectedUserDoc.id), {
+                    tokenBalance: newBalance
+                });
+
+                // Log transaction
+                await addDoc(collection(db, 'tokenTransactions'), {
+                    userId: userData.uid,
+                    type: 'admin_deduct',
+                    amount: amount,
+                    newBalance: newBalance,
+                    timestamp: new Date(),
+                    byAdmin: currentUser.email,
+                    description: `Admin deducted ${amount} tokens`
+                });
+
+                // Update display
+                document.getElementById('adminTokens').textContent = newBalance;
+                document.getElementById('deductTokensAmount').value = '';
+                alert('✅ Deducted ' + amount + ' tokens from ' + userData.username);
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        };
+
+        window.resetSearch = function() {
+            document.getElementById('searchUsername').value = '';
+            document.getElementById('adminUserInfo').style.display = 'none';
+            selectedUserDoc = null;
+        };
 
         // Override generate function to check tokens
         const originalGenerate = window.generateDesign;
