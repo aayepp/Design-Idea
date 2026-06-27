@@ -1542,6 +1542,15 @@
                     💳 Credits: <span id="tokenCount" style="color: #60a5fa; font-weight: bold;">0</span>
                 </div>
                 <button onclick="logout()" id="logoutBtn" class="api-status" style="background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); cursor: pointer; display: none; border: 1px solid; padding: 10px 16px;">Logout</button>
+                
+                <!-- Language Selector -->
+                <div id="languageSelector" style="display: none; margin-left: 10px;">
+                    <select id="languageDropdown" onchange="changeLanguage(this.value)" style="padding: 10px 12px; background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(59, 130, 246, 0.3); color: #cbd5e1; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">
+                        <option value="en">🇬🇧 English</option>
+                        <option value="ms">🇲🇾 Bahasa Melayu</option>
+                        <option value="zh">🇨🇳 中文 (繁体)</option>
+                    </select>
+                </div>
             </div>
         </div>
     </nav>
@@ -3443,6 +3452,352 @@ function buildDesignPrompt(settings) {
         const db = getFirestore(app);
 
         let currentUser = null;
+        let currentLanguage = localStorage.getItem('appLanguage') || 'en';
+
+        // ===== TRANSLATION DICTIONARY =====
+        const translations = {
+            en: {
+                // Header & Navigation
+                logout: "Logout",
+                english: "English",
+                malay: "Bahasa Melayu",
+                mandarin: "中文",
+                
+                // Auth Screen
+                brandName: "Smart Poster Designer",
+                subtitle: "AI-Powered Marketing Posters",
+                loginTitle: "Login",
+                signupTitle: "Create Account",
+                email: "Email",
+                password: "Password",
+                username: "Username",
+                confirmPassword: "Confirm Password",
+                loginBtn: "Login",
+                signupBtn: "Sign Up",
+                switchToLogin: "Already have account? Login",
+                switchToSignup: "New here? Create Account",
+                
+                // Sidebar
+                apiConfig: "API Configuration",
+                apiStatus: "API Status",
+                settingsManagement: "Settings Management",
+                gettingStarted: "Getting Started",
+                imageGenGuide: "Use Prompt for Image Generation",
+                
+                // Admin Panel
+                adminPanel: "Admin Panel - User Management",
+                searchUser: "Search User",
+                allUsers: "All Users",
+                refresh: "Refresh",
+                totalUsers: "Total Users",
+                totalCreditsIssued: "Total Credits Issued",
+                sortBy: "Sort By",
+                mostRecent: "Most Recent",
+                mostCredits: "Most Credits",
+                username: "Username (A-Z)",
+                addCredits: "Add Credits",
+                deductCredits: "Deduct Credits",
+                delete: "Delete",
+                clearSearch: "Clear Search",
+                
+                // User Card
+                created: "Created",
+                lastOnline: "Last Online",
+                add: "Add",
+                deduct: "Deduct",
+                delete: "Delete",
+                
+                // Form
+                formTitle: "Create Poster",
+                formSubtitle: "Design professional marketing materials instantly",
+                campaign: "Campaign",
+                brandName: "Brand Name",
+                campaignTitle: "Campaign Title",
+                target: "Target",
+                targetAudience: "Target Audience",
+                style: "Style",
+                selectStyle: "Select Style",
+                tone: "Tone",
+                selectTone: "Select Tone",
+                language: "Language",
+                selectLanguage: "Select Language",
+                details: "Details",
+                description: "Description",
+                callToAction: "Call to Action",
+                generateBtn: "Generate (Costs 15 Credits)",
+                generating: "Generating...",
+                
+                // Tokens/Credits
+                credits: "Credits",
+                creditsPerGenerate: "Each poster costs 15 credits",
+                dailyReset: "Daily credits reset at 12:00 AM Malaysia time",
+                
+                // Notifications
+                welcomeAdmin: "Welcome Back, Admin!",
+                loggedInAs: "Logged in as",
+                administrator: "Administrator",
+                adminFeatures: "Admin Features Available:",
+                welcomeUser: "Welcome Back",
+                readyToCreate: "Ready to create amazing posters?",
+                yourCredits: "Your Credits",
+                startManaging: "Start Managing",
+                letsCreate: "Let's Create",
+                
+                // Messages
+                generationSuccess: "Poster generated successfully!",
+                errorOccurred: "Error occurred. Please try again.",
+                dailyResetNotification: "Daily credits reset! You have 100 credits now.",
+                creditsAdded: "Host added",
+                creditsRemoved: "Admin removed",
+                creditsFrom: "credits from your account!",
+                
+                // Admin Actions
+                addUserTokens: "Add",
+                deductUserTokens: "Deduct",
+                deleteUserAccount: "Delete User",
+                confirmDelete: "Delete account",
+                deleteWarning: "WARNING: This action cannot be undone!",
+                deleteConfirmText: "Type DELETE to confirm",
+            },
+            ms: {
+                // Header & Navigation
+                logout: "Keluar",
+                english: "English",
+                malay: "Bahasa Melayu",
+                mandarin: "中文",
+                
+                // Auth Screen
+                brandName: "Pereka Poster Pintar",
+                subtitle: "Poster Pemasaran Bertenaga AI",
+                loginTitle: "Masuk",
+                signupTitle: "Buat Akaun",
+                email: "E-mel",
+                password: "Kata Laluan",
+                username: "Nama Pengguna",
+                confirmPassword: "Sahkan Kata Laluan",
+                loginBtn: "Masuk",
+                signupBtn: "Daftar",
+                switchToLogin: "Sudah ada akaun? Masuk",
+                switchToSignup: "Baru di sini? Buat Akaun",
+                
+                // Sidebar
+                apiConfig: "Konfigurasi API",
+                apiStatus: "Status API",
+                settingsManagement: "Pengurusan Tetapan",
+                gettingStarted: "Memulakan",
+                imageGenGuide: "Gunakan Prompt untuk Penjanaan Imej",
+                
+                // Admin Panel
+                adminPanel: "Panel Admin - Pengurusan Pengguna",
+                searchUser: "Cari Pengguna",
+                allUsers: "Semua Pengguna",
+                refresh: "Segarkan",
+                totalUsers: "Jumlah Pengguna",
+                totalCreditsIssued: "Jumlah Kredit Dikeluarkan",
+                sortBy: "Isih Mengikut",
+                mostRecent: "Paling Terbaharu",
+                mostCredits: "Paling Kredit",
+                username: "Nama Pengguna (A-Z)",
+                addCredits: "Tambah Kredit",
+                deductCredits: "Tolak Kredit",
+                delete: "Padam",
+                clearSearch: "Padam Carian",
+                
+                // User Card
+                created: "Dibuat",
+                lastOnline: "Dalam Talian Terakhir",
+                add: "Tambah",
+                deduct: "Tolak",
+                delete: "Padam",
+                
+                // Form
+                formTitle: "Cipta Poster",
+                formSubtitle: "Reka bahan pemasaran profesional secara instan",
+                campaign: "Kempen",
+                brandName: "Nama Jenama",
+                campaignTitle: "Tajuk Kempen",
+                target: "Sasaran",
+                targetAudience: "Audiens Sasaran",
+                style: "Gaya",
+                selectStyle: "Pilih Gaya",
+                tone: "Nada",
+                selectTone: "Pilih Nada",
+                language: "Bahasa",
+                selectLanguage: "Pilih Bahasa",
+                details: "Butiran",
+                description: "Penerangan",
+                callToAction: "Ajakan Bertindak",
+                generateBtn: "Janakan (Kos 15 Kredit)",
+                generating: "Menjana...",
+                
+                // Tokens/Credits
+                credits: "Kredit",
+                creditsPerGenerate: "Setiap poster kos 15 kredit",
+                dailyReset: "Kredit harian ditetapkan semula pada pukul 12:00 tengah malam waktu Malaysia",
+                
+                // Notifications
+                welcomeAdmin: "Selamat Datang Kembali, Admin!",
+                loggedInAs: "Anda login sebagai",
+                administrator: "Pentadbir",
+                adminFeatures: "Ciri Admin Tersedia:",
+                welcomeUser: "Selamat Datang Kembali",
+                readyToCreate: "Siap untuk mencipta poster yang menakjubkan?",
+                yourCredits: "Kredit Anda",
+                startManaging: "Mula Menguruskan",
+                letsCreate: "Mari Kita Cipta",
+                
+                // Messages
+                generationSuccess: "Poster dijana dengan berjaya!",
+                errorOccurred: "Ralat berlaku. Sila cuba lagi.",
+                dailyResetNotification: "Kredit harian ditetapkan semula! Anda mempunyai 100 kredit sekarang.",
+                creditsAdded: "Host menambah",
+                creditsRemoved: "Admin mengeluarkan",
+                creditsFrom: "kredit dari akaun anda!",
+                
+                // Admin Actions
+                addUserTokens: "Tambah",
+                deductUserTokens: "Tolak",
+                deleteUserAccount: "Padam Pengguna",
+                confirmDelete: "Padam akaun",
+                deleteWarning: "AMARAN: Tindakan ini tidak boleh dibuat asal!",
+                deleteConfirmText: "Taip PADAM untuk mengesahkan",
+            },
+            zh: {
+                // Header & Navigation
+                logout: "登出",
+                english: "English",
+                malay: "Bahasa Melayu",
+                mandarin: "中文",
+                
+                // Auth Screen
+                brandName: "智能海报设计师",
+                subtitle: "AI驱动的营销海报",
+                loginTitle: "登录",
+                signupTitle: "创建账户",
+                email: "电子邮件",
+                password: "密码",
+                username: "用户名",
+                confirmPassword: "确认密码",
+                loginBtn: "登录",
+                signupBtn: "注册",
+                switchToLogin: "已有账户? 登录",
+                switchToSignup: "新用户? 创建账户",
+                
+                // Sidebar
+                apiConfig: "API配置",
+                apiStatus: "API状态",
+                settingsManagement: "设置管理",
+                gettingStarted: "开始使用",
+                imageGenGuide: "使用提示进行图像生成",
+                
+                // Admin Panel
+                adminPanel: "管理面板 - 用户管理",
+                searchUser: "搜索用户",
+                allUsers: "所有用户",
+                refresh: "刷新",
+                totalUsers: "用户总数",
+                totalCreditsIssued: "总发行积分",
+                sortBy: "排序方式",
+                mostRecent: "最新的",
+                mostCredits: "最多积分",
+                username: "用户名 (A-Z)",
+                addCredits: "添加积分",
+                deductCredits: "扣除积分",
+                delete: "删除",
+                clearSearch: "清除搜索",
+                
+                // User Card
+                created: "创建于",
+                lastOnline: "最后在线",
+                add: "添加",
+                deduct: "扣除",
+                delete: "删除",
+                
+                // Form
+                formTitle: "创建海报",
+                formSubtitle: "即时设计专业营销材料",
+                campaign: "活动",
+                brandName: "品牌名称",
+                campaignTitle: "活动标题",
+                target: "目标",
+                targetAudience: "目标受众",
+                style: "风格",
+                selectStyle: "选择风格",
+                tone: "语气",
+                selectTone: "选择语气",
+                language: "语言",
+                selectLanguage: "选择语言",
+                details: "详情",
+                description: "描述",
+                callToAction: "行动号召",
+                generateBtn: "生成 (花费15积分)",
+                generating: "正在生成...",
+                
+                // Tokens/Credits
+                credits: "积分",
+                creditsPerGenerate: "每个海报花费15积分",
+                dailyReset: "每日积分在马来西亚时间晚上12:00重置",
+                
+                // Notifications
+                welcomeAdmin: "欢迎回来，管理员！",
+                loggedInAs: "您登录为",
+                administrator: "管理员",
+                adminFeatures: "可用的管理员功能:",
+                welcomeUser: "欢迎回来",
+                readyToCreate: "准备好创建令人惊叹的海报了吗？",
+                yourCredits: "您的积分",
+                startManaging: "开始管理",
+                letsCreate: "让我们创作",
+                
+                // Messages
+                generationSuccess: "海报生成成功！",
+                errorOccurred: "发生错误。请重试。",
+                dailyResetNotification: "每日积分已重置！您现在拥有100积分。",
+                creditsAdded: "主机添加了",
+                creditsRemoved: "管理员移除了",
+                creditsFrom: "积分从您的账户！",
+                
+                // Admin Actions
+                addUserTokens: "添加",
+                deductUserTokens: "扣除",
+                deleteUserAccount: "删除用户",
+                confirmDelete: "删除账户",
+                deleteWarning: "警告：此操作无法撤销！",
+                deleteConfirmText: "输入删除以确认",
+            }
+        };
+
+        // ===== LANGUAGE SYSTEM =====
+        function t(key) {
+            return translations[currentLanguage]?.[key] || translations['en'][key] || key;
+        }
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('appLanguage', lang);
+            document.getElementById('languageDropdown').value = lang;
+            applyLanguageChanges();
+        }
+
+        function applyLanguageChanges() {
+            // Update all elements with data-translate attribute
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                element.textContent = t(key);
+            });
+            
+            // Update all placeholders
+            document.querySelectorAll('[data-translate-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-translate-placeholder');
+                element.placeholder = t(key);
+            });
+        }
+
+        // Initialize language on page load
+        window.addEventListener('load', () => {
+            document.getElementById('languageDropdown').value = currentLanguage;
+            applyLanguageChanges();
+        });
         let isSignupMode = true;
         const HOST_EMAIL = "ayep.business@gmail.com"; // CHANGE TO YOUR EMAIL
 
@@ -3523,6 +3878,7 @@ function buildDesignPrompt(settings) {
                 document.getElementById('mainContent').style.display = 'block';
                 document.getElementById('tokenStatus').style.display = 'flex';
                 document.getElementById('logoutBtn').style.display = 'block';
+                document.getElementById('languageSelector').style.display = 'block';
                 
                 // Check if user is host
                 if (user.email === HOST_EMAIL) {
@@ -3550,6 +3906,7 @@ function buildDesignPrompt(settings) {
                 document.getElementById('mainContent').style.display = 'none';
                 document.getElementById('tokenStatus').style.display = 'none';
                 document.getElementById('logoutBtn').style.display = 'none';
+                document.getElementById('languageSelector').style.display = 'none';
                 document.getElementById('adminPanelSection').style.display = 'none';
             }
         });
@@ -4228,8 +4585,17 @@ function buildDesignPrompt(settings) {
                 if (userData.empty) return;
                 
                 const profile = userData.docs[0].data();
-                const username = profile.username;
+                let username = profile.username;
                 const isHost = user.email === HOST_EMAIL;
+                
+                // If no username, use email or "Administrator"
+                if (!username) {
+                    if (isHost) {
+                        username = "Administrator";
+                    } else {
+                        username = user.email?.split('@')[0] || "User";
+                    }
+                }
                 
                 // Create welcome popup
                 const popup = document.createElement('div');
@@ -4256,7 +4622,7 @@ function buildDesignPrompt(settings) {
                         <div style="text-align: center;">
                             <div style="font-size: 48px; margin-bottom: 20px; animation: float 3s ease-in-out infinite;">👑</div>
                             <h2 style="color: #60a5fa; font-size: 28px; margin: 0 0 10px 0; font-weight: 700;">Welcome Back, Admin!</h2>
-                            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 30px 0;">You're logged in as <strong style="color: #86efac;">${username}</strong></p>
+                            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 30px 0;">Logged in as <strong style="color: #86efac;">${username}</strong></p>
                             
                             <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 30px;">
                                 <div style="color: #cbd5e1; font-size: 13px; margin-bottom: 15px; line-height: 1.6;">
