@@ -4245,6 +4245,29 @@ function buildDesignPrompt(settings) {
                     const createdDate = user.createdAt?.toDate?.() ? new Date(user.createdAt.toDate()).toLocaleDateString() : 'N/A';
                     const role = user.role === 'host' ? '👑 Host' : '👤 User';
                     
+                    // Calculate last online display
+                    let lastOnlineText = 'Never';
+                    if (user.lastOnline) {
+                        const lastOnlineDate = new Date(user.lastOnline.toDate());
+                        const now = new Date();
+                        const diffMs = now - lastOnlineDate;
+                        const diffMins = Math.floor(diffMs / 60000);
+                        const diffHours = Math.floor(diffMins / 60);
+                        const diffDays = Math.floor(diffHours / 24);
+                        
+                        if (diffMins < 1) {
+                            lastOnlineText = 'Just now';
+                        } else if (diffMins < 60) {
+                            lastOnlineText = `${diffMins}m ago`;
+                        } else if (diffHours < 24) {
+                            lastOnlineText = `${diffHours}h ago`;
+                        } else if (diffDays < 7) {
+                            lastOnlineText = `${diffDays}d ago`;
+                        } else {
+                            lastOnlineText = lastOnlineDate.toLocaleDateString();
+                        }
+                    }
+                    
                     html += `
                         <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 8px; padding: 10px; margin-bottom: 8px;">
                             <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
@@ -4254,9 +4277,18 @@ function buildDesignPrompt(settings) {
                                 </div>
                                 <div style="text-align: right;">
                                     <div style="color: #86efac; font-weight: 700; font-size: 13px;">${user.tokenBalance || 0}🎫</div>
-                                    <div style="color: #94a3b8; font-size: 9px;">${createdDate}</div>
                                 </div>
                             </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; font-size: 9px;">
+                                <div style="color: #94a3b8;">
+                                    <span style="color: #cbd5e1; font-weight: 600;">📅 Created:</span> ${createdDate}
+                                </div>
+                                <div style="color: #94a3b8; text-align: right;">
+                                    <span style="color: #cbd5e1; font-weight: 600;">🟢 Last Online:</span> ${lastOnlineText}
+                                </div>
+                            </div>
+                            
                             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
                                 <button onclick="quickAddTokens('${user.username}', '${user.email}', '${user.id}')" style="padding: 6px; background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.3); color: #86efac; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: 600;">➕ Add</button>
                                 <button onclick="quickDeductTokens('${user.username}', '${user.email}', '${user.id}')" style="padding: 6px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: 600;">➖ Deduct</button>
