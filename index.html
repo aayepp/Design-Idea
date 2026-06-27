@@ -3537,6 +3537,9 @@ function buildDesignPrompt(settings) {
                 // Update last online timestamp
                 await updateLastOnline(user.uid);
                 
+                // Show welcome popup
+                await showWelcomePopup(user);
+                
                 // Real-time listener for token updates (for normal users)
                 if (user.email !== HOST_EMAIL) {
                     setupTokenUpdateListener(user.uid);
@@ -3571,21 +3574,21 @@ function buildDesignPrompt(settings) {
                         
                         // First time - check if balance changed since last logout
                         if (lastKnownTokenBalance === null) {
-                            const lastLogoutBalance = parseInt(localStorage.getItem(`lastBalance_${uid}`)) || currentBalance;
+                            const lastLogoutBalance = parseInt(localStorage.getItem(`lastBalance_${uid}`));
                             
-                            // If balance is different from last time, show notification on login
-                            if (currentBalance !== lastLogoutBalance && lastLogoutBalance !== currentBalance) {
+                            // If we have a previous balance and it's different, show notification
+                            if (lastLogoutBalance !== undefined && lastLogoutBalance !== null && currentBalance !== lastLogoutBalance) {
                                 const difference = currentBalance - lastLogoutBalance;
                                 if (difference > 0) {
-                                    // Tokens were ADDED since last logout
+                                    // Credits were ADDED since last logout
                                     setTimeout(() => {
                                         showTokenAddedNotification(difference, currentBalance);
-                                    }, 500);
+                                    }, 1000);
                                 } else if (difference < 0) {
-                                    // Tokens were DEDUCTED since last logout
+                                    // Credits were DEDUCTED since last logout
                                     setTimeout(() => {
                                         showTokenDeductedNotification(Math.abs(difference), currentBalance);
-                                    }, 500);
+                                    }, 1000);
                                 }
                             }
                             
@@ -3598,10 +3601,10 @@ function buildDesignPrompt(settings) {
                             const difference = currentBalance - lastKnownTokenBalance;
                             
                             if (difference > 0) {
-                                // Tokens were ADDED
+                                // Credits were ADDED
                                 showTokenAddedNotification(difference, currentBalance);
                             } else if (difference < 0) {
-                                // Tokens were DEDUCTED
+                                // Credits were DEDUCTED
                                 showTokenDeductedNotification(Math.abs(difference), currentBalance);
                             }
                             
@@ -4217,6 +4220,104 @@ function buildDesignPrompt(settings) {
                 alert('Error: ' + error.message);
             }
         };
+
+        // ===== WELCOME POPUP ON LOGIN =====
+        async function showWelcomePopup(user) {
+            try {
+                const userData = await getDocs(query(collection(db, 'users'), where('uid', '==', user.uid)));
+                if (userData.empty) return;
+                
+                const profile = userData.docs[0].data();
+                const username = profile.username;
+                const isHost = user.email === HOST_EMAIL;
+                
+                // Create welcome popup
+                const popup = document.createElement('div');
+                popup.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: linear-gradient(135deg, rgba(30, 58, 138, 0.95), rgba(15, 23, 42, 0.95));
+                    border: 2px solid rgba(59, 130, 246, 0.5);
+                    border-radius: 20px;
+                    padding: 40px;
+                    max-width: 500px;
+                    width: 90%;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(59, 130, 246, 0.3);
+                    z-index: 10000;
+                    animation: popupSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+                    backdrop-filter: blur(10px);
+                `;
+                
+                if (isHost) {
+                    // HOST WELCOME
+                    popup.innerHTML = `
+                        <div style="text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 20px; animation: float 3s ease-in-out infinite;">👑</div>
+                            <h2 style="color: #60a5fa; font-size: 28px; margin: 0 0 10px 0; font-weight: 700;">Welcome Back, Admin!</h2>
+                            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 30px 0;">You're logged in as <strong style="color: #86efac;">${username}</strong></p>
+                            
+                            <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 30px;">
+                                <div style="color: #cbd5e1; font-size: 13px; margin-bottom: 15px; line-height: 1.6;">
+                                    <div style="margin-bottom: 10px;">✨ <strong>Admin Features Available:</strong></div>
+                                    <div>• 👥 Manage all user accounts</div>
+                                    <div>• 💳 Add/deduct credits to users</div>
+                                    <div>• 🗑️ Delete inactive accounts</div>
+                                    <div>• 📊 Monitor user activity & stats</div>
+                                </div>
+                            </div>
+                            
+                            <button onclick="this.parentElement.parentElement.remove()" style="width: 100%; padding: 14px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(100, 200, 255, 0.3)); border: 1px solid rgba(59, 130, 246, 0.5); color: #60a5fa; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 700; transition: all 0.3s ease;">
+                                🚀 Start Managing
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    // NORMAL USER WELCOME
+                    popup.innerHTML = `
+                        <div style="text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 20px; animation: bounce 2s ease-in-out infinite;">👋</div>
+                            <h2 style="color: #86efac; font-size: 28px; margin: 0 0 10px 0; font-weight: 700;">Welcome Back, ${username}!</h2>
+                            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 30px 0;">Ready to create amazing posters?</p>
+                            
+                            <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 30px;">
+                                <div style="color: #86efac; font-size: 16px; font-weight: 700; margin-bottom: 10px;">💳 Your Credits</div>
+                                <div id="welcomeCredits" style="color: #60a5fa; font-size: 32px; font-weight: 700;">0</div>
+                                <div style="color: #cbd5e1; font-size: 12px; margin-top: 10px;">Each poster costs 15 credits</div>
+                            </div>
+                            
+                            <button onclick="this.parentElement.parentElement.remove()" style="width: 100%; padding: 14px; background: linear-gradient(135deg, rgba(34, 197, 94, 0.4), rgba(100, 255, 150, 0.3)); border: 1px solid rgba(34, 197, 94, 0.5); color: #86efac; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 700; transition: all 0.3s ease;">
+                                ✨ Let's Create
+                            </button>
+                        </div>
+                    `;
+                }
+                
+                document.body.appendChild(popup);
+                
+                // For normal users, update credits display
+                if (!isHost) {
+                    setTimeout(() => {
+                        const creditsEl = document.getElementById('welcomeCredits');
+                        if (creditsEl) {
+                            creditsEl.textContent = profile.tokenBalance || 0;
+                        }
+                    }, 100);
+                }
+                
+                // Auto close after 8 seconds
+                setTimeout(() => {
+                    if (popup.parentElement) {
+                        popup.style.animation = 'popupSlideOut 0.4s ease-in forwards';
+                        setTimeout(() => popup.remove(), 400);
+                    }
+                }, 8000);
+                
+            } catch (error) {
+                console.error('Error showing welcome popup:', error);
+            }
+        }
 
         // ===== UPDATE LAST ONLINE =====
         async function updateLastOnline(uid) {
