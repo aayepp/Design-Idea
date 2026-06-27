@@ -1918,7 +1918,7 @@
                             </div>
 
                             <!-- Users List -->
-                            <div id="allUsersList" style="max-height: 400px; overflow-y: auto;">
+                            <div id="allUsersList" style="max-height: 400px; overflow-y: auto; padding-right: 4px; scroll-behavior: smooth;">
                                 <div style="color: #cbd5e1; text-align: center; padding: 20px; font-size: 12px;">Loading users...</div>
                             </div>
                         </div>
@@ -3375,13 +3375,31 @@ function buildDesignPrompt(settings) {
                         const userData = snapshot.docs[0].data();
                         const currentBalance = userData.tokenBalance;
                         
-                        // First time - just set the balance
+                        // First time - check if balance changed since last logout
                         if (lastKnownTokenBalance === null) {
+                            const lastLogoutBalance = parseInt(localStorage.getItem(`lastBalance_${uid}`)) || currentBalance;
+                            
+                            // If balance is different from last time, show notification on login
+                            if (currentBalance !== lastLogoutBalance && lastLogoutBalance !== currentBalance) {
+                                const difference = currentBalance - lastLogoutBalance;
+                                if (difference > 0) {
+                                    // Tokens were ADDED since last logout
+                                    setTimeout(() => {
+                                        showTokenAddedNotification(difference, currentBalance);
+                                    }, 500);
+                                } else if (difference < 0) {
+                                    // Tokens were DEDUCTED since last logout
+                                    setTimeout(() => {
+                                        showTokenDeductedNotification(Math.abs(difference), currentBalance);
+                                    }, 500);
+                                }
+                            }
+                            
                             lastKnownTokenBalance = currentBalance;
                             return;
                         }
                         
-                        // If balance changed
+                        // If balance changed during this session
                         if (currentBalance !== lastKnownTokenBalance) {
                             const difference = currentBalance - lastKnownTokenBalance;
                             
@@ -3806,6 +3824,26 @@ function buildDesignPrompt(settings) {
 
         window.logout = async function() {
             if (confirm('Are you sure you want to logout?')) {
+                // Save current balance before logout
+                if (currentUser) {
+                    try {
+                        const q = query(collection(db, 'users'), where('uid', '==', currentUser.uid));
+                        const snapshot = await getDocs(q);
+                        if (!snapshot.empty) {
+                            const balance = snapshot.docs[0].data().tokenBalance;
+                            localStorage.setItem(`lastBalance_${currentUser.uid}`, balance.toString());
+                        }
+                    } catch (error) {
+                        console.error('Error saving balance on logout:', error);
+                    }
+                }
+                
+                // Reset listener
+                lastKnownTokenBalance = null;
+                if (window.tokenUpdateUnsubscribe) {
+                    window.tokenUpdateUnsubscribe();
+                }
+                
                 await signOut(auth);
                 currentUser = null;
             }
@@ -4219,9 +4257,10 @@ function buildDesignPrompt(settings) {
                                     <div style="color: #94a3b8; font-size: 9px;">${createdDate}</div>
                                 </div>
                             </div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
                                 <button onclick="quickAddTokens('${user.username}', '${user.email}', '${user.id}')" style="padding: 6px; background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.3); color: #86efac; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: 600;">➕ Add</button>
                                 <button onclick="quickDeductTokens('${user.username}', '${user.email}', '${user.id}')" style="padding: 6px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: 600;">➖ Deduct</button>
+                                <button onclick="quickDeleteUser('${user.username}', '${user.email}', '${user.id}')" style="padding: 6px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: 600;">🗑️ Delete</button>
                             </div>
                         </div>
                     `;
@@ -4260,6 +4299,57 @@ function buildDesignPrompt(settings) {
                         deductUserTokens();
                     });
                 }, 500);
+            }
+        };
+
+        // Quick delete user from list
+        window.quickDeleteUser = async function(username, email, userId) {
+            const confirmed = confirm(
+                `⚠️ Delete account: ${username}\n\n` +
+                `Email: ${email}\n\n` +
+                `This action cannot be undone!`
+            );
+
+            if (!confirmed) return;
+
+            const confirmText = prompt(`Type "DELETE ${username}" to confirm deletion:`);
+            
+            if (confirmText !== `DELETE ${username}`) {
+                alert('❌ Confirmation text did not match. Account NOT deleted.');
+                return;
+            }
+
+            try {
+                // Find the user document
+                const q = query(collection(db, 'users'), where('username', '==', username));
+                const snapshot = await getDocs(q);
+                
+                if (!snapshot.empty) {
+                    const userDocId = snapshot.docs[0].id;
+                    const userData = snapshot.docs[0].data();
+                    
+                    // Delete user
+                    await deleteDoc(doc(db, 'users', userDocId));
+                    
+                    // Log deletion
+                    await addDoc(collection(db, 'tokenTransactions'), {
+                        userId: userData.uid,
+                        username: username,
+                        type: 'account_deleted',
+                        timestamp: new Date(),
+                        byAdmin: currentUser.email,
+                        description: `Account permanently deleted by admin`
+                    });
+                    
+                    alert(`✅ Account "${username}" has been permanently deleted.`);
+                    
+                    // Refresh user list
+                    await loadAllUsers();
+                } else {
+                    alert('❌ User not found!');
+                }
+            } catch (error) {
+                alert('❌ Error deleting account: ' + error.message);
             }
         };
 
