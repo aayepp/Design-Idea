@@ -1653,6 +1653,15 @@
                 transform: translateY(-5px);
             }
         }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
     </style>
     
     <div class="container" style="position: relative; z-index: 1;">
@@ -1843,6 +1852,7 @@
                         <div style="display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid rgba(59, 130, 246, 0.3); padding-bottom: 8px;">
                             <button onclick="switchAdminTab('search')" id="tabSearch" style="flex: 1; padding: 8px; background: rgba(59, 130, 246, 0.4); border: 1px solid rgba(59, 130, 246, 0.5); color: #60a5fa; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">🔍 Search User</button>
                             <button onclick="switchAdminTab('all')" id="tabAll" style="flex: 1; padding: 8px; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.3); color: #cbd5e1; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">👥 All Users</button>
+                            <button onclick="refreshAdminPanel()" id="refreshBtn" style="padding: 8px 12px; background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.3); color: #86efac; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; transition: all 0.3s ease;" title="Refresh data">🔄 Refresh</button>
                         </div>
 
                         <!-- TAB 1: Search User -->
@@ -1859,9 +1869,10 @@
                                     <div><strong>Email:</strong> <span id="adminEmail">-</span></div>
                                     <div><strong>Tokens:</strong> <span id="adminTokens" style="color: #60a5fa;">-</span></div>
                                     <div><strong>Created:</strong> <span id="adminCreated">-</span></div>
+                                    <div><strong>Last Online:</strong> <span id="adminLastOnline" style="color: #94a3b8;">Never</span></div>
                                 </div>
 
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
                                     <div>
                                         <label style="color: #cbd5e1; font-size: 11px; display: block; margin-bottom: 4px;">Add Tokens</label>
                                         <input type="number" id="addTokensAmount" placeholder="10" min="1" style="width: 100%; padding: 8px; background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 6px; color: #f1f5f9; font-size: 11px; box-sizing: border-box;">
@@ -1874,6 +1885,9 @@
                                         <button onclick="deductUserTokens()" style="width: 100%; padding: 8px; margin-top: 4px; background: rgba(239, 68, 68, 0.3); border: 1px solid rgba(239, 68, 68, 0.5); color: #fca5a5; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600;">➖ Deduct</button>
                                     </div>
                                 </div>
+
+                                <!-- Delete User Button -->
+                                <button onclick="deleteUserAccount()" style="width: 100%; padding: 8px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; transition: all 0.3s ease;" title="Permanently delete this user account">🗑️ Delete User</button>
                             </div>
 
                             <button onclick="resetSearch()" style="width: 100%; padding: 10px; background: rgba(100, 116, 139, 0.3); border: 1px solid rgba(148, 163, 184, 0.3); color: #cbd5e1; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">🔄 Clear Search</button>
@@ -3218,7 +3232,7 @@ function buildDesignPrompt(settings) {
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, doc, getDoc, updateDoc, query, where, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, doc, getDoc, updateDoc, query, where, getDocs, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
         // ===== FIREBASE CONFIG - REPLACE WITH YOUR CONFIG =====
         const firebaseConfig = {
@@ -3325,6 +3339,9 @@ function buildDesignPrompt(settings) {
                 }
                 
                 await updateTokenDisplay();
+                
+                // Update last online timestamp
+                await updateLastOnline(user.uid);
                 
                 // Real-time listener for token updates (for normal users)
                 if (user.email !== HOST_EMAIL) {
@@ -3836,6 +3853,30 @@ function buildDesignPrompt(settings) {
                 document.getElementById('adminEmail').textContent = userData.email;
                 document.getElementById('adminTokens').textContent = userData.tokenBalance;
                 document.getElementById('adminCreated').textContent = new Date(userData.createdAt.toDate()).toLocaleDateString();
+                
+                // Display last online
+                let lastOnlineText = 'Never';
+                if (userData.lastOnline) {
+                    const lastOnlineDate = new Date(userData.lastOnline.toDate());
+                    const now = new Date();
+                    const diffMs = now - lastOnlineDate;
+                    const diffMins = Math.floor(diffMs / 60000);
+                    const diffHours = Math.floor(diffMins / 60);
+                    const diffDays = Math.floor(diffHours / 24);
+                    
+                    if (diffMins < 1) {
+                        lastOnlineText = 'Just now';
+                    } else if (diffMins < 60) {
+                        lastOnlineText = `${diffMins}m ago`;
+                    } else if (diffHours < 24) {
+                        lastOnlineText = `${diffHours}h ago`;
+                    } else if (diffDays < 7) {
+                        lastOnlineText = `${diffDays}d ago`;
+                    } else {
+                        lastOnlineText = lastOnlineDate.toLocaleDateString();
+                    }
+                }
+                document.getElementById('adminLastOnline').textContent = lastOnlineText;
                 document.getElementById('adminUserInfo').style.display = 'block';
 
                 // Clear input fields
@@ -3883,6 +3924,11 @@ function buildDesignPrompt(settings) {
                 
                 // Show success popup to HOST
                 showHostSuccessPopup(amount, userData.username, newBalance);
+                
+                // Auto-refresh after 1 second
+                setTimeout(() => {
+                    refreshAdminPanel();
+                }, 1000);
             } catch (error) {
                 alert('Error: ' + error.message);
             }
@@ -3930,8 +3976,114 @@ function buildDesignPrompt(settings) {
                 
                 // Show success popup to HOST
                 showHostSuccessPopup(-amount, userData.username, newBalance);
+                
+                // Auto-refresh after 1 second
+                setTimeout(() => {
+                    refreshAdminPanel();
+                }, 1000);
             } catch (error) {
                 alert('Error: ' + error.message);
+            }
+        };
+
+        // ===== UPDATE LAST ONLINE =====
+        async function updateLastOnline(uid) {
+            try {
+                const q = query(collection(db, 'users'), where('uid', '==', uid));
+                const snapshot = await getDocs(q);
+                
+                if (!snapshot.empty) {
+                    const userRef = doc(db, 'users', snapshot.docs[0].id);
+                    await updateDoc(userRef, {
+                        lastOnline: new Date()
+                    });
+                }
+            } catch (error) {
+                console.error('Error updating last online:', error);
+            }
+        }
+
+        // ===== DELETE USER ACCOUNT =====
+        window.deleteUserAccount = async function() {
+            if (!selectedUserDoc) {
+                alert('Please search for a user first');
+                return;
+            }
+
+            const userData = selectedUserDoc.data();
+            const username = userData.username;
+
+            // Confirmation dialog
+            const confirmed = confirm(
+                `⚠️ WARNING: This action cannot be undone!\n\n` +
+                `Delete account: ${username}\n` +
+                `Email: ${userData.email}\n\n` +
+                `This will permanently remove:\n` +
+                `• User account\n` +
+                `• All tokens\n` +
+                `• Transaction history\n\n` +
+                `Type "DELETE" to confirm.`
+            );
+
+            if (!confirmed) return;
+
+            // Ask for confirmation text
+            const confirmText = prompt(`Type "DELETE ${username}" to permanently delete this account:`);
+            
+            if (confirmText !== `DELETE ${username}`) {
+                alert('❌ Confirmation text did not match. Account NOT deleted.');
+                return;
+            }
+
+            try {
+                // Show loading state
+                const btn = document.querySelector('[onclick="deleteUserAccount()"]');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = '⏳ Deleting...';
+                }
+
+                const userId = userData.uid;
+                const userDocId = selectedUserDoc.id;
+
+                // Delete user from Firestore
+                await deleteDoc(doc(db, 'users', userDocId));
+
+                // Log deletion
+                await addDoc(collection(db, 'tokenTransactions'), {
+                    userId: userId,
+                    username: username,
+                    type: 'account_deleted',
+                    timestamp: new Date(),
+                    byAdmin: currentUser.email,
+                    description: `Account permanently deleted by admin`
+                });
+
+                // Show success
+                alert(`✅ Account "${username}" has been permanently deleted.`);
+
+                // Reset form
+                document.getElementById('searchUsername').value = '';
+                document.getElementById('adminUserInfo').style.display = 'none';
+                selectedUserDoc = null;
+
+                // Refresh if in all users tab
+                if (document.getElementById('adminTabAll').style.display !== 'none') {
+                    await loadAllUsers();
+                }
+
+                // Reset button
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = '🗑️ Delete User';
+                }
+            } catch (error) {
+                alert('❌ Error deleting account: ' + error.message);
+                const btn = document.querySelector('[onclick="deleteUserAccount()"]');
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = '🗑️ Delete User';
+                }
             }
         };
 
@@ -3939,6 +4091,45 @@ function buildDesignPrompt(settings) {
             document.getElementById('searchUsername').value = '';
             document.getElementById('adminUserInfo').style.display = 'none';
             selectedUserDoc = null;
+        };
+
+        // ===== ADMIN PANEL REFRESH =====
+        window.refreshAdminPanel = async function() {
+            const btn = document.getElementById('refreshBtn');
+            if (!btn) return;
+            
+            // Add spinning animation
+            btn.style.animation = 'spin 1s linear infinite';
+            btn.disabled = true;
+            
+            try {
+                // Get current active tab
+                const searchTab = document.getElementById('adminTabSearch');
+                const allTab = document.getElementById('adminTabAll');
+                
+                if (searchTab && searchTab.style.display !== 'none') {
+                    // Refresh search tab - re-search current user
+                    const username = document.getElementById('searchUsername').value.trim();
+                    if (username) {
+                        await searchUser();
+                    }
+                } else if (allTab && allTab.style.display !== 'none') {
+                    // Refresh all users tab
+                    await loadAllUsers();
+                }
+                
+                // Show brief success feedback
+                btn.style.color = '#22c55e';
+                setTimeout(() => {
+                    btn.style.color = '#86efac';
+                }, 500);
+            } catch (error) {
+                console.error('Refresh error:', error);
+            } finally {
+                // Remove spinning animation
+                btn.style.animation = 'none';
+                btn.disabled = false;
+            }
         };
 
         // ===== ADMIN TAB SWITCHING =====
