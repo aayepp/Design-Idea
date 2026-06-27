@@ -1543,14 +1543,6 @@
                 </div>
                 <button onclick="logout()" data-translate="logout" id="logoutBtn" class="api-status" style="background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); cursor: pointer; display: none; border: 1px solid; padding: 10px 16px;">Logout</button>
                 
-                <!-- Language Selector -->
-                <div id="languageSelector" style="display: none; margin-left: 10px;">
-                    <select id="languageDropdown" onchange="changeLanguage(this.value)" style="padding: 10px 12px; background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(59, 130, 246, 0.3); color: #cbd5e1; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">
-                        <option value="en">🇬🇧 English</option>
-                        <option value="ms">🇲🇾 Bahasa Melayu</option>
-                        <option value="zh">🇨🇳 中文 (繁体)</option>
-                    </select>
-                </div>
             </div>
         </div>
     </nav>
@@ -4320,7 +4312,6 @@ function buildDesignPrompt(settings) {
             console.log('Language selection disabled - English only');
             currentLanguage = 'en';
             localStorage.setItem('appLanguage', 'en');
-            document.getElementById('languageDropdown').value = 'en';
         }
 
         // Translation system disabled - English only
@@ -4593,20 +4584,8 @@ function buildDesignPrompt(settings) {
             console.log('All UI elements updated!');
         }
 
-        // Initialize language on page load
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('languageDropdown').value = currentLanguage;
-                updateAllUIText();
-            }, 500);
-        });
+        // Language system disabled
         
-        // Also update when dropdown changes
-        document.addEventListener('change', function(e) {
-            if (e.target && e.target.id === 'languageDropdown') {
-                changeLanguage(e.target.value);
-            }
-        });
         let isSignupMode = true;
         const HOST_EMAIL = "ayep.business@gmail.com"; // CHANGE TO YOUR EMAIL
 
@@ -4687,7 +4666,6 @@ function buildDesignPrompt(settings) {
                 document.getElementById('mainContent').style.display = 'block';
                 document.getElementById('tokenStatus').style.display = 'flex';
                 document.getElementById('logoutBtn').style.display = 'block';
-                document.getElementById('languageSelector').style.display = 'block';
                 
                 // Check if user is host
                 if (user.email === HOST_EMAIL) {
@@ -4715,7 +4693,6 @@ function buildDesignPrompt(settings) {
                 document.getElementById('mainContent').style.display = 'none';
                 document.getElementById('tokenStatus').style.display = 'none';
                 document.getElementById('logoutBtn').style.display = 'none';
-                document.getElementById('languageSelector').style.display = 'none';
                 document.getElementById('adminPanelSection').style.display = 'none';
             }
         });
